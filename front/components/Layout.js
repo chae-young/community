@@ -1,17 +1,44 @@
+import {useState,useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import {UserOutlined,SearchOutlined} from '@ant-design/icons';
+import {Header} from '../styles';
+import LoginForm from './LoginForm';
+import Signup from './Signup';
 
 const Layout = ({children})=>{
+    const [isLoggedIn,setIsLoggedIn] = useState('');
+
+    const [isToggleOn,setIsToggleOn] = useState(true);
+    const onToggle = useCallback(()=>{
+        setIsToggleOn((prev)=>!prev);
+    },[isToggleOn])
+
+    const [myIconClick,setMyIconClick] = useState(false);
+    const myIcon = useCallback(()=>{
+        setMyIconClick(true);
+    })
     return (
-        <div>
-            <ul>
-                <li><Link href="/"><a>메인</a></Link></li>
-                <li><Link href="/profile"><a>프로필</a></Link></li>
-                <li><Link href="/signup"><a>회원가입</a></Link></li>
-            </ul>
-            {children}
-        </div>
+        <>
+        <Header>
+            <nav>
+                <ul className="header__util-menu">
+                    <li><button onClick={myIcon} type="button"><UserOutlined /></button></li>
+                    <li><button type="button"><SearchOutlined /></button></li>
+                </ul>
+            </nav>
+            <aside className={myIconClick ? "is--open" : null}>
+                계정이 없으신가요?<button onClick={onToggle}>회원가입하기</button>
+                {isToggleOn ? <LoginForm setIsLoggedIn={setIsLoggedIn}/> : <Signup/>}
+            </aside>
+        </Header>
+        {children} 
+        </>
     )
+}
+
+Layout.propTypes = {
+    children:PropTypes.node.isRequired,
 }
 
 export default Layout
