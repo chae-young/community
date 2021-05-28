@@ -2,7 +2,7 @@ import {useState,useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import {UserOutlined,SearchOutlined} from '@ant-design/icons';
-import {Header} from '../styles';
+import {Header} from '../styles/style';
 import LoginForm from './LoginForm';
 import Signup from './Signup';
 
@@ -28,7 +28,7 @@ const Layout = ({children})=>{
                 </ul>
             </nav>
             <aside className={myIconClick ? "is--open" : null}>
-                계정이 없으신가요?<button onClick={onToggle}>회원가입하기</button>
+                계정이 없으신가요?<button onClick={onToggle}>{isToggleOn ? "회원가입하기" : "로그인하기"}</button>
                 {isToggleOn ? <LoginForm setIsLoggedIn={setIsLoggedIn}/> : <Signup/>}
             </aside>
         </Header>

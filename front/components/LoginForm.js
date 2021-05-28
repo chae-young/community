@@ -1,39 +1,42 @@
-import { Form,Input } from 'antd';
 import { useCallback, useState } from 'react';
+import useInput from '../hooks/useInput';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import {btnStyle} from '../styles/MakeStyle';
 
 const LoginForm = ({setIsLoggedIn})=>{
-    const [id,setId] = useState('');
-    const [password,setPassword] = useState('');
+    const btnClass = btnStyle();
+
+    const [id,onChangeId] = useInput('');
+    const [password,onChangePassword] = useInput('');
     const onSubmit = useCallback(()=>{
         console.log(id,password)
         setIsLoggedIn(true);
     },[id,password])
 
-    const onChangeId = useCallback((e)=>{
-        setId(e.target.value);
-    },[])
-    const onChangePassword = useCallback((e)=>{
-        setPassword(e.target.value);
-    },[])
-    
     return (
-        <Form onFinish={onSubmit}>
-            <div>
-                <label htmlFor="user-id"/>
-                <Input name="user-id" value={id} onChange={onChangeId} placeholder="아이디를 입력해주세요." required/>
+        <form onSubmit={onSubmit}>
+            <div className="aside__input-field">
+                <TextField 
+                id="user-id" 
+                label="아이디" 
+                value={id} 
+                onChange={onChangeId} 
+                fullWidth 
+                required/>
             </div>
-            <div>
-                <label htmlFor="user-password"/>
-                <Input 
-                name="user-password" 
+            <div className="aside__input-field">
+                <TextField 
                 type="password" 
+                id="user-password" 
+                label="비밀번호" 
                 value={password} 
                 onChange={onChangePassword} 
-                placeholder="비밀번호를 입력해주세요."
+                fullWidth 
                 required/>
-            </div>       
-            <button type="submit">로그인</button>     
-        </Form>
+            </div>                  
+            <Button variant="contained" color="primary" fullWidth className={btnClass.bg}>로그인</Button>   
+        </form>
     )
 }
 
