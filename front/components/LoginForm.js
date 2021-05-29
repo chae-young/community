@@ -4,14 +4,16 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {btnStyle} from '../styles/MakeStyle';
 
-const LoginForm = ({setIsLoggedIn})=>{
+const LoginForm = ({setIsLoggedIn,setLoginOn})=>{
     const btnClass = btnStyle();
 
     const [id,onChangeId] = useInput('');
     const [password,onChangePassword] = useInput('');
-    const onSubmit = useCallback(()=>{
+    const onSubmit = useCallback((e)=>{
+        e.preventDefault()
         console.log(id,password)
         setIsLoggedIn(true);
+        setLoginOn(false);
     },[id,password])
 
     return (
@@ -35,7 +37,7 @@ const LoginForm = ({setIsLoggedIn})=>{
                 fullWidth 
                 required/>
             </div>                  
-            <Button variant="contained" color="primary" fullWidth className={btnClass.bg}>로그인</Button>   
+            <Button variant="contained" color="primary" type="submit" fullWidth className={btnClass.bg}>로그인</Button>   
         </form>
     )
 }
