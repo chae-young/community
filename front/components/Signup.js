@@ -3,10 +3,16 @@ import useInput from '../hooks/useInput';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {ErrorMsg} from '../styles/style';
-import {btnStyle} from '../styles/MakeStyle';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyle = makeStyles((theme) => ({
+    bg: {
+        background:'red',
+    },
+}));
 
 const Signup = ()=>{
-    const btnClass = btnStyle();    
+    const classes = useStyle();    
 
     const [id,onChangeId] = useInput('');
     const [nickname,onChangeNickname] = useInput('');
@@ -67,7 +73,7 @@ const Signup = ()=>{
                 required/>
                 {passwordError && <ErrorMsg>비밀번호가 맞지 않습니다.</ErrorMsg>}
             </div>                       
-            <Button variant="contained" color="primary" fullWidth className={btnClass.bg}>가입하기</Button>               
+            <Button variant="contained" color="primary" fullWidth className={classes.bg}>가입하기</Button>               
         </form>
     )
 }

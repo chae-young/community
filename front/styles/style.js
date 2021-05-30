@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Header = styled.header`
+export const HeaderWrap = styled.header`
     & .header__util-menu{
         position:absolute;
         right:0;
@@ -31,4 +31,14 @@ export const Header = styled.header`
 `
 export const ErrorMsg = styled.div`
     color:red;
+`
+
+export const PopoverInfo = styled.div`
+    padding:2rem;
+    & .popover-info-profile{
+        display:flex;
+    }
+    & .popover-info-follow{
+        display:flex;
+    }
 `

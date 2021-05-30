@@ -2,7 +2,9 @@ import Layout from "../components/Layout";
 
 const Main = ()=>{
     return (
-        <Layout>메인</Layout>
+        <Layout>
+            <section>메인</section>
+        </Layout>
     )
 }
 export default Main;

@@ -2,10 +2,16 @@ import { useCallback, useState } from 'react';
 import useInput from '../hooks/useInput';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {btnStyle} from '../styles/MakeStyle';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyle = makeStyles((theme) => ({
+    bg: {
+        background:'red',
+    },
+}));
 
 const LoginForm = ({setIsLoggedIn,setLoginOn})=>{
-    const btnClass = btnStyle();
+    const classes = useStyle();
 
     const [id,onChangeId] = useInput('');
     const [password,onChangePassword] = useInput('');
@@ -37,7 +43,7 @@ const LoginForm = ({setIsLoggedIn,setLoginOn})=>{
                 fullWidth 
                 required/>
             </div>                  
-            <Button variant="contained" color="primary" type="submit" fullWidth className={btnClass.bg}>로그인</Button>   
+            <Button variant="contained" color="primary" type="submit" fullWidth className={classes.bg}>로그인</Button>   
         </form>
     )
 }
