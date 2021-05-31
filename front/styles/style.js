@@ -7,38 +7,71 @@ export const HeaderWrap = styled.header`
         top:0;
         display:flex;
     }
-
-    & aside{
-        position:fixed;
-        right:0;
-        top:0; 
-        z-index:9;
-        width:50vw;
-        height:100%;
-        padding:2rem;
-        background:#fff;
-        transform:translateX(100%);
-        transition:all .5s ease;
-        box-sizing:border-box;
-        
-        &.is--open{
-            transform:translateX(0);
-        }
-        & .aside__input-field{
-            margin-bottom:20px;
-        }
-    }
 `
+export const Aside = styled.aside.attrs(props => ({
+    className: "is--open",
+  }))`
+      position:fixed;
+      right:0;
+      top:0; 
+      z-index:9;
+      width:50vw;
+      height:100%;
+      padding:2rem;
+      background:#fff;
+      transform:${props=>(props.toggle ? 'translateX(0)': 'translateX(100%)')};
+      transition:all .5s ease;
+      box-sizing:border-box;
+  `;
+// export const Aside = styled.aside`
+//     position:fixed;
+//     right:0;
+//     top:0; 
+//     z-index:9;
+//     width:50vw;
+//     height:100%;
+//     padding:2rem;
+//     background:#fff;
+//     transform:translateX(100%);
+//     transition:all .5s ease;
+//     box-sizing:border-box;
+    
+//     &.is--open{
+//         transform:translateX(0);
+//     }
+//     & .aside__input-field{
+//         margin-bottom:20px;
+//     }
+// `
 export const ErrorMsg = styled.div`
     color:red;
 `
 
-export const PopoverInfo = styled.div`
+export const PopoverWrap = styled.div`
     padding:2rem;
-    & .popover-info-profile{
-        display:flex;
+`
+export const PopoverProfile = styled.div`
+    display:flex;
+
+`
+export const PopoverBtn = styled.div`
+    display:flex;
+`
+export const PopoverInfo = styled.div`
+    padding:1rem;
+    & .nick{
+        text-decoration:none;
+        font-size:1.4rem;
+        font-weight:bold;
+        color:rgb(0,0,0);
+        &:hover{
+            text-decoration:underline;            
+        }
     }
-    & .popover-info-follow{
-        display:flex;
+    & .id{
+        display:block;
+        margin-top:10px;
+        font-size:1.2rem;
+        color:rgb(102,102,102)
     }
 `

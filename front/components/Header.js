@@ -1,7 +1,7 @@
 import {useState,useCallback, useEffect} from 'react';
 import {UserOutlined,SearchOutlined} from '@ant-design/icons';
 import Link from 'next/link';
-import {HeaderWrap} from '../styles/style';
+import {HeaderWrap,Aside} from '../styles/style';
 import LoginForm from './LoginForm';
 import Signup from './Signup';
 import MypopOver from './MypopOver';
@@ -43,10 +43,10 @@ const Header = ()=>{
                     <li><button type="button"><SearchOutlined /></button></li>
                 </ul>
             </nav>
-            <aside className={loginOn ? "is--open" : null}>
+            <Aside toggle={loginOn}>
                 계정이 없으신가요?<button onClick={onToggle}>{isToggleOn ? "회원가입하기" : "로그인하기"}</button>
                 {isToggleOn ? <LoginForm setIsLoggedIn={setIsLoggedIn} setLoginOn={setLoginOn}/> : <Signup/>}
-            </aside>
+            </Aside>
         </HeaderWrap>        
     )
 }
