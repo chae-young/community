@@ -1,16 +1,22 @@
 import { useCallback, useState } from 'react';
+import {useDispatch} from 'react-redux';
 import useInput from '../hooks/useInput';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, rgbToHex } from '@material-ui/core/styles';
+import { LoginAction } from '../reducers/user';
 
 const useStyle = makeStyles((theme) => ({
     bg: {
-        background:'red',
+        background: "rgb(249, 137, 15)",        
+        '&:hover': {
+            background:'rgb(253, 206, 156)',
+         },        
     },
 }));
 
-const LoginForm = ({setIsLoggedIn,setLoginOn})=>{
+const LoginForm = ({setLoginOn})=>{
+    const dispatch = useDispatch();
     const classes = useStyle();
 
     const [id,onChangeId] = useInput('');
@@ -18,7 +24,7 @@ const LoginForm = ({setIsLoggedIn,setLoginOn})=>{
     const onSubmit = useCallback((e)=>{
         e.preventDefault()
         console.log(id,password)
-        setIsLoggedIn(true);
+        dispatch(LoginAction({id,password}));
         setLoginOn(false);
     },[id,password])
 

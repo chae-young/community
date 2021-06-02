@@ -1,12 +1,22 @@
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import Popover from '@material-ui/core/Popover';
 import Avatar from '@material-ui/core/Avatar';
 import Link from 'next/link';
 import {PopoverWrap,PopoverProfile,PopoverInfo,PopoverBtn} from '../styles/style';
+import { LOG_OUT } from '../reducers/user';
 
 const MypopOver = ({options})=>{
+    const dispatch = useDispatch();
+
     const handleClose = () => {
         options.setAnchorEl(null);
     };
+    const onLogout = useCallback(()=>{
+        dispatch({type:LOG_OUT})
+        handleClose()
+    })
     return(
         <Popover
             id={options.id}
@@ -22,7 +32,7 @@ const MypopOver = ({options})=>{
                     <PopoverInfo>
                         <Link href="/Mypage"><a className="nick">닉네임</a></Link>
                         <span className="id">아이디</span>
-                        <button>로그아웃</button>
+                        <button onClick={onLogout}>로그아웃</button>
                     </PopoverInfo>
                 </PopoverProfile>
                 <PopoverBtn>
@@ -32,6 +42,15 @@ const MypopOver = ({options})=>{
             </PopoverWrap>
         </Popover>        
     )
+}
+
+MypopOver.propTypes={
+    options:PropTypes.shape({
+        id:PropTypes.string,
+        open:PropTypes.boolean,
+        anchorEl:PropTypes.boolean,
+        setAnchorEl:PropTypes.boolean,
+    }),
 }
 
 export default MypopOver;
