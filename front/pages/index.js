@@ -1,9 +1,10 @@
 import Layout from "../components/Layout";
+import PostList from '../components/PostList';
 
 const Main = ()=>{
     return (
         <Layout>
-            <section>메인</section>
+            <PostList/>
         </Layout>
     )
 }

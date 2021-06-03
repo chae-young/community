@@ -1,7 +1,7 @@
 import {useState,useCallback, useEffect} from 'react';
 import {UserOutlined,SearchOutlined} from '@ant-design/icons';
 import Link from 'next/link';
-import {HeaderWrap,Aside} from '../styles/style';
+import {HeaderUtillMenu,Aside} from '../styles/style';
 import LoginForm from './LoginForm';
 import Signup from './Signup';
 import MypopOver from './MypopOver';
@@ -31,10 +31,10 @@ const Header = ()=>{
     const id = open ? 'simple-popover' : undefined;
 
     return(
-        <HeaderWrap>
+        <header>
             <h1><Link href="/"><a>로고</a></Link></h1>
             <nav>
-                <ul className="header__util-menu">
+                <HeaderUtillMenu>
                     <li>
                         <button type="button" variant="contained" onClick={loginOnClick}>
                             {isLoggedIn ? '내프로필사진예정' : <UserOutlined />}
@@ -42,13 +42,13 @@ const Header = ()=>{
                         <MypopOver options={{id,open,anchorEl,setAnchorEl}}/>
                     </li>
                     <li><button type="button"><SearchOutlined /></button></li>
-                </ul>
+                </HeaderUtillMenu>
             </nav>
             <Aside toggle={loginOn}>
                 계정이 없으신가요?<button onClick={onToggle}>{isToggleOn ? "회원가입하기" : "로그인하기"}</button>
                 {isToggleOn ? <LoginForm setLoginOn={setLoginOn}/> : <Signup/>}
             </Aside>
-        </HeaderWrap>        
+        </header>        
     )
 }
 

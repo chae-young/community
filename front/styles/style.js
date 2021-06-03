@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
-export const HeaderWrap = styled.header`
-    & .header__util-menu{
-        position:absolute;
-        right:0;
-        top:0;
-        display:flex;
-    }
+export const Container = styled.section`
+    max-width:1440px;
+    margin:0 auto;
+`
+export const HeaderUtillMenu = styled.ul`
+    position:absolute;
+    right:0;
+    top:0;
+    display:flex;
 `
 export const Aside = styled.aside`
     position:fixed;

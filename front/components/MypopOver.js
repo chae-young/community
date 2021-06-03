@@ -30,7 +30,8 @@ const MypopOver = ({options})=>{
                         <Avatar alt="내 프로필 사진" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/171216_%EC%96%91%EC%84%B8%EC%A2%85_10.jpg/375px-171216_%EC%96%91%EC%84%B8%EC%A2%85_10.jpg" width="10%" />
                     </div>
                     <PopoverInfo>
-                        <Link href="/Mypage"><a className="nick">닉네임</a></Link>
+                        <Link href="/profile"><a className="profile-nick">닉네임</a></Link>
+                        <Link href="/write"><a className="profile-write">글쓰기</a></Link>
                         <span className="id">아이디</span>
                         <button onClick={onLogout}>로그아웃</button>
                     </PopoverInfo>

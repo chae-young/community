@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import Header from './Header';
+import {Container} from '../styles/style';
 
 const Layout = ({children})=>{
     return (
         <>
         <Header/>
-        {children} 
+        <Container>{children}</Container>
         </>
     )
 }
