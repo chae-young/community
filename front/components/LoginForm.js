@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
+import { useForm } from "react-hook-form";
 import {useDispatch} from 'react-redux';
-import useInput from '../hooks/useInput';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, rgbToHex } from '@material-ui/core/styles';
@@ -16,26 +16,23 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 const LoginForm = ({setLoginOn})=>{
+    const { register, handleSubmit } = useForm();
     const dispatch = useDispatch();
     const classes = useStyle();
 
-    const [id,onChangeId] = useInput('');
-    const [password,onChangePassword] = useInput('');
-    const onSubmit = useCallback((e)=>{
-        e.preventDefault()
-        console.log(id,password)
-        dispatch(LoginAction({id,password}));
+    const onSubmit = (data) => {
+        console.log(data);
+        dispatch(LoginAction({data}));
         setLoginOn(false);
-    },[id,password])
+    }
 
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className="aside__input-field">
                 <TextField 
                 id="user-id" 
                 label="아이디" 
-                value={id} 
-                onChange={onChangeId} 
+                {...register("id")} 
                 fullWidth 
                 required/>
             </div>
@@ -44,8 +41,7 @@ const LoginForm = ({setLoginOn})=>{
                 type="password" 
                 id="user-password" 
                 label="비밀번호" 
-                value={password} 
-                onChange={onChangePassword} 
+                {...register("password")} 
                 fullWidth 
                 required/>
             </div>                  

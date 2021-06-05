@@ -23,15 +23,11 @@ const PostForm = ()=>{
           buttonList:[
           ['undo', 'redo',
           'font', 'fontSize', 'formatBlock',
-          'paragraphStyle', 'blockquote',
-          'bold', 'underline', 'italic', 'strike', 'subscript', 'superscript',
-          'fontColor', 'hiliteColor', 'textStyle',
-          'removeFormat',
-          'outdent', 'indent',
-          'align', 'horizontalRule', 'list', 'lineHeight',
-          'table', 'link', 'image', 'video', 'audio',
-          'fullScreen', 'showBlocks', 'codeView',
-          'preview', 'print', 'save', 'template']]
+          'blockquote',
+          'bold', 'underline', 'italic', 'strike',
+          'fontColor', 'hiliteColor',
+          'align', 'list', 'lineHeight',
+          'table', 'link', 'image',]]
         }}
         onChange={handleChange}
       />

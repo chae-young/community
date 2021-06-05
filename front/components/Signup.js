@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import useInput from '../hooks/useInput';
+import { useForm } from "react-hook-form";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {ErrorMsg} from '../styles/style';
@@ -14,9 +14,7 @@ const useStyle = makeStyles((theme) => ({
 const Signup = ()=>{
     const classes = useStyle();    
 
-    const [id,onChangeId] = useInput('');
-    const [nickname,onChangeNickname] = useInput('');
-    const [password,onChangePassword] = useInput('');
+    const { register, handleSubmit ,formState: { errors }} = useForm();
 
     const [passwordCheck,setPasswordCheck] = useState('');
     const [passwordError,setPasswordError] = useState(false);
@@ -25,21 +23,20 @@ const Signup = ()=>{
         setPasswordError(e.target.value !== password);
     },[password]);
 
-    const onSubmit = useCallback((e)=>{
+    const onSubmit = (data)=>{
         if(password !== setPasswordCheck){
             return setPasswordError(true);
         }
-        console.log(id,nickname,password)
-    },[password,passwordCheck])
+        console.log(data)
+    };
 
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className="aside__input-field">
                 <TextField 
                 id="user-id" 
                 label="아이디" 
-                value={id} 
-                onChange={onChangeId} 
+                {...register("id")} 
                 fullWidth 
                 required/>
             </div>
@@ -47,8 +44,7 @@ const Signup = ()=>{
                 <TextField 
                 id="user-nickname" 
                 label="닉네임" 
-                value={nickname} 
-                onChange={onChangeNickname} 
+                {...register("nickname")}  
                 fullWidth 
                 required/>
             </div>            
@@ -57,8 +53,7 @@ const Signup = ()=>{
                 type="password" 
                 id="user-password" 
                 label="비밀번호" 
-                value={password} 
-                onChange={onChangePassword} 
+                {...register("password")} 
                 fullWidth 
                 required/>
             </div>   
@@ -73,7 +68,7 @@ const Signup = ()=>{
                 required/>
                 {passwordError && <ErrorMsg>비밀번호가 맞지 않습니다.</ErrorMsg>}
             </div>                       
-            <Button variant="contained" color="primary" fullWidth className={classes.bg}>가입하기</Button>               
+            <Button variant="contained" color="primary" type="submit" fullWidth className={classes.bg}>가입하기</Button>               
         </form>
     )
 }

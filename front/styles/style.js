@@ -55,3 +55,32 @@ export const PopoverInfo = styled.div`
         color:rgb(102,102,102)
     }
 `
+export const PostListLi = styled.div`
+    display:flex;
+    & .post-list__img{
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        width: 148px;
+        height: 148px;
+        overflow: hidden;
+
+        > img {
+            flex:1;
+            height:100%;
+        }
+    }
+    & .post-list__con{
+        display:flex;
+        width:100%;
+        align-items:center;
+
+        > p{
+            flex:8;
+        }
+        > span{
+            flex:1;
+            text-align:center;
+        }
+    }
+`
