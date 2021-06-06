@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { useForm } from "react-hook-form";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {ErrorMsg} from '../styles/style';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyle = makeStyles((theme) => ({
@@ -14,19 +13,8 @@ const useStyle = makeStyles((theme) => ({
 const Signup = ()=>{
     const classes = useStyle();    
 
-    const { register, handleSubmit ,formState: { errors }} = useForm();
-
-    const [passwordCheck,setPasswordCheck] = useState('');
-    const [passwordError,setPasswordError] = useState(false);
-    const onChangePasswordCheck = useCallback((e)=>{
-        setPasswordCheck(e.target.value);
-        setPasswordError(e.target.value !== password);
-    },[password]);
-
+    const { register, handleSubmit , watch ,formState: { errors } } = useForm();
     const onSubmit = (data)=>{
-        if(password !== setPasswordCheck){
-            return setPasswordError(true);
-        }
         console.log(data)
     };
 
@@ -53,20 +41,25 @@ const Signup = ()=>{
                 type="password" 
                 id="user-password" 
                 label="비밀번호" 
-                {...register("password")} 
+                {...register("password",{
+                    minLength: 8            
+                })} 
                 fullWidth 
                 required/>
+                {console.log(errors?.password?.type)}
+                {errors?.password?.type === "minLength" && (<p>비밀번호 8자 이상으로 입력해주세요.</p>)}
             </div>   
             <div className="aside__input-field">
                 <TextField 
                 type="password" 
                 id="user-password-check" 
                 label="비밀번호 확인" 
-                value={passwordCheck} 
-                onChange={onChangePasswordCheck} 
+                {...register("passwordCheck",{
+                    validate: value => value === watch('password')          
+                })} 
                 fullWidth 
-                required/>
-                {passwordError && <ErrorMsg>비밀번호가 맞지 않습니다.</ErrorMsg>}
+                required/>  
+                {errors?.passwordCheck?.type === "validate" && (<p>비밀번호가 틀립니다.</p>)} 
             </div>                       
             <Button variant="contained" color="primary" type="submit" fullWidth className={classes.bg}>가입하기</Button>               
         </form>
