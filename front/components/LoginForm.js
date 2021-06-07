@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import {useDispatch} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { makeStyles, rgbToHex } from '@material-ui/core/styles';
-import { LoginAction } from '../reducers/user';
+import { makeStyles } from '@material-ui/core/styles';
+import { LoginRequestAction } from '../reducers/user';
 
 const useStyle = makeStyles((theme) => ({
     bg: {
@@ -22,7 +22,7 @@ const LoginForm = ({setLoginOn})=>{
 
     const onSubmit = (data) => {
         console.log(data);
-        dispatch(LoginAction({data}));
+        dispatch(LoginRequestAction({data}));
         setLoginOn(false);
     }
 

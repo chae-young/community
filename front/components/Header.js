@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { useSelector } from 'react-redux';
 
 const Header = ()=>{
-    const {isLoggedIn} = useSelector((state)=>state.user);
+    const {me} = useSelector((state)=>state.user);
 
     const [isToggleOn,setIsToggleOn] = useState(true);
     const onToggle = useCallback(()=>{
@@ -18,7 +18,7 @@ const Header = ()=>{
 
     const [loginOn,setLoginOn] = useState(null);
     const loginOnClick = useCallback((e)=>{
-        if(isLoggedIn) {
+        if(me) {
             setLoginOn(false);
             setAnchorEl(e.currentTarget);
             return;
@@ -37,9 +37,9 @@ const Header = ()=>{
                 <HeaderUtillMenu>
                     <li>
                         <button type="button" variant="contained" onClick={loginOnClick}>
-                            {isLoggedIn ? '내프로필사진예정' : <UserOutlined />}
+                            {me ? '내프로필사진예정' : <UserOutlined />}
                         </button>
-                        <MypopOver options={{id,open,anchorEl,setAnchorEl}}/>
+                        {me && <MypopOver options={{id,open,anchorEl,setAnchorEl}}/>}
                     </li>
                     <li><button type="button"><SearchOutlined /></button></li>
                 </HeaderUtillMenu>
