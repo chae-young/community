@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback, useState} from 'react';
+import TextField from '@material-ui/core/TextField';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
@@ -12,16 +13,33 @@ const SunEditor = dynamic(() => import('suneditor-react'), {
 const PostForm = () => {
   const dispatch = useDispatch();
 
-  const handleChange = (content) => {
-    console.log(content);
+  const [boardTitle, setBoardTitle] = useState('');
+  const [boardText, setBoardText] = useState('');
+
+  const onChangeTitle = useCallback((e) => {
+    setBoardTitle(e.target.value);
+  }, [boardTitle]);
+  
+  const onSubmit = useCallback(() => {
     dispatch({
       type: ADD_POST_REQUEST,
-      data: content,
+      data: {content: boardText, title: boardTitle},
     });
+  }, [boardTitle, boardText]);
+
+  const handleonBlur = (event, editorContents) => {
+    setBoardText(editorContents);
+    console.log(event, editorContents);
   };
 
   return (
     <div>
+        <TextField
+          placeholder="제목을 입력해주세요"
+          fullWidth
+          value={boardTitle}
+          onChange={onChangeTitle}
+        />
       <SunEditor
         lang="ko"
         height="50vh"
@@ -35,9 +53,9 @@ const PostForm = () => {
           'align', 'list', 'lineHeight',
           'table', 'link', 'image']],
         }}
-        onChange={handleChange}
+        onBlur={handleonBlur}
       />
-      <button type="button"><Link href="/board"><a>등록</a></Link></button>
+      <button type="button" onClick={onSubmit}><Link href="/board"><a>등록</a></Link></button>
     </div>
   );
 };

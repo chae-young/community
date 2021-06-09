@@ -36,7 +36,10 @@ const dummyPost = (data) => (
             id: 2,
             nickname: '더미닉넴',
         },
-        content: data,
+        post: {
+            title: data.title,
+            content: data.content,
+        },
         Images: [],
         Comments: [],
     }
@@ -55,7 +58,11 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case ADD_POST_SUCCESS:
             draft.postAddLoading = false;
             draft.postAddDone = true;
-            draft.postList = draft.postList.unshift(dummyPost(action.data));
+            draft.postList.unshift(dummyPost(action.data));
+        break;
+        case ADD_POST_FAILURE:
+            draft.postAddDone = false;
+            draft.postAddError = action.error;
         break;
         default:
         break;

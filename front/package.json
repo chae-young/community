@@ -23,6 +23,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-hook-form": "^7.8.0",
+    "react-lines-ellipsis": "^0.15.0",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
@@ -36,9 +37,12 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.27.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-hooks": "^0.2.0",
     "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.3.1"
   }
 }
