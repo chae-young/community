@@ -1,4 +1,4 @@
-import ssss, { useState } from "react"
+import { useState } from "react"
 
 const usePagination = (data, itemsPerPage) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -19,6 +19,7 @@ const usePagination = (data, itemsPerPage) => {
   }
 
   function jump(page) {
+    console.log("prev")
     const pageNumber = Math.max(1, page)
     setCurrentPage((currentPage) => Math.min(pageNumber, maxPage))
   }
