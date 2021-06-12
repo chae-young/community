@@ -1,0 +1,5 @@
+const PostView = () =>{
+   return (
+       
+   ) 
+}

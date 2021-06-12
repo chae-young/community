@@ -12,7 +12,8 @@ function mainMovieAPI(data) {
 
 function* mainMovie(action) {
   // const result = yield call(mainMovieAPI)
-  console.log(result)
+  // console.log(result)
+  yield delay(1000)
   try {
     yield delay(1000)
     yield put({
