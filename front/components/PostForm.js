@@ -1,27 +1,35 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback } from "react"
+import React, { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import Rating from "@material-ui/lab/Rating"
+import { useDispatch } from "react-redux"
+import { addPostReuestAction } from "../reducers/post"
 
 const PostForm = () => {
+  const dispatch = useDispatch()
   const { register, handleSubmit } = useForm()
-  const [value, setValue] = React.useState(0.5)
+  const [imgSrc, setImgSrc] = useState("")
+  const [rating, setRating] = useState(0.5)
 
-  const onSubmit = useCallback(() => {}, [])
+  const onSubmit = useCallback((data) => {
+    console.log(rating, data)
+    const { title, content } = data
+    dispatch(addPostReuestAction({ rating, imgSrc, title, content }))
+  }, [])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <img src="" alt="" />
-      <h2>영화제목</h2>
+      <img src={imgSrc} alt="" />
+      <input {...register("title")} />
       <Rating
-        name="simple-controlled"
-        value={value}
+        value={rating}
         precision={0.5}
         onChange={(_event, newValue) => {
-          setValue(newValue)
+          setRating(newValue)
         }}
       />
       <textarea {...register("content")} />
+      <button type="submit">등록</button>
     </form>
   )
 }

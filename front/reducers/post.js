@@ -32,7 +32,7 @@ const dummyList = (num) =>
     ],
   }))
 
-initialState.postList = dummyList(100)
+// initialState.postList = dummyList(100)
 
 const dummyPost = (data) => ({
   id: 1,
@@ -52,6 +52,11 @@ export const ADD_POST_REQUEST = "ADD_POST_REQUEST"
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS"
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE"
 
+export const addPostReuestAction = (data) => ({
+  type: ADD_POST_REQUEST,
+  data,
+})
+
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
@@ -62,7 +67,7 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_SUCCESS:
         draft.postAddLoading = false
         draft.postAddDone = true
-        draft.postList.unshift(dummyPost(action.data))
+        draft.postList.unshift(action.data)
         break
       case ADD_POST_FAILURE:
         draft.postAddDone = false

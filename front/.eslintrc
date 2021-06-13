@@ -22,6 +22,7 @@
       "prettier"
     ],
     "rules": {
+
       "arrow-body-style":"off",
       "object-curly-spacing":"off",
       "indent": "off",
