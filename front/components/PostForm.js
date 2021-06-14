@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useState, useRef } from "react"
 import { useForm } from "react-hook-form"
 import Rating from "@material-ui/lab/Rating"
 import { useDispatch } from "react-redux"
+import Router from "next/router"
 import { addPostReuestAction } from "../reducers/post"
 
 const PostForm = () => {
@@ -15,11 +16,21 @@ const PostForm = () => {
     console.log(rating, data)
     const { title, content } = data
     dispatch(addPostReuestAction({ rating, imgSrc, title, content }))
+    Router.push("/board")
   }, [])
 
+  const inputFile = useRef(null)
+  const onFileUpload = () => {
+    inputFile.current.click()
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <img src={imgSrc} alt="" />
+      <button type="button">이미지 검색하기</button>
+      <input type="file" ref={inputFile} style={{ display: "none" }} />
+      <button type="button" onClick={onFileUpload}>
+        내 이미지 가져오기
+      </button>
       <input {...register("title")} />
       <Rating
         value={rating}

@@ -1,51 +1,44 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import Slider from "react-slick"
 import LinesEllipsis from "react-lines-ellipsis"
-import { Pagination } from "@material-ui/lab"
-import { PostListLi } from "../styles/style"
 import { MAIN_MOVIE_REQUEST } from "../reducers/movie"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 
 const PostList = () => {
   const dispatch = useDispatch()
   const { postList } = useSelector((state) => state.post)
 
-  useEffect(() => {
-    dispatch({
-      type: MAIN_MOVIE_REQUEST,
-    })
-  })
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+    ],
+  }
 
   return (
     <>
-      <ul>
+      <Slider {...settings}>
         {postList.map((v) => (
-          <PostListLi key={v.id}>
-            {v.Images[0] && (
-              <div className="post-list__img">
-                <img src={v.Images[0].src} alt="" />
-              </div>
-            )}
-            <div className="post-list__con">
-              <LinesEllipsis
-                text={v.post.title}
-                maxLine="1"
-                ellipsis="..."
-                trimRight
-              />
-              <span>댓글{v.Comments.length}</span>
-            </div>
+          <PostListLi>
+            <figure>
+              <img src={v.Images} alt={v.post.title} />
+              <figcaption>{v.post.title}</figcaption>
+            </figure>
+            <span>{v.post.rate}</span>
           </PostListLi>
         ))}
-      </ul>
-
-      <Pagination
-        count={count}
-        size="large"
-        page={page}
-        variant="outlined"
-        shape="rounded"
-        onChange={handleChange}
-      />
+      </Slider>
     </>
   )
 }

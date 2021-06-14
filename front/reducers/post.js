@@ -42,9 +42,10 @@ const dummyPost = (data) => ({
   },
   post: {
     title: data.title,
+    rate: data.rating,
     content: data.content,
   },
-  Images: [],
+  Images: data.imgSrc,
   Comments: [],
 })
 
@@ -67,7 +68,7 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_SUCCESS:
         draft.postAddLoading = false
         draft.postAddDone = true
-        draft.postList.unshift(action.data)
+        draft.postList.unshift(dummyPost(action.data))
         break
       case ADD_POST_FAILURE:
         draft.postAddDone = false
