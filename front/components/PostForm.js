@@ -4,7 +4,23 @@ import { useForm } from "react-hook-form"
 import Rating from "@material-ui/lab/Rating"
 import { useDispatch } from "react-redux"
 import Router from "next/router"
+import styled from "styled-components"
+
+import faker from "faker"
 import { addPostReuestAction } from "../reducers/post"
+
+const PostFormHead = styled.div`
+  display: flex;
+`
+const PostFormImg = styled.div`
+  > div {
+    width: 20%;
+  }
+`
+const PostFormImgBtn = styled.div`
+  display: flex;
+`
+const PostFormTit = styled.div``
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -25,20 +41,30 @@ const PostForm = () => {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <img src={imgSrc} alt="" />
-      <button type="button">이미지 검색하기</button>
-      <input type="file" ref={inputFile} style={{ display: "none" }} />
-      <button type="button" onClick={onFileUpload}>
-        내 이미지 가져오기
-      </button>
-      <input {...register("title")} />
-      <Rating
-        value={rating}
-        precision={0.5}
-        onChange={(_event, newValue) => {
-          setRating(newValue)
-        }}
-      />
+      <PostFormHead>
+        <PostFormImg>
+          <div>
+            <img src={faker.image.image()} width="100%" />
+          </div>
+          <PostFormImgBtn>
+            <button type="button">이미지 검색하기</button>
+            <input type="file" ref={inputFile} style={{ display: "none" }} />
+            <button type="button" onClick={onFileUpload}>
+              내 이미지 가져오기
+            </button>
+          </PostFormImgBtn>
+        </PostFormImg>
+        <PostFormTit>
+          <input {...register("title")} />
+          <Rating
+            value={rating}
+            precision={0.5}
+            onChange={(_event, newValue) => {
+              setRating(newValue)
+            }}
+          />
+        </PostFormTit>
+      </PostFormHead>
       <textarea {...register("content")} />
       <button type="submit">등록</button>
     </form>

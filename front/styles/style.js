@@ -1,6 +1,9 @@
 import styled from "styled-components"
 
-export const Container = styled.section``
+export const Container = styled.section`
+  max-width: 1440px;
+  margin: 0 auto;
+`
 export const HeaderUtillMenu = styled.ul`
   position: absolute;
   right: 0;
