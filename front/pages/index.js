@@ -1,11 +1,11 @@
-import Layout from "../components/Layout";
-import PostList from '../components/PostList';
+import Layout from "../components/Layout"
+import PostList from "../components/PostList"
 
-const Main = ()=>{
-    return (
-        <Layout>
-            
-        </Layout>
-    )
+const Main = () => {
+  return (
+    <Layout>
+      <PostList />
+    </Layout>
+  )
 }
-export default Main;
+export default Main

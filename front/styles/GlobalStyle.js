@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
+import { createGlobalStyle } from "styled-components"
+import reset from "styled-reset"
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -21,6 +21,5 @@ const GlobalStyle = createGlobalStyle`
         outline: none;
         padding-left: 10px;
     }
-`;
-
-export default GlobalStyle;
+`
+export default GlobalStyle

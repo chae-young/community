@@ -1,9 +1,19 @@
 import styled from "styled-components"
 
-export const Container = styled.section`
-  max-width: 1440px;
-  margin: 0 auto;
-`
+const size = {
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  tablet: "768px",
+  desktop: "2560px",
+}
+
+export const device = {
+  mobile: `(min-width: ${size.mobileS} and max-width: ${size.tablt})`,
+  tablet: `(min-width: ${size.tablet})`,
+  desktop: `(min-width: ${size.desktop})`,
+}
+
 export const HeaderUtillMenu = styled.ul`
   position: absolute;
   right: 0;

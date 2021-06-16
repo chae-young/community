@@ -1,47 +1,47 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import Slider from "react-slick"
-import LinesEllipsis from "react-lines-ellipsis"
 import { MAIN_MOVIE_REQUEST } from "../reducers/movie"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import { Swiper, SwiperSlide } from "swiper/react"
+import SwiperCore, { Navigation } from "swiper/core"
+
+import "swiper/swiper.min.css"
 import styled from "styled-components"
 
-const PostListLi = styled.li``
+SwiperCore.use([Navigation])
 
 const PostList = () => {
   const dispatch = useDispatch()
   const { postList } = useSelector((state) => state.post)
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-    ],
+  const breakpoints = {
+    320: {
+      slidesPerView: 2,
+      spaceBetween: 10,
+    },
+    1024: {
+      slidesPerView: 6,
+      spaceBetween: 10,
+    },
   }
-
   return (
     <>
-      <Slider {...settings}>
+      <Swiper
+        navigation
+        slidesPerGroup={1}
+        spaceBetween={10}
+        className="mySwiper"
+        breakpoints={breakpoints}
+      >
         {postList.map((v) => (
-          <PostListLi>
+          <SwiperSlide>
             <figure>
-              <img src={v.Images} alt={v.post.title} />
+              <img src={v.Images[0].src} alt={v.post.title} />
               <figcaption>{v.post.title}</figcaption>
             </figure>
             <span>{v.post.rate}</span>
-          </PostListLi>
+          </SwiperSlide>
         ))}
-      </Slider>
+      </Swiper>
     </>
   )
 }
