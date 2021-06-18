@@ -1,15 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useState, useRef } from "react"
 import { useForm } from "react-hook-form"
-import { ErrorMessage } from "@hookform/error-message"
 import { useDispatch } from "react-redux"
-import Router from "next/router"
 
 import Rating from "@material-ui/lab/Rating"
 import Container from "@material-ui/core/Container"
 import styled, { ThemeProvider } from "styled-components"
 import faker from "faker"
+
 import { addPostReuestAction } from "../reducers/post"
+import MovieSrhModal from "./MovieSrhModal"
 
 const PostFormHead = styled.div`
   display: flex;
@@ -73,6 +73,7 @@ const PostForm = () => {
   const onFileUpload = () => {
     inputFile.current.click()
   }
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="sm">
@@ -83,7 +84,7 @@ const PostForm = () => {
                 <img src={faker.image.image()} width="100%" />
               </div>
               <PostFormImgBtn>
-                <button type="button">이미지 검색하기</button>
+                <MovieSrhModal />
                 <input
                   type="file"
                   ref={inputFile}

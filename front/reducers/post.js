@@ -37,7 +37,7 @@ initialState.postList = dummyList(4)
 const dummyPost = (data) => ({
   id: 1,
   User: {
-    id: 2,
+    id: 33,
     nickname: "더미닉넴",
   },
   post: {

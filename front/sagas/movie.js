@@ -1,38 +1,67 @@
 import axios from "axios"
 import { fork, all, takeLatest, delay, put, call } from "redux-saga/effects"
 import {
-  MAIN_MOVIE_REQUEST,
-  MAIN_MOVIE_SUCCESS,
-  MAIN_MOVIE_FAILURE,
+  MOVIE_SRH_REQUEST,
+  MOVIE_SRH_SUCCESS,
+  MOVIE_SRH_FAILURE,
+  NOW_SCREENING_MOVIE_REQUEST,
+  NOW_SCREENING_MOVIE_SUCCESS,
+  NOW_SCREENING_MOVIE_FAILURE,
 } from "../reducers/movie"
 
-function mainMovieAPI(data) {
-  return axios.get("/moive", data)
+function movieSrhAPI(data) {
+  return axios.get("/movie", {
+    params: {
+      query: data,
+    },
+  })
 }
-
-function* mainMovie(action) {
-  // const result = yield call(mainMovieAPI)
-  // console.log(result)
-  yield delay(1000)
+function* movieSrh(action) {
   try {
-    yield delay(1000)
+    const result = yield call(movieSrhAPI, action.data)
+    console.log(result)
+
     yield put({
-      type: MAIN_MOVIE_SUCCESS,
+      type: MOVIE_SRH_SUCCESS,
       data: result.data,
     })
   } catch (err) {
     console.error(err)
     yield put({
-      type: MAIN_MOVIE_FAILURE,
-      data: err.response.data,
+      type: MOVIE_SRH_FAILURE,
+      error: err.response.data,
     })
   }
 }
 
-function* watchMainMovie() {
-  yield takeLatest(MAIN_MOVIE_REQUEST, mainMovie)
+function nowScreeningMovieAPI() {
+  return axios.get("/movie/main")
+}
+function* nowScreeningMovie(action) {
+  try {
+    const result = yield call(nowScreeningMovieAPI, action.data)
+    console.log(result)
+
+    yield put({
+      type: NOW_SCREENING_MOVIE_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: NOW_SCREENING_MOVIE_FAILURE,
+      error: err.response.data,
+    })
+  }
 }
 
-export default function* postSaga() {
-  yield all([fork(watchMainMovie)])
+function* watchNowScreeningMovie() {
+  yield takeLatest(NOW_SCREENING_MOVIE_REQUEST, nowScreeningMovie)
+}
+function* watchMovieSrh() {
+  yield takeLatest(MOVIE_SRH_REQUEST, movieSrh)
+}
+
+export default function* movieSaga() {
+  yield all([fork(watchMovieSrh), fork(watchNowScreeningMovie)])
 }

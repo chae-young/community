@@ -11,7 +11,7 @@ function addPostAPI(data) {
 }
 function* addPost(action) {
   try {
-    // const result = yield call(addPostAPI, action.data)
+    const result = yield call(addPostAPI, action.data)
     yield delay(1000)
     yield put({
       type: ADD_POST_SUCCESS,
