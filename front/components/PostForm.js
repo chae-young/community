@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useState, useRef } from "react"
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import Rating from "@material-ui/lab/Rating"
 import Container from "@material-ui/core/Container"
@@ -54,14 +54,23 @@ export const theme = {
 
 const PostForm = () => {
   const dispatch = useDispatch()
+  const { movieSrhList } = useSelector((state) => state.movie)
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm()
+
+  const [selectedIndex, setSelectedIndex] = useState(1)
+  const [selectedCheck, setSelectedCheck] = useState(false)
+  const handleListItemClick = (event, index) => {
+    console.log(index)
+    setSelectedCheck(true)
+    setSelectedIndex(index)
+  }
+
   const [imgSrc, setImgSrc] = useState("")
   const [rating, setRating] = useState(0.5)
-
   const onSubmit = useCallback((data) => {
     console.log(rating, data)
     const { title, content } = data
@@ -81,10 +90,16 @@ const PostForm = () => {
           <PostFormHead>
             <PostFormImg>
               <div>
-                <img src={faker.image.image()} width="100%" />
+                <img
+                  src={selectedCheck && movieSrhList[selectedIndex].image}
+                  width="100%"
+                />
               </div>
               <PostFormImgBtn>
-                <MovieSrhModal />
+                <MovieSrhModal
+                  selectedIndex={selectedIndex}
+                  handleListItemClick={handleListItemClick}
+                />
                 <input
                   type="file"
                   ref={inputFile}

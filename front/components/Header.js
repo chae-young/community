@@ -1,12 +1,20 @@
 import React, { useState, useCallback, useEffect } from "react"
-import { UserOutlined, SearchOutlined } from "@ant-design/icons"
-import Link from "next/link"
-import Avatar from "@material-ui/core/Avatar"
 import { useSelector } from "react-redux"
+import Link from "next/link"
+
+import { UserOutlined, SearchOutlined } from "@ant-design/icons"
+import Avatar from "@material-ui/core/Avatar"
+import styled from "styled-components"
+
 import { HeaderUtillMenu, Aside } from "../styles/style"
 import LoginForm from "./LoginForm"
 import Signup from "./Signup"
 import MypopOver from "./MypopOver"
+
+const Logo = styled.h1`
+  display: flex;
+  justify-content: center;
+`
 
 const Header = () => {
   const { me } = useSelector((state) => state.user)
@@ -32,11 +40,11 @@ const Header = () => {
 
   return (
     <header>
-      <h1>
+      <Logo>
         <Link href="/">
-          <a>MovieHome</a>
+          <a>MovieFeeds</a>
         </Link>
-      </h1>
+      </Logo>
       <nav>
         <HeaderUtillMenu>
           <li>

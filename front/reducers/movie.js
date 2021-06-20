@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) =>
       case MOVIE_SRH_SUCCESS:
         draft.movieSrhLoading = false
         draft.movieSrhDone = true
-        draft.movieSrhList.push(action.data)
+        draft.movieSrhList = action.data.items
         break
       case MOVIE_SRH_FAILURE:
         draft.movieSrhDone = false

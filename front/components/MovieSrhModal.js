@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const MovieSrhModal = () => {
+const MovieSrhModal = ({ selectedIndex, handleListItemClick }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const { movieSrhList } = useSelector((state) => state.movie)
@@ -49,11 +49,6 @@ const MovieSrhModal = () => {
     })
   }, [text])
 
-  const [selectedIndex, setSelectedIndex] = useState(1)
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index)
-  }
-
   return (
     <>
       <button type="button" onClick={handleOpen}>
@@ -66,21 +61,28 @@ const MovieSrhModal = () => {
         aria-describedby="image serach"
       >
         <div className={classes.paper}>
-          <input type="text" value={text} onChange={onChangeText} />
+          <input
+            type="text"
+            value={text}
+            onChange={onChangeText}
+            placeholder="영화 제목을 입력해주세요."
+          />
           <button onClick={onClickSrh}>검색</button>
           <List component="nav">
-            {movieSrhList.length
-              ? movieSrhList[0].items.map((v, index) => (
-                  <ListItem
-                    key={index}
-                    button
-                    selected={selectedIndex === index}
-                    onClick={(event) => handleListItemClick(event, index)}
-                  >
-                    <img src={v.image} alt={v.title} width="10%" />
-                  </ListItem>
-                ))
-              : null}
+            {movieSrhList.length ? (
+              movieSrhList.map((v, index) => (
+                <ListItem
+                  key={index}
+                  button
+                  selected={selectedIndex === index}
+                  onClick={(event) => handleListItemClick(event, index)}
+                >
+                  <img src={v.image} alt={v.title} width="10%" />
+                </ListItem>
+              ))
+            ) : (
+              <p>검색 결과가 없습니다.</p>
+            )}
           </List>
         </div>
       </Modal>
