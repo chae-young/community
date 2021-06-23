@@ -20,7 +20,7 @@ module.exports = {
   production: {
     username: "root",
     password: process.env.DB_PASSWORD,
-    database: "database_production",
+    database: "moviefeeds",
     host: "moviefeeds",
     dialect: "mysql"
   }
