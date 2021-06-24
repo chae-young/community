@@ -23,6 +23,8 @@ db.sequelize.sync()
 passportConfig();
 dotenv.config();
 
+app.use('/', express.static(path.join(__dirname, 'uploads')));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 
