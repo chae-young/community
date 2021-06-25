@@ -32,7 +32,7 @@ const LoginForm = ({setLoginOn})=>{
                 <TextField 
                 id="user-id" 
                 label="아이디" 
-                {...register("id")} 
+                {...register("userid")} 
                 fullWidth 
                 required/>
             </div>

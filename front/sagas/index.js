@@ -5,7 +5,7 @@ import postSaga from "./post"
 import userSaga from "./user"
 import movieSaga from "./movie"
 
-axios.defaults.baseURL = "http://localhost:3065"
+axios.defaults.baseURL = "http://localhost:3063"
 
 export default function* rootSaga() {
   yield all([fork(userSaga), fork(postSaga), fork(movieSaga)])
