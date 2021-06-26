@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback } from "react"
 import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types"
 import Popover from '@material-ui/core/Popover';
 import Avatar from '@material-ui/core/Avatar';
 import Link from 'next/link';
@@ -37,8 +37,9 @@ const MypopOver = ({options})=>{
                     </PopoverInfo>
                 </PopoverProfile>
                 <PopoverBtn>
-                    <button>팔로워</button>
-                    <button>팔로잉</button>
+                    <button>내 글<br/> 0 </button>
+                    <button>팔로워<br/> 0 </button>
+                    <button>팔로잉<br/> 0 </button>
                 </PopoverBtn>
             </PopoverWrap>
         </Popover>        
