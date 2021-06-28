@@ -19,7 +19,7 @@ export const LOG_OUT_FAILURE = 'LOG_OUT';
 export const LoginRequestAction = (data) => (
     {
         type: LOG_IN_REQUEST,
-        data,
+        ...data,
     }
 );
 

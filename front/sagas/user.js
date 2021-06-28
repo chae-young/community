@@ -10,23 +10,23 @@ function loginAPI(data) {
   return axios.post("/user/login", data)
 }
 function* login(action) {
-    try {
-        const result = yield call(loginAPI,action.data)
-        yield put({
-            type: LOG_IN_SUCCESS,
-            data: action.data,
-        });
-    } catch (err) {
-        console.error(err);
-        yield put({
-            type: LOG_IN_FAILURE,
-            data: err.response.data,
-        });
-    }
+  try {
+    const result = yield call(loginAPI, action.data)
+    yield put({
+      type: LOG_IN_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: LOG_IN_FAILURE,
+      error: err.response.data,
+    })
+  }
 }
 
 function* watchLogin() {
-    yield takeLatest(LOG_IN_REQUEST, login);
+  yield takeLatest(LOG_IN_REQUEST, login)
 }
 
 export default function* userSaga() {

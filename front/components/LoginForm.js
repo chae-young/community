@@ -1,10 +1,13 @@
-import { useCallback, useState } from 'react';
-import { useForm } from "react-hook-form";
-import {useDispatch} from 'react-redux';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import { LoginRequestAction } from '../reducers/user';
+import React, { useCallback, useState, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from "react-redux"
+import PropTypes from "prop-types"
+
+import TextField from "@material-ui/core/TextField"
+import Button from "@material-ui/core/Button"
+
+import { makeStyles } from "@material-ui/core/styles"
+import { LoginRequestAction } from "../reducers/user"
 
 const useStyle = makeStyles((theme) => ({
     bg: {
@@ -15,16 +18,21 @@ const useStyle = makeStyles((theme) => ({
     },
 }));
 
-const LoginForm = ({setLoginOn})=>{
-    const { register, handleSubmit } = useForm();
-    const dispatch = useDispatch();
-    const classes = useStyle();
+const LoginForm = ({ setLoginOn }) => {
+  const { me, loginError, loginLoading } = useSelector((state) => state.user)
+  const { register, handleSubmit } = useForm()
+  const dispatch = useDispatch()
+  const classes = useStyle()
 
-    const onSubmit = (data) => {
-        console.log(data);
-        dispatch(LoginRequestAction({data}));
-        setLoginOn(false);
-    }
+  const onSubmit = (data) => {
+    console.log(data)  
+    dispatch(LoginRequestAction({ data }))
+    if (loginError && !loginLoading) {
+      alert(loginError)
+    } else{
+      setLoginOn(false)
+    }     
+  }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -50,4 +58,8 @@ const LoginForm = ({setLoginOn})=>{
     )
 }
 
-export default LoginForm;
+LoginForm.propTypes = {
+  setLoginOn: PropTypes.bool.isRequired,
+}
+
+export default LoginForm
