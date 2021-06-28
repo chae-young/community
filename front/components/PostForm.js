@@ -8,7 +8,7 @@ import Container from "@material-ui/core/Container"
 import styled, { ThemeProvider } from "styled-components"
 import faker from "faker"
 
-import { addPostReuestAction } from "../reducers/post"
+import { addPostReuestAction, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
 import MovieSrhModal from "./MovieSrhModal"
 
 const PostFormHead = styled.div`
@@ -55,6 +55,7 @@ export const theme = {
 const PostForm = () => {
   const dispatch = useDispatch()
   const { movieSrhList } = useSelector((state) => state.movie)
+  const { imagePath } = useSelector((state) => state.post)
   const {
     register,
     formState: { errors },
@@ -63,11 +64,6 @@ const PostForm = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(1)
   const [selectedCheck, setSelectedCheck] = useState(false)
-  const handleListItemClick = (event, index) => {
-    console.log(index)
-    setSelectedCheck(true)
-    setSelectedIndex(index)
-  }
 
   const [imgSrc, setImgSrc] = useState("")
   const [rating, setRating] = useState(0.5)
@@ -83,27 +79,38 @@ const PostForm = () => {
     inputFile.current.click()
   }
 
+  const onChangeImages = useCallback((e) => {
+    console.log('images', e.target.files[0])
+    const imageFormData = new FormData()
+    imageFormData.append("singleimage", e.target.files[0])
+
+    dispatch({
+      type: IMAGE_UPLOAD_REQUEST,
+      data: imageFormData,
+    })
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="sm">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <PostFormHead>
             <PostFormImg>
               <div>
                 <img
-                  src={selectedCheck && movieSrhList[selectedIndex].image}
+                  src={'http://localhost:3063/'+ imagePath[0]}
                   width="100%"
                 />
               </div>
               <PostFormImgBtn>
                 <MovieSrhModal
-                  selectedIndex={selectedIndex}
-                  handleListItemClick={handleListItemClick}
+                  setSelectedIndex={setSelectedIndex}
                 />
                 <input
                   type="file"
                   ref={inputFile}
                   style={{ display: "none" }}
+                  onChange={onChangeImages}
                 />
                 <button type="button" onClick={onFileUpload}>
                   내 이미지 가져오기

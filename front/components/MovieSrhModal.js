@@ -1,8 +1,8 @@
-import React, { useCallback, useState, useRef } from "react"
+import React, { useCallback, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import PropTypes from "prop-types"
 
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
+import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const MovieSrhModal = ({ selectedIndex, handleListItemClick }) => {
+const MovieSrhModal = ({ setSelectedIndex }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const { movieSrhList } = useSelector((state) => state.movie)
@@ -49,6 +49,10 @@ const MovieSrhModal = ({ selectedIndex, handleListItemClick }) => {
     })
   }, [text])
 
+  const onClickImage = useCallback((index) => () => {
+    setSelectedIndex(index)
+  },[])
+
   return (
     <>
       <button type="button" onClick={handleOpen}>
@@ -68,26 +72,25 @@ const MovieSrhModal = ({ selectedIndex, handleListItemClick }) => {
             placeholder="영화 제목을 입력해주세요."
           />
           <button onClick={onClickSrh}>검색</button>
-          <List component="nav">
+          <Grid container className={classes.root} spacing={2}>
             {movieSrhList.length ? (
               movieSrhList.map((v, index) => (
-                <ListItem
-                  key={index}
-                  button
-                  selected={selectedIndex === index}
-                  onClick={(event) => handleListItemClick(event, index)}
-                >
-                  <img src={v.image} alt={v.title} width="10%" />
-                </ListItem>
+                <Grid item xs={4} onClick={onClickImage(index)}>
+                  <img src={v.image} alt={v.title} width="100%" />
+                </Grid>
               ))
             ) : (
               <p>검색 결과가 없습니다.</p>
             )}
-          </List>
+          </Grid>
         </div>
       </Modal>
     </>
   )
+}
+
+MovieSrhModal.propTypes = {
+  selectedIndex: PropTypes.func.isRequired,
 }
 
 export default MovieSrhModal

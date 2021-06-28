@@ -2,10 +2,13 @@ import produce from "immer"
 
 export const initialState = {
   postList: [],
-  imagePaths: [],
+  imagePath: [],
   postAddLoading: false,
   postAddDone: false,
   postAddError: null,
+  imageUploadLoading: false,
+  imageUploadDone: false,
+  imageUploadError: null,  
 }
 
 const dummyList = (num) =>
@@ -53,6 +56,10 @@ export const ADD_POST_REQUEST = "ADD_POST_REQUEST"
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS"
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE"
 
+export const IMAGE_UPLOAD_REQUEST = "IMAGE_UPLOAD_REQUEST"
+export const IMAGE_UPLOAD_SUCCESS = "IMAGE_UPLOAD_SUCCESS"
+export const IMAGE_UPLOAD_FAILURE = "IMAGE_UPLOAD_FAILURE"
+
 export const addPostReuestAction = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -73,6 +80,20 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_FAILURE:
         draft.postAddDone = false
         draft.postAddError = action.error
+        break
+      case IMAGE_UPLOAD_REQUEST:
+        draft.imageUploadLoading = true
+        draft.imageUploadDone = false
+        draft.imagePath = []
+        break
+      case IMAGE_UPLOAD_SUCCESS:
+        draft.imageUploadLoading = false
+        draft.imageUploadDone = true
+        draft.imagePath.push(action.data)
+        break
+      case IMAGE_UPLOAD_FAILURE:
+        draft.imageUploadDone = false
+        draft.imageUploadError = action.error
         break
       default:
         break

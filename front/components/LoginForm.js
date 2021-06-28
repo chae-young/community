@@ -31,35 +31,40 @@ const LoginForm = ({ setLoginOn }) => {
       alert(loginError)
     } else{
       setLoginOn(false)
-    }     
+    }
   }
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="aside__input-field">
-                <TextField 
-                id="user-id" 
-                label="아이디" 
-                {...register("userid")} 
-                fullWidth 
-                required/>
-            </div>
-            <div className="aside__input-field">
-                <TextField 
-                type="password" 
-                id="user-password" 
-                label="비밀번호" 
-                {...register("password")} 
-                fullWidth 
-                required/>
-            </div>                  
-            <Button variant="contained" color="primary" type="submit" fullWidth className={classes.bg}>로그인</Button>   
-        </form>
-    )
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="aside__input-field">
+        <TextField 
+          id="user-id"
+          label="아이디"
+          {...register("userid")}
+          fullWidth
+          required/>
+      </div>
+      <div className="aside__input-field">
+        <TextField 
+          type="password"
+          id="user-password"
+          label="비밀번호"
+          {...register("password")}
+          fullWidth
+          required/>
+      </div>
+      <Button 
+        variant="contained"
+        color="primary"
+        type="submit"
+        fullWidth
+        className={classes.bg}>로그인</Button>
+  </form>
+  )
 }
 
 LoginForm.propTypes = {
-  setLoginOn: PropTypes.bool.isRequired,
+  setLoginOn: PropTypes.func.isRequired,
 }
 
 export default LoginForm
