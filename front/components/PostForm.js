@@ -1,15 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useState, useRef } from "react"
+import React, { useCallback, useState, useRef, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 
 import Rating from "@material-ui/lab/Rating"
 import Container from "@material-ui/core/Container"
+import { Attachment } from '@material-ui/icons';
 import styled, { ThemeProvider } from "styled-components"
-import faker from "faker"
 
-import { addPostReuestAction, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
+import { ADD_POST_REQUEST, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
 import MovieSrhModal from "./MovieSrhModal"
+import basicPoster from "../images/noimage.png"
 
 const PostFormHead = styled.div`
   display: flex;
@@ -20,6 +21,11 @@ const PostFormImg = styled.div`
 `
 const PostFormImgBtn = styled.div`
   display: flex;
+  & button{
+    flex:1;
+    justify-content:center;
+    font-size:1.2rem
+  }
 `
 const PostFormTit = styled.div`
   flex: 7;
@@ -62,15 +68,23 @@ const PostForm = () => {
     handleSubmit,
   } = useForm()
 
-  const [selectedIndex, setSelectedIndex] = useState(1)
-  const [selectedCheck, setSelectedCheck] = useState(false)
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  // 0이면 api 1이면 file
+  const [selectedCheck, setSelectedCheck] = useState(null)
 
-  const [imgSrc, setImgSrc] = useState("")
   const [rating, setRating] = useState(0.5)
   const onSubmit = useCallback((data) => {
-    console.log(rating, data)
-    const { title, content } = data
-    dispatch(addPostReuestAction({ rating, imgSrc, title, content }))
+    console.log(title, content ,imagePath, rating)
+    // const FormData = new FormData()
+    // FormData.append("image",imagePath)
+    // FormData.append("title",title)
+    // FormData.append("content",content)
+    // FormData.append("rating",rating)
+    // const { title, content } = data
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: { title, content ,imagePath, rating},
+    })
     // Router.push("/board")
   }, [])
 
@@ -78,17 +92,29 @@ const PostForm = () => {
   const onFileUpload = () => {
     inputFile.current.click()
   }
+  const onClickImage = (e) => {e.target.value = null}
 
-  const onChangeImages = useCallback((e) => {
-    console.log('images', e.target.files[0])
+  const onChangeImage = useCallback((e) => {
+    console.log('image', e.target.files[0])
     const imageFormData = new FormData()
     imageFormData.append("singleimage", e.target.files[0])
-
     dispatch({
       type: IMAGE_UPLOAD_REQUEST,
       data: imageFormData,
     })
-  }, [])
+    setSelectedCheck(1)
+  }, [imagePath])
+
+  const imgSrc = () => {
+    switch(selectedCheck){
+      case 0:
+        return imagePath
+      case 1:
+        return `http://localhost:3063/${imagePath}`
+      default:
+        return basicPoster
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -97,24 +123,22 @@ const PostForm = () => {
           <PostFormHead>
             <PostFormImg>
               <div>
-                <img
-                  src={'http://localhost:3063/'+ imagePath[0]}
-                  width="100%"
-                />
+                <img src={imgSrc()} width="100%" />
               </div>
               <PostFormImgBtn>
                 <MovieSrhModal
                   setSelectedIndex={setSelectedIndex}
+                  setSelectedCheck={setSelectedCheck}
                 />
                 <input
                   type="file"
                   ref={inputFile}
                   style={{ display: "none" }}
-                  onChange={onChangeImages}
+                  onChange={onChangeImage}
+                  onClick={onClickImage}
                 />
-                <button type="button" onClick={onFileUpload}>
-                  내 이미지 가져오기
-                </button>
+                <button 
+                  type="button" onClick={onFileUpload} >내 이미지 <Attachment font-size="small"/></button>
               </PostFormImgBtn>
             </PostFormImg>
             <PostFormTit>

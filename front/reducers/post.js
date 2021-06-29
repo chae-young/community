@@ -2,7 +2,7 @@ import produce from "immer"
 
 export const initialState = {
   postList: [],
-  imagePath: [],
+  imagePath: "",
   postAddLoading: false,
   postAddDone: false,
   postAddError: null,
@@ -60,10 +60,7 @@ export const IMAGE_UPLOAD_REQUEST = "IMAGE_UPLOAD_REQUEST"
 export const IMAGE_UPLOAD_SUCCESS = "IMAGE_UPLOAD_SUCCESS"
 export const IMAGE_UPLOAD_FAILURE = "IMAGE_UPLOAD_FAILURE"
 
-export const addPostReuestAction = (data) => ({
-  type: ADD_POST_REQUEST,
-  data,
-})
+export const SRH_IMAGE_UPLOAD = "SRH_IMAGE_UPLOAD"
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -84,16 +81,19 @@ const reducer = (state = initialState, action) =>
       case IMAGE_UPLOAD_REQUEST:
         draft.imageUploadLoading = true
         draft.imageUploadDone = false
-        draft.imagePath = []
+        draft.imagePath = ""
         break
       case IMAGE_UPLOAD_SUCCESS:
         draft.imageUploadLoading = false
         draft.imageUploadDone = true
-        draft.imagePath.push(action.data)
+        draft.imagePath = action.data
         break
       case IMAGE_UPLOAD_FAILURE:
         draft.imageUploadDone = false
         draft.imageUploadError = action.error
+        break
+      case SRH_IMAGE_UPLOAD:
+        draft.imagePath = action.data
         break
       default:
         break

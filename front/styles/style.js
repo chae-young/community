@@ -14,6 +14,12 @@ export const device = {
   desktop: `(min-width: ${size.desktop})`,
 }
 
+export const CloseBtn = styled.button`
+  position: absolute;
+  right: 0;
+  top: 0;
+`
+
 export const HeaderUtillMenu = styled.ul`
   position: absolute;
   right: 0;

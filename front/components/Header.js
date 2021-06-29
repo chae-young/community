@@ -10,16 +10,13 @@ import { HeaderUtillMenu, Aside } from "../styles/style"
 import LoginForm from "./LoginForm"
 import Signup from "./Signup"
 import MypopOver from "./MypopOver"
+import { CloseBtn } from "../styles/style"
 
 const Logo = styled.h1`
   display: flex;
   justify-content: center;
 `
-const CloseBtn = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-`
+
 
 const Header = () => {
   const { me } = useSelector((state) => state.user)

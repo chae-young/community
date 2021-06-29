@@ -4,9 +4,12 @@ import PropTypes from "prop-types"
 
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
+import { Close, Search } from '@material-ui/icons';
 import Modal from "@material-ui/core/Modal"
 
 import { MOVIE_SRH_REQUEST } from "../reducers/movie"
+import { SRH_IMAGE_UPLOAD } from "../reducers/post"
+import { CloseBtn } from "../styles/style"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const MovieSrhModal = ({ setSelectedIndex }) => {
+const MovieSrhModal = ({ setSelectedIndex, setSelectedCheck }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
-  const { movieSrhList } = useSelector((state) => state.movie)
+  const { movieSrhList, movieSrhLoading } = useSelector((state) => state.movie)
 
   const [text, setText] = useState("")
   const onChangeText = useCallback((e) => {
@@ -50,14 +53,18 @@ const MovieSrhModal = ({ setSelectedIndex }) => {
   }, [text])
 
   const onClickImage = useCallback((index) => () => {
-    setSelectedIndex(index)
-  },[])
+      setSelectedIndex(index)
+      setOpen(false)
+      dispatch({
+        type: SRH_IMAGE_UPLOAD,
+        data: movieSrhList[index].image,
+      })
+      setSelectedCheck(0)
+  },[movieSrhList])
 
   return (
     <>
-      <button type="button" onClick={handleOpen}>
-        이미지 검색하기
-      </button>
+      <button type="button" onClick={handleOpen}>검색 <Search font-size="small"/></button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -65,6 +72,7 @@ const MovieSrhModal = ({ setSelectedIndex }) => {
         aria-describedby="image serach"
       >
         <div className={classes.paper}>
+          <CloseBtn onClick={handleClose}><Close fontSize="large" /></CloseBtn>
           <input
             type="text"
             value={text}
@@ -73,7 +81,7 @@ const MovieSrhModal = ({ setSelectedIndex }) => {
           />
           <button onClick={onClickSrh}>검색</button>
           <Grid container className={classes.root} spacing={2}>
-            {movieSrhList.length ? (
+            {!movieSrhLoading && movieSrhList.length ? (
               movieSrhList.map((v, index) => (
                 <Grid item xs={4} onClick={onClickImage(index)}>
                   <img src={v.image} alt={v.title} width="100%" />
@@ -90,7 +98,8 @@ const MovieSrhModal = ({ setSelectedIndex }) => {
 }
 
 MovieSrhModal.propTypes = {
-  selectedIndex: PropTypes.func.isRequired,
+  setSelectedIndex: PropTypes.func.isRequired,
+  setSelectedCheck: PropTypes.func.isRequired,
 }
 
 export default MovieSrhModal
