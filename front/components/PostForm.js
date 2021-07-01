@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import Rating from "@material-ui/lab/Rating"
 import Container from "@material-ui/core/Container"
-import { Attachment } from '@material-ui/icons';
+import { Attachment } from "@material-ui/icons"
 import styled, { ThemeProvider } from "styled-components"
 
 import { ADD_POST_REQUEST, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
@@ -21,10 +21,10 @@ const PostFormImg = styled.div`
 `
 const PostFormImgBtn = styled.div`
   display: flex;
-  & button{
-    flex:1;
-    justify-content:center;
-    font-size:1.2rem
+  & button {
+    flex: 1;
+    justify-content: center;
+    font-size: 1.2rem;
   }
 `
 const PostFormTit = styled.div`
@@ -62,29 +62,28 @@ const PostForm = () => {
   const dispatch = useDispatch()
   const { movieSrhList } = useSelector((state) => state.movie)
   const { imagePath } = useSelector((state) => state.post)
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm()
+  const { register, errors, trigger, handleSubmit } = useForm()
 
   const [selectedIndex, setSelectedIndex] = useState(0)
-  // 0이면 api 1이면 file
+  // 2이면 api 2이면 file
   const [selectedCheck, setSelectedCheck] = useState(null)
 
   const [rating, setRating] = useState(0.5)
   const onSubmit = useCallback((data) => {
-    console.log(title, content ,imagePath, rating)
+    if (imgSrc() === basicPoster) {
+      return alert("사진을 등록해주세요")
+    }
+    console.log(data, watch("title"), "데이터")
     // const FormData = new FormData()
     // FormData.append("image",imagePath)
     // FormData.append("title",title)
     // FormData.append("content",content)
     // FormData.append("rating",rating)
     // const { title, content } = data
-    dispatch({
-      type: ADD_POST_REQUEST,
-      data: { title, content ,imagePath, rating},
-    })
+    // dispatch({
+    //   type: ADD_POST_REQUEST,
+    //   data: { title, content ,imagePath, rating},
+    // })
     // Router.push("/board")
   }, [])
 
@@ -92,24 +91,29 @@ const PostForm = () => {
   const onFileUpload = () => {
     inputFile.current.click()
   }
-  const onClickImage = (e) => {e.target.value = null}
+  const onClickImage = (e) => {
+    e.target.value = null
+  }
 
-  const onChangeImage = useCallback((e) => {
-    console.log('image', e.target.files[0])
-    const imageFormData = new FormData()
-    imageFormData.append("singleimage", e.target.files[0])
-    dispatch({
-      type: IMAGE_UPLOAD_REQUEST,
-      data: imageFormData,
-    })
-    setSelectedCheck(1)
-  }, [imagePath])
+  const onChangeImage = useCallback(
+    (e) => {
+      console.log("image", e.target.files[0])
+      const imageFormData = new FormData()
+      imageFormData.append("singleimage", e.target.files[0])
+      dispatch({
+        type: IMAGE_UPLOAD_REQUEST,
+        data: imageFormData,
+      })
+      setSelectedCheck(1)
+    },
+    [imagePath],
+  )
 
   const imgSrc = () => {
-    switch(selectedCheck){
-      case 0:
-        return imagePath
+    switch (selectedCheck) {
       case 1:
+        return imagePath
+      case 2:
         return `http://localhost:3063/${imagePath}`
       default:
         return basicPoster
@@ -137,8 +141,9 @@ const PostForm = () => {
                   onChange={onChangeImage}
                   onClick={onClickImage}
                 />
-                <button 
-                  type="button" onClick={onFileUpload} >내 이미지 <Attachment font-size="small"/></button>
+                <button type="button" onClick={onFileUpload}>
+                  내 이미지 <Attachment font-size="small" />
+                </button>
               </PostFormImgBtn>
             </PostFormImg>
             <PostFormTit>
@@ -148,7 +153,6 @@ const PostForm = () => {
                 })}
                 placeholder="제목을 입력해주세요."
               />
-
               <Rating
                 value={rating}
                 precision={0.5}
@@ -164,8 +168,20 @@ const PostForm = () => {
               required: true,
             })}
           />
-
-          <Button type="submit">등록</Button>
+          <Button
+            type="submit"
+            onClick={async () => {
+              const titleVal = await trigger("title")
+              const contentVal = await trigger("content")
+              if (!titleVal) {
+                alert("제목을 입력해주세요")
+              } else if (!contentVal) {
+                alert("내용을 입력해주세요")
+              }
+            }}
+          >
+            등록
+          </Button>
         </form>
       </Container>
     </ThemeProvider>
