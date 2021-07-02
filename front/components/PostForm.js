@@ -73,9 +73,14 @@ const PostForm = () => {
     if (imgSrc() === basicPoster) {
       return alert("사진을 등록해주세요")
     }
-    console.log(data, watch("title"), "데이터")
-    // const FormData = new FormData()
-    // FormData.append("image",imagePath)
+    // console.log(data,imagePath,rating)
+
+    /*     const totalData = {...data,imagePath,rating}
+    const FormData = new FormData()
+    for(key in totalData){
+      FormData.append(key,totalData[key])
+    }
+     */
     // FormData.append("title",title)
     // FormData.append("content",content)
     // FormData.append("rating",rating)
