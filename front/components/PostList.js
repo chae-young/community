@@ -1,67 +1,42 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 
-import { Swiper, SwiperSlide } from "swiper/react"
-import SwiperCore, { Navigation } from "swiper/core"
-import "swiper/swiper.min.css"
-import Rating from "@material-ui/lab/Rating"
-import styled from "styled-components"
+import { makeStyles } from "@material-ui/core/styles"
+import { Grid, Card, CardHeader, CardMedia } from "@material-ui/core"
+import { Rating } from "@material-ui/lab"
 
-import { NOW_SCREENING_MOVIE_REQUEST } from "../reducers/movie"
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: 760,
+    padding: "1.5rem",
+    margin: "auto",
+  },
+}))
 
-SwiperCore.use([Navigation])
-const RateStar = styled.div``
 const PostList = () => {
-  const dispatch = useDispatch()
-  const { nowScreeningMovie, nowScreeningMovieDone } = useSelector(
-    (state) => state.movie,
-  )
+  const classes = useStyles()
+  const { postList } = useSelector((state) => state.post)
 
-  useEffect(() => {
-    if (!nowScreeningMovie.length) {
-      dispatch({
-        type: NOW_SCREENING_MOVIE_REQUEST,
-      })
-    }
-  }, [])
-
-  const breakpoints = {
-    320: {
-      slidesPerView: 2,
-      spaceBetween: 10,
-    },
-    1024: {
-      slidesPerView: 6,
-      spaceBetween: 10,
-    },
-  }
   return (
-    <>
-      <Swiper
-        navigation
-        slidesPerGroup={1}
-        className="mySwiper"
-        breakpoints={breakpoints}
-      >
-        {nowScreeningMovie.map((v) => (
-          <SwiperSlide>
-            <figure>
-              <img src={v.img} alt={v.title} />
-              <figcaption>{v.title}</figcaption>
-            </figure>
-            <RateStar>
+    <Grid container className={classes.root} spacing={1}>
+      {postList.map((v) => (
+        <Grid item xs={6} sm={3}>
+          <div>
+            <img src={v.Images} />
+            <p>{v.post.title}</p>
+            <div>
               <Rating
-                value={Number(v.star.substring(0, 4)) / 2}
-                precision={0.1}
-                size="large"
-                eadOnly
+                name="read-only"
+                precision={0.5}
+                value={v.post.rating}
+                readOnly
               />
-              <span>{Number(v.star.substring(0, 4))}</span>
-            </RateStar>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </>
+              {v.post.rating}
+            </div>
+          </div>
+        </Grid>
+      ))}
+    </Grid>
   )
 }
 

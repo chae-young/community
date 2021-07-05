@@ -1,10 +1,10 @@
 import Layout from "../components/Layout"
-import PostList from "../components/PostList"
+import MainList from "../components/MainList"
 
 const Main = () => {
   return (
     <Layout>
-      <PostList />
+      <MainList />
     </Layout>
   )
 }
