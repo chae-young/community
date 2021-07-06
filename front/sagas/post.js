@@ -1,5 +1,14 @@
 import axios from "axios"
-import { fork, all, takeLatest, delay, put, call } from "redux-saga/effects"
+import {
+  fork,
+  all,
+  takeLatest,
+  throttle,
+  takeLeading,
+  delay,
+  put,
+  call,
+} from "redux-saga/effects"
 import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
@@ -7,6 +16,10 @@ import {
   IMAGE_UPLOAD_REQUEST,
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_FAILURE,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
+  LOAD_POST_FAILURE,
+  dummyList,
 } from "../reducers/post"
 
 function addPostAPI(data) {
@@ -49,18 +62,36 @@ function* imageUpload(action) {
   }
 }
 
+function loadPostAPI(data) {
+  return axios.post("/post/image", data)
+}
+function* loadPost(action) {
+  try {
+    //const result = yield call(loadPostAPI, action.data)
+    yield delay(1000)
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: dummyList(10),
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: LOAD_POST_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost)
 }
 function* watchImageUpload() {
   yield takeLatest(IMAGE_UPLOAD_REQUEST, imageUpload)
 }
+function* watchLoadPost() {
+  yield throttle(3000, LOAD_POST_REQUEST, loadPost)
+}
 
 export default function* postSaga() {
-  yield all(
-    [
-      fork(watchAddPost),
-      fork(watchImageUpload),
-    ]
-  )
+  yield all([fork(watchAddPost), fork(watchImageUpload), fork(watchLoadPost)])
 }

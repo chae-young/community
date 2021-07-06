@@ -9,9 +9,12 @@ export const initialState = {
   imageUploadLoading: false,
   imageUploadDone: false,
   imageUploadError: null,
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
 }
 
-const dummyList = (num) =>
+export const dummyList = (num) =>
   Array.from(Array(num).keys()).map((v) => ({
     id: 1,
     User: {
@@ -34,7 +37,7 @@ const dummyList = (num) =>
     ],
   }))
 
-initialState.postList = dummyList(10)
+initialState.postList = dummyList(20)
 
 const dummyPost = (data) => ({
   id: 1,
@@ -60,6 +63,10 @@ export const IMAGE_UPLOAD_SUCCESS = "IMAGE_UPLOAD_SUCCESS"
 export const IMAGE_UPLOAD_FAILURE = "IMAGE_UPLOAD_FAILURE"
 
 export const SRH_IMAGE_UPLOAD = "SRH_IMAGE_UPLOAD"
+
+export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST"
+export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS"
+export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE"
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -93,6 +100,19 @@ const reducer = (state = initialState, action) =>
         break
       case SRH_IMAGE_UPLOAD:
         draft.imagePath = action.data
+        break
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true
+        draft.loadPostDone = false
+        break
+      case LOAD_POST_SUCCESS:
+        draft.loadPostLoading = false
+        draft.loadPostDone = true
+        draft.postList.push(...action.data)
+        break
+      case LOAD_POST_FAILURE:
+        draft.loadPostDone = false
+        draft.loadPostError = action.error
         break
       default:
         break
