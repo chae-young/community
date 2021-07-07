@@ -2,6 +2,7 @@
 import React, { useCallback, useState, useRef, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
+import Router from "next/router"
 
 import Rating from "@material-ui/lab/Rating"
 import Container from "@material-ui/core/Container"
@@ -69,28 +70,28 @@ const PostForm = () => {
   const [selectedCheck, setSelectedCheck] = useState(null)
 
   const [rating, setRating] = useState(0.5)
-  const onSubmit = useCallback((data) => {
-    if (imgSrc() === basicPoster) {
-      return alert("사진을 등록해주세요")
-    }
-    // console.log(data,imagePath,rating)
-
-    /*     const totalData = {...data,imagePath,rating}
+  const onSubmit = useCallback(
+    (data) => {
+      const totalData = { ...data, imagePath, rating }
+      console.log(totalData)
+      /*     
     const FormData = new FormData()
     for(key in totalData){
       FormData.append(key,totalData[key])
     }
      */
-    // FormData.append("title",title)
-    // FormData.append("content",content)
-    // FormData.append("rating",rating)
-    // const { title, content } = data
-    // dispatch({
-    //   type: ADD_POST_REQUEST,
-    //   data: { title, content ,imagePath, rating},
-    // })
-    // Router.push("/board")
-  }, [])
+      // FormData.append("title",title)
+      // FormData.append("content",content)
+      // FormData.append("rating",rating)
+      // const { title, content } = data
+      dispatch({
+        type: ADD_POST_REQUEST,
+        data: { post: { ...totalData } },
+      })
+      Router.push("/board")
+    },
+    [imagePath, rating],
+  )
 
   const inputFile = useRef(null)
   const onFileUpload = () => {
@@ -156,7 +157,7 @@ const PostForm = () => {
                 {...register("title", {
                   required: true,
                 })}
-                placeholder="제목을 입력해주세요."
+                placeholder="영화제목을 입력해주세요."
               />
               <Rating
                 value={rating}
@@ -172,6 +173,7 @@ const PostForm = () => {
             {...register("content", {
               required: true,
             })}
+            placeholder="내용을 입력해주세요."
           />
           <Button
             type="submit"
@@ -179,9 +181,11 @@ const PostForm = () => {
               const titleVal = await trigger("title")
               const contentVal = await trigger("content")
               if (!titleVal) {
-                alert("제목을 입력해주세요")
+                alert("영화제목을 입력해주세요")
               } else if (!contentVal) {
                 alert("내용을 입력해주세요")
+              } else if (imgSrc() === basicPoster) {
+                alert("사진을 등록해주세요")
               }
             }}
           >

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import Link from "next/link"
 
 import { makeStyles } from "@material-ui/core/styles"
 import { Grid, Card, CardHeader, CardMedia } from "@material-ui/core"
@@ -7,14 +8,15 @@ import { Rating } from "@material-ui/lab"
 
 import styled from "styled-components"
 import { LOAD_POST_REQUEST } from "../reducers/post"
+import { useCallback } from "react"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     maxWidth: 760,
     padding: "1.5rem",
     margin: "auto",
   },
-}))
+})
 const ListPoster = styled.div`
   width: 100%;
   height: 25em;
@@ -42,7 +44,7 @@ const PostList = () => {
     const loadOnScroll = () => {
       if (
         Math.round(window.scrollY) + document.documentElement.clientHeight >=
-        document.documentElement.scrollHeight - 1000
+        document.documentElement.scrollHeight - 200
       ) {
         if (loadPostDone) setFlag(false)
         if (!flag && !loadPostLoading) {
@@ -62,21 +64,25 @@ const PostList = () => {
   return (
     <Grid container className={classes.root} spacing={1}>
       {postList.map((v) => (
-        <Grid item xs={6} sm={3}>
-          <ListPoster>
-            <img src={v.Images} width="100%" />
-          </ListPoster>
-          <ListContent>
-            <p>{v.post.title}</p>
-            <Rating
-              name="read-only"
-              precision={0.5}
-              value={v.post.rating}
-              readOnly
-            />
-            {v.post.rating}
-          </ListContent>
-        </Grid>
+        <Link href={`/view/${v.id}`}>
+          <a>
+            <Grid key={v.id} item xs={6} sm={3}>
+              <ListPoster>
+                <img src={v.post.imagePath} width="100%" />
+              </ListPoster>
+              <ListContent>
+                <p>{v.post.title}</p>
+                <Rating
+                  name="read-only"
+                  precision={0.5}
+                  value={v.post.rating}
+                  readOnly
+                />
+                {v.post.rating}
+              </ListContent>
+            </Grid>
+          </a>
+        </Link>
       ))}
     </Grid>
   )

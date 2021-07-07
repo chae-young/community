@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
-import { Close, Search } from '@material-ui/icons';
+import { Close, Search } from "@material-ui/icons"
 import Modal from "@material-ui/core/Modal"
 
 import { MOVIE_SRH_REQUEST } from "../reducers/movie"
@@ -52,19 +52,24 @@ const MovieSrhModal = ({ setSelectedIndex, setSelectedCheck }) => {
     })
   }, [text])
 
-  const onClickImage = useCallback((index) => () => {
+  const onClickImage = useCallback(
+    (index) => () => {
       setSelectedIndex(index)
       setOpen(false)
       dispatch({
         type: SRH_IMAGE_UPLOAD,
         data: movieSrhList[index].image,
       })
-      setSelectedCheck(0)
-  },[movieSrhList])
+      setSelectedCheck(1)
+    },
+    [movieSrhList],
+  )
 
   return (
     <>
-      <button type="button" onClick={handleOpen}>검색 <Search font-size="small"/></button>
+      <button type="button" onClick={handleOpen}>
+        검색 <Search font-size="small" />
+      </button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -72,7 +77,9 @@ const MovieSrhModal = ({ setSelectedIndex, setSelectedCheck }) => {
         aria-describedby="image serach"
       >
         <div className={classes.paper}>
-          <CloseBtn onClick={handleClose}><Close fontSize="large" /></CloseBtn>
+          <CloseBtn onClick={handleClose}>
+            <Close fontSize="large" />
+          </CloseBtn>
           <input
             type="text"
             value={text}
