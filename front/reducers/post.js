@@ -1,4 +1,5 @@
 import produce from "immer"
+import shortid from "shortid"
 
 export const initialState = {
   postList: [],
@@ -12,6 +13,9 @@ export const initialState = {
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
 }
 
 export const dummyList = (num) =>
@@ -37,20 +41,23 @@ export const dummyList = (num) =>
     ],
   }))
 
-initialState.postList = dummyList(20)
-
+//initialState.postList = dummyList(5)
+const dummyComment = (data) => ({
+  User: { nickname: "cy" },
+  content: data.text,
+})
 const dummyPost = (data) => ({
-  id: 1,
+  id: data.id,
   User: {
-    id: 33,
-    nickname: "더미닉넴",
+    id: shortid.generate(),
+    nickname: "테스트용닉네임",
   },
   post: {
     title: data.title,
-    rate: data.rating,
+    rating: data.rating,
     content: data.content,
   },
-  Images: data.imgSrc,
+  Image: data.imagePath,
   Comments: [],
 })
 
@@ -67,6 +74,10 @@ export const SRH_IMAGE_UPLOAD = "SRH_IMAGE_UPLOAD"
 export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST"
 export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS"
 export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE"
+
+export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST"
+export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS"
+export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE"
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -113,6 +124,21 @@ const reducer = (state = initialState, action) =>
       case LOAD_POST_FAILURE:
         draft.loadPostDone = false
         draft.loadPostError = action.error
+        break
+      case ADD_COMMENT_REQUEST:
+        draft.addCommentLoading = true
+        draft.addCommentDone = false
+        break
+      case ADD_COMMENT_SUCCESS: {
+        const post = draft.postList.find((v) => v.id === action.data.postId)
+        post.Comments.unshift(dummyComment(action.data))
+        draft.addCommentLoading = false
+        draft.addCommentDone = true
+        break
+      }
+      case ADD_COMMENT_FAILURE:
+        draft.addCommentDone = false
+        draft.addCommentError = action.error
         break
       default:
         break

@@ -1,4 +1,5 @@
 import axios from "axios"
+import shortid from "shortid"
 import {
   fork,
   all,
@@ -19,6 +20,9 @@ import {
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
   LOAD_POST_FAILURE,
+  ADD_COMMENT_REQUEST,
+  ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_FAILURE,
   dummyList,
 } from "../reducers/post"
 
@@ -31,7 +35,10 @@ function* addPost(action) {
     yield delay(1000)
     yield put({
       type: ADD_POST_SUCCESS,
-      data: action.data,
+      data: {
+        id: shortid.generate(),
+        ...action.data,
+      },
     })
   } catch (err) {
     console.error(err)
@@ -82,6 +89,26 @@ function* loadPost(action) {
   }
 }
 
+function addCommentAPI(data) {
+  return axios.post("/post/image", data)
+}
+function* addComment(action) {
+  try {
+    //const result = yield call(addCommentAPI, action.data)
+    yield delay(1000)
+    yield put({
+      type: ADD_COMMENT_SUCCESS,
+      data: action.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: ADD_COMMENT_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost)
 }
@@ -91,7 +118,15 @@ function* watchImageUpload() {
 function* watchLoadPost() {
   yield throttle(3000, LOAD_POST_REQUEST, loadPost)
 }
+function* watchAddComment() {
+  yield takeLatest(ADD_COMMENT_REQUEST, addComment)
+}
 
 export default function* postSaga() {
-  yield all([fork(watchAddPost), fork(watchImageUpload), fork(watchLoadPost)])
+  yield all([
+    fork(watchAddPost),
+    fork(watchImageUpload),
+    fork(watchLoadPost),
+    fork(watchAddComment),
+  ])
 }
