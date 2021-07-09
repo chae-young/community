@@ -64,11 +64,11 @@ const PostList = () => {
   return (
     <Grid container className={classes.root} spacing={1}>
       {postList.map((v) => (
-        <Link href={`/view/${v.id}`}>
-          <a>
-            <Grid key={v.id} item xs={6} sm={3}>
+        <Grid key={v.id} item xs={6} sm={3}>
+          <Link href={`/view/${v.id}`}>
+            <a>
               <ListPoster>
-                <img src={v.post.imagePath} width="100%" />
+                <img src={v.Image} width="100%" />
               </ListPoster>
               <ListContent>
                 <p>{v.post.title}</p>
@@ -80,9 +80,9 @@ const PostList = () => {
                 />
                 {v.post.rating}
               </ListContent>
-            </Grid>
-          </a>
-        </Link>
+            </a>
+          </Link>
+        </Grid>
       ))}
     </Grid>
   )

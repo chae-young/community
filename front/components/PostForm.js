@@ -86,9 +86,10 @@ const PostForm = () => {
       // const { title, content } = data
       dispatch({
         type: ADD_POST_REQUEST,
-        data: { post: { ...totalData } },
+        data: totalData,
       })
       Router.push("/board")
+      window.scrollTo(0, 0)
     },
     [imagePath, rating],
   )

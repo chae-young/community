@@ -1,8 +1,13 @@
 import React, { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
-import TextField from "@material-ui/core/TextField"
-import Button from "@material-ui/core/Button"
+import PropTypes from "prop-types"
+import { useDispatch, useSelector } from "react-redux"
+
 import { makeStyles } from "@material-ui/core/styles"
+import { TextField, Button } from "@material-ui/core"
+
+import { SIGN_UP_REQUEST } from "../reducers/user"
+import { useEffect } from "react"
 
 const useStyle = makeStyles((theme) => ({
   bg: {
@@ -10,9 +15,10 @@ const useStyle = makeStyles((theme) => ({
   },
 }))
 
-const Signup = () => {
+const Signup = ({ setLoginOn }) => {
   const classes = useStyle()
-
+  const dispatch = useDispatch()
+  const { signUpDone } = useSelector((state) => state.user)
   const {
     register,
     handleSubmit,
@@ -20,24 +26,44 @@ const Signup = () => {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => {
+  useEffect(() => {
+    if (signUpDone) {
+      alert("가입이 완료되었습니다")
+    }
+  }, [signUpDone])
+
+  const onSubmit = useCallback((data) => {
     console.log(data)
-  }
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data,
+    })
+    setLoginOn(false)
+  }, [])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="aside__input-field">
         <TextField
-          id="user-id"
-          label="아이디"
-          {...register("id")}
+          id="name"
+          label="이름"
+          {...register("name")}
           fullWidth
           required
         />
       </div>
       <div className="aside__input-field">
         <TextField
-          id="user-nickname"
+          id="userId"
+          label="아이디"
+          {...register("userId")}
+          fullWidth
+          required
+        />
+      </div>
+      <div className="aside__input-field">
+        <TextField
+          id="nickname"
           label="닉네임"
           {...register("nickname")}
           fullWidth
@@ -47,7 +73,7 @@ const Signup = () => {
       <div className="aside__input-field">
         <TextField
           type="password"
-          id="user-password"
+          id="password"
           label="비밀번호"
           {...register("password", {
             minLength: 8,
@@ -62,7 +88,7 @@ const Signup = () => {
       <div className="aside__input-field">
         <TextField
           type="password"
-          id="user-password-check"
+          id="password-check"
           label="비밀번호 확인"
           {...register("passwordCheck", {
             validate: (value) => value === watch("password"),
@@ -85,6 +111,10 @@ const Signup = () => {
       </Button>
     </form>
   )
+}
+
+Signup.propTypes = {
+  setLoginOn: PropTypes.func.isRequired,
 }
 
 export default Signup
