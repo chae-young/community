@@ -3,9 +3,9 @@ import { useSelector } from "react-redux"
 import Link from "next/link"
 
 import { Close, AccountCircleOutlined, Search } from "@material-ui/icons"
-import Avatar from "@material-ui/core/Avatar"
-import styled from "styled-components"
+import { Avatar } from "@material-ui/core"
 
+import styled from "styled-components"
 import { HeaderUtillMenu, Aside } from "../styles/style"
 import LoginForm from "./LoginForm"
 import Signup from "./Signup"
@@ -56,7 +56,7 @@ const Header = () => {
           <li>
             <button type="button" variant="contained" onClick={loginOnClick}>
               {me ? (
-                "내프로필사진예정"
+                <Avatar alt={me.nickname} src="" />
               ) : (
                 <AccountCircleOutlined fontSize="large" />
               )}

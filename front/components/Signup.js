@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
@@ -7,7 +7,6 @@ import { makeStyles } from "@material-ui/core/styles"
 import { TextField, Button } from "@material-ui/core"
 
 import { SIGN_UP_REQUEST } from "../reducers/user"
-import { useEffect } from "react"
 
 const useStyle = makeStyles((theme) => ({
   bg: {
