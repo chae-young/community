@@ -3,20 +3,19 @@ import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 
-import TextField from "@material-ui/core/TextField"
-import Button from "@material-ui/core/Button"
+import { TextField, Button } from "@material-ui/core"
 
 import { makeStyles } from "@material-ui/core/styles"
 import { LoginRequestAction } from "../reducers/user"
 
 const useStyle = makeStyles((theme) => ({
-    bg: {
-        background: "rgb(249, 137, 15)",        
-        '&:hover': {
-            background:'rgb(253, 206, 156)',
-         },        
+  bg: {
+    background: "rgb(249, 137, 15)",
+    "&:hover": {
+      background: "rgb(253, 206, 156)",
     },
-}));
+  },
+}))
 
 const LoginForm = ({ setLoginOn }) => {
   const { me, loginError, loginLoading } = useSelector((state) => state.user)
@@ -25,11 +24,11 @@ const LoginForm = ({ setLoginOn }) => {
   const classes = useStyle()
 
   const onSubmit = (data) => {
-    console.log(data)  
+    console.log(data)
     dispatch(LoginRequestAction({ data }))
     if (loginError && !loginLoading) {
       alert(loginError)
-    } else{
+    } else {
       setLoginOn(false)
     }
   }
@@ -37,29 +36,34 @@ const LoginForm = ({ setLoginOn }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="aside__input-field">
-        <TextField 
-          id="user-id"
+        <TextField
+          id="userid"
           label="아이디"
           {...register("userid")}
           fullWidth
-          required/>
+          required
+        />
       </div>
       <div className="aside__input-field">
-        <TextField 
+        <TextField
           type="password"
           id="user-password"
           label="비밀번호"
           {...register("password")}
           fullWidth
-          required/>
+          required
+        />
       </div>
-      <Button 
+      <Button
         variant="contained"
         color="primary"
         type="submit"
         fullWidth
-        className={classes.bg}>로그인</Button>
-  </form>
+        className={classes.bg}
+      >
+        로그인
+      </Button>
+    </form>
   )
 }
 

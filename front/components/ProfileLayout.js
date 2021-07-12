@@ -22,10 +22,10 @@ const ProfileLayout = ({ children }) => {
 
   return (
     <Layout>
-      <h2>{me.nickname}님 프로필</h2>
+      <h2>{}님 프로필</h2>
       <Link href="/profile/edit">
         <a>
-          <Avatar alt={me.nickname} src="" className={classes.size} />
+          <Avatar alt="" src="" className={classes.size} />
         </a>
       </Link>
       {children}

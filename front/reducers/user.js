@@ -2,6 +2,9 @@ import shortid from "shortid"
 import produce from "immer"
 
 export const initialState = {
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: null,
   loginLoading: false,
   loginDone: false,
   loginError: null,
@@ -11,8 +14,14 @@ export const initialState = {
   signUpLoading: false,
   signUpDone: false,
   signUpError: null,
+  profileImgLoading: false,
+  profileImgDone: false,
+  profileImgError: null,
   me: null,
 }
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST"
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS"
+export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE"
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST"
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS"
@@ -25,6 +34,10 @@ export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE"
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST"
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS"
 export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE"
+
+export const PROFILE_IMG_REQUEST = "PROFILE_IMG_REQUEST"
+export const PROFILE_IMG_SUCCESS = "PROFILE_IMG_SUCCESS"
+export const PROFILE_IMG_FAILURE = "PROFILE_IMG_FAILURE"
 
 export const LoginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
@@ -46,6 +59,20 @@ const dummyUser = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true
+        draft.loadUserError = null
+        draft.loadUserDone = false
+        break
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false
+        draft.me = action.data
+        draft.loadUserDone = true
+        break
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false
+        draft.loadUserError = action.error
+        break
       case LOG_IN_REQUEST:
         draft.loginLoading = true
         draft.loginDone = false
@@ -85,6 +112,19 @@ const reducer = (state = initialState, action) =>
       case SIGN_UP_FAILURE:
         draft.signUpLoading = false
         draft.signUpError = action.error
+        break
+      case PROFILE_IMG_REQUEST:
+        draft.profileImgLoading = true
+        draft.profileImgDone = false
+        draft.profileImgError = null
+        break
+      case PROFILE_IMG_SUCCESS:
+        draft.profileImgLoading = false
+        draft.profileImgDone = true
+        break
+      case PROFILE_IMG_FAILURE:
+        draft.profileImgLoading = false
+        draft.profileImgError = action.error
         break
       default:
         break
