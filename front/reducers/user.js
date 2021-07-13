@@ -17,6 +17,9 @@ export const initialState = {
   profileImgLoading: false,
   profileImgDone: false,
   profileImgError: null,
+  profileEditLoading: false,
+  profileEditDone: false,
+  profileEditError: null,
   me: null,
 }
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST"
@@ -38,6 +41,10 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE"
 export const PROFILE_IMG_REQUEST = "PROFILE_IMG_REQUEST"
 export const PROFILE_IMG_SUCCESS = "PROFILE_IMG_SUCCESS"
 export const PROFILE_IMG_FAILURE = "PROFILE_IMG_FAILURE"
+
+export const PROFILE_EDIT_REQUEST = "PROFILE_EDIT_REQUEST"
+export const PROFILE_EDIT_SUCCESS = "PROFILE_EDIT_SUCCESS"
+export const PROFILE_EDIT_FAILURE = "PROFILE_EDIT_FAILURE"
 
 export const LoginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
@@ -121,10 +128,25 @@ const reducer = (state = initialState, action) =>
       case PROFILE_IMG_SUCCESS:
         draft.profileImgLoading = false
         draft.profileImgDone = true
+        draft.me.Image = action.data
         break
       case PROFILE_IMG_FAILURE:
         draft.profileImgLoading = false
         draft.profileImgError = action.error
+        break
+      case PROFILE_EDIT_REQUEST:
+        draft.profileEditLoading = true
+        draft.profileEditDone = false
+        draft.profileEditError = null
+        break
+      case PROFILE_EDIT_SUCCESS:
+        draft.profileEditLoading = false
+        draft.profileEditDone = true
+        draft.me.Image = action.data.image
+        break
+      case PROFILE_EDIT_FAILURE:
+        draft.profileEditLoading = false
+        draft.profileEditError = action.error
         break
       default:
         break

@@ -25,7 +25,11 @@ const ProfileLayout = ({ children }) => {
       <h2>{}님 프로필</h2>
       <Link href="/profile/edit">
         <a>
-          <Avatar alt="" src="" className={classes.size} />
+          <Avatar
+            alt=""
+            src="http://e-doa.co.kr/DATA/cheditor/20160707180750_dvlyprsi.jpg"
+            className={classes.size}
+          />
         </a>
       </Link>
       {children}

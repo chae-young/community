@@ -111,7 +111,7 @@ const PostForm = () => {
         type: IMAGE_UPLOAD_REQUEST,
         data: imageFormData,
       })
-      setSelectedCheck(1)
+      setSelectedCheck(2)
     },
     [imagePath],
   )

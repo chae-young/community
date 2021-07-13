@@ -13,6 +13,9 @@ import {
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
   LOAD_USER_REQUEST,
+  PROFILE_EDIT_REQUEST,
+  PROFILE_EDIT_SUCCESS,
+  PROFILE_EDIT_FAILURE,
 } from "../reducers/user"
 
 function loadUserAPI() {
@@ -75,20 +78,39 @@ function* signUp(action) {
 }
 
 function profileImgAPI(data) {
-  //return axios.post("/user", data)
+  return axios.post("/user/image", data)
 }
 function* profileImg(action) {
   try {
-    //const result = yield call(profileImgAPI, action.data)
-    yield delay(1000)
+    const result = yield call(profileImgAPI, action.data)
+    //yield delay(1000)
     yield put({
       type: PROFILE_IMG_SUCCESS,
-      data: action.data,
+      data: result.data,
     })
   } catch (err) {
     console.error(err)
     yield put({
       type: PROFILE_IMG_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function profileEditAPI(data) {
+  return axios.patch("/user/profile", data)
+}
+function* profileEdit(action) {
+  try {
+    const result = yield call(profileEditAPI, action.data)
+    yield put({
+      type: PROFILE_EDIT_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: PROFILE_EDIT_FAILURE,
       error: err.response.data,
     })
   }
@@ -106,11 +128,15 @@ function* watchSignup() {
 function* watchProfileImg() {
   yield takeLatest(PROFILE_IMG_REQUEST, profileImg)
 }
+function* watchProfileEdit() {
+  yield takeLatest(PROFILE_EDIT_REQUEST, profileEdit)
+}
 export default function* userSaga() {
   yield all([
     fork(watchLogin),
     fork(watchSignup),
-    fork(watchProfileImg),
     fork(watchLoadUser),
+    fork(watchProfileImg),
+    fork(watchProfileEdit),
   ])
 }
