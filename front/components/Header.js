@@ -56,7 +56,10 @@ const Header = () => {
           <li>
             <button type="button" variant="contained" onClick={loginOnClick}>
               {me ? (
-                <Avatar alt={me.nickname} src="" />
+                <Avatar
+                  alt={me.nickname}
+                  src={`http://localhost:3063/profile/${me.src}`}
+                />
               ) : (
                 <AccountCircleOutlined fontSize="large" />
               )}

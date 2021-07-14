@@ -128,7 +128,7 @@ const reducer = (state = initialState, action) =>
       case PROFILE_IMG_SUCCESS:
         draft.profileImgLoading = false
         draft.profileImgDone = true
-        draft.me.Image = action.data
+        draft.me.src = action.data
         break
       case PROFILE_IMG_FAILURE:
         draft.profileImgLoading = false
@@ -142,7 +142,8 @@ const reducer = (state = initialState, action) =>
       case PROFILE_EDIT_SUCCESS:
         draft.profileEditLoading = false
         draft.profileEditDone = true
-        draft.me.Image = action.data.image
+        draft.me.nickname = action.data.nickname
+        draft.me.src = action.data.image
         break
       case PROFILE_EDIT_FAILURE:
         draft.profileEditLoading = false

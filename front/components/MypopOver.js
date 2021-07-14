@@ -34,7 +34,11 @@ const MypopOver = ({ options }) => {
       <PopoverWrap>
         <PopoverProfile>
           <div className="profile__img">
-            <Avatar alt="내 프로필 사진" src="" width="10%" />
+            <Avatar
+              alt={me.nickname}
+              src={`http://localhost:3063/profile/${me.src}`}
+              width="10%"
+            />
           </div>
           <PopoverInfo>
             <Link href="/profile">

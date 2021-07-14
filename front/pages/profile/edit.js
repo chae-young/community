@@ -23,23 +23,17 @@ const edit = () => {
   const onClickImage = (e) => {
     e.target.value = null
   }
-  const onSubmit = useCallback(
-    (data) => {
-      const formData = new FormData()
-      console.log(me.Image, data.nickname)
-      formData.append("nickname", data.nickname)
-      formData.append("image", me.Image)
+  const onSubmit = (data) => {
+    const editFormData = new FormData()
+    editFormData.append("nickname", data.nickname)
+    editFormData.append("image", me.Image)
 
-      dispatch({
-        type: PROFILE_EDIT_REQUEST,
-        data: formData,
-      })
-      for (var key of formData.entries()) {
-        console.log(key[0] + ", " + key[1])
-      }
-    },
-    [me.Image],
-  )
+    dispatch({
+      type: PROFILE_EDIT_REQUEST,
+      data: editFormData,
+    })
+  }
+
   const onChangeImage = useCallback((e) => {
     const imageFormData = new FormData()
     imageFormData.append("singleimage", e.target.files[0])
@@ -54,8 +48,8 @@ const edit = () => {
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <button type="button" onClick={onFileUpload}>
           <Avatar
-            alt="내 프로필 사진"
-            src={`http://localhost:3063/profile/${me.Image}`}
+            alt={me.nickname}
+            src={`http://localhost:3063/profile/${me.src}`}
             width="10%"
           />
         </button>

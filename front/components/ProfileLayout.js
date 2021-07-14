@@ -26,8 +26,8 @@ const ProfileLayout = ({ children }) => {
       <Link href="/profile/edit">
         <a>
           <Avatar
-            alt=""
-            src="http://e-doa.co.kr/DATA/cheditor/20160707180750_dvlyprsi.jpg"
+            alt={me.nickname}
+            src={`http://localhost:3063/profile/${me.src}`}
             className={classes.size}
           />
         </a>

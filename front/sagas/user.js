@@ -103,6 +103,7 @@ function profileEditAPI(data) {
 function* profileEdit(action) {
   try {
     const result = yield call(profileEditAPI, action.data)
+
     yield put({
       type: PROFILE_EDIT_SUCCESS,
       data: result.data,
