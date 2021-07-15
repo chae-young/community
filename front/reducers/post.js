@@ -89,7 +89,7 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_SUCCESS:
         draft.postAddLoading = false
         draft.postAddDone = true
-        draft.postList.unshift(dummyPost(action.data))
+        draft.postList.unshift(action.data)
         break
       case ADD_POST_FAILURE:
         draft.postAddDone = false

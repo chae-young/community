@@ -35,10 +35,7 @@ function* addPost(action) {
     //yield delay(1000)
     yield put({
       type: ADD_POST_SUCCESS,
-      data: {
-        id: shortid.generate(),
-        ...action.data,
-      },
+      data: result.data,
     })
   } catch (err) {
     console.error(err)

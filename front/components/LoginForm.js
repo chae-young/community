@@ -24,14 +24,15 @@ const LoginForm = ({ setLoginOn }) => {
   const classes = useStyle()
 
   const onSubmit = (data) => {
-    console.log(data)
     dispatch(LoginRequestAction({ data }))
-    if (loginError && !loginLoading) {
+  }
+  useEffect(() => {
+    if (loginError) {
       alert(loginError)
     } else {
       setLoginOn(false)
     }
-  }
+  }, [loginError])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

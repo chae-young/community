@@ -73,13 +73,10 @@ const PostForm = () => {
   const onSubmit = useCallback(
     (data) => {
       const totalData = { ...data, imagePath, rating }
-      console.log(totalData)
-      /*     
-    const FormData = new FormData()
-    for(key in totalData){
-      FormData.append(key,totalData[key])
-    }
-     */
+      const formData = new FormData()
+      for (let key in totalData) {
+        formData.append(key, totalData[key])
+      }
       // FormData.append("title",title)
       // FormData.append("content",content)
       // FormData.append("rating",rating)
