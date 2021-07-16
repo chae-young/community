@@ -66,16 +66,15 @@ function* imageUpload(action) {
   }
 }
 
-function loadPostAPI(data) {
-  return axios.post("/post/image", data)
+function loadPostAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId}`)
 }
 function* loadPost(action) {
   try {
-    //const result = yield call(loadPostAPI, action.data)
-    yield delay(1000)
+    const result = yield call(loadPostAPI, action.lastId)
     yield put({
       type: LOAD_POST_SUCCESS,
-      data: dummyList(10),
+      data: result.data,
     })
   } catch (err) {
     console.error(err)

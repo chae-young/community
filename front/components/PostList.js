@@ -39,6 +39,12 @@ const PostList = () => {
     (state) => state.post,
   )
 
+  useEffect(() => {
+    console.log("로드포스트")
+    dispatch({
+      type: LOAD_POST_REQUEST,
+    })
+  }, [])
   const [flag, setFlag] = useState(false)
   useEffect(() => {
     const loadOnScroll = () => {
@@ -48,8 +54,10 @@ const PostList = () => {
       ) {
         if (loadPostDone) setFlag(false)
         if (!flag && !loadPostLoading) {
+          const lastId = postList[postList.length - 1].id
           dispatch({
             type: LOAD_POST_REQUEST,
+            lastId,
           })
           setFlag(true)
         }
@@ -71,14 +79,14 @@ const PostList = () => {
                 <img src={v.Image} width="100%" />
               </ListPoster>
               <ListContent>
-                <p>{v.post.title}</p>
+                <p>{v.title}</p>
                 <Rating
                   name="read-only"
                   precision={0.5}
-                  value={v.post.rating}
+                  value={v.rating}
                   readOnly
                 />
-                {v.post.rating}
+                {v.rating}
               </ListContent>
             </a>
           </Link>
