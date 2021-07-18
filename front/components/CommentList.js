@@ -16,7 +16,7 @@ const CommentList = ({ id }) => {
   return (
     <List>
       {postList
-        .find((v) => v.id === id)
+        .find((v) => v.id === parseInt(id))
         .Comments.map((v) => (
           <ListItem alignItems="flex-start">
             <ListItemAvatar>

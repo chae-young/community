@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Link from "next/link"
 
@@ -8,7 +8,7 @@ import { Rating } from "@material-ui/lab"
 
 import styled from "styled-components"
 import { LOAD_POST_REQUEST } from "../reducers/post"
-import { useCallback } from "react"
+import { LOAD_USER_REQUEST } from "../reducers/user"
 
 const useStyles = makeStyles({
   root: {
@@ -35,16 +35,18 @@ const ListContent = styled.div``
 const PostList = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
-  const { postList, loadPostLoading, loadPostDone } = useSelector(
+  const { postList, postCount, loadPostLoading, loadPostDone } = useSelector(
     (state) => state.post,
   )
-
   useEffect(() => {
-    console.log("로드포스트")
-    dispatch({
-      type: LOAD_POST_REQUEST,
-    })
+    dispatch({ type: LOAD_USER_REQUEST })
+    if (postCount) {
+      dispatch({
+        type: LOAD_POST_REQUEST,
+      })
+    }
   }, [])
+
   const [flag, setFlag] = useState(false)
   useEffect(() => {
     const loadOnScroll = () => {
@@ -76,7 +78,7 @@ const PostList = () => {
           <Link href={`/view/${v.id}`}>
             <a>
               <ListPoster>
-                <img src={v.Image} width="100%" />
+                <img src={v.Images[0].src} width="100%" />
               </ListPoster>
               <ListContent>
                 <p>{v.title}</p>

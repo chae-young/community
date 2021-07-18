@@ -13,6 +13,7 @@ export const initialState = {
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
+  postCount: false,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
@@ -118,7 +119,8 @@ const reducer = (state = initialState, action) =>
         draft.loadPostLoading = false
         const posts = [...action.data, ...draft.postList]
         draft.postList = posts
-        draft.loadPostDone = true
+        ;(draft.postCount = action.data.length === 10),
+          (draft.loadPostDone = true)
         break
       }
       case LOAD_POST_FAILURE:

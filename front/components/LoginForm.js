@@ -25,6 +25,7 @@ const LoginForm = ({ setLoginOn }) => {
 
   const onSubmit = (data) => {
     dispatch(LoginRequestAction({ data }))
+    setLoginOn(false)
   }
   useEffect(() => {
     if (loginError) {
