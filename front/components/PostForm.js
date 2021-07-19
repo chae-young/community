@@ -66,7 +66,7 @@ const PostForm = () => {
   const { register, errors, trigger, handleSubmit } = useForm()
 
   const [selectedIndex, setSelectedIndex] = useState(0)
-  // 2이면 api 2이면 file
+  // 1이면 api 2이면 file
   const [selectedCheck, setSelectedCheck] = useState(null)
 
   const [rating, setRating] = useState(0.5)
@@ -113,7 +113,7 @@ const PostForm = () => {
     [imagePath],
   )
 
-  const imgSrc = () => {
+  const imgSrc = useCallback(() => {
     switch (selectedCheck) {
       case 1:
         return imagePath
@@ -122,7 +122,7 @@ const PostForm = () => {
       default:
         return basicPoster
     }
-  }
+  }, [selectedCheck])
 
   return (
     <ThemeProvider theme={theme}>

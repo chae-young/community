@@ -40,10 +40,8 @@ const PostList = () => {
   )
   useEffect(() => {
     dispatch({ type: LOAD_USER_REQUEST })
-    if (postCount) {
-      dispatch({
-        type: LOAD_POST_REQUEST,
-      })
+    if (postCount === 0 || postCount === 10) {
+      dispatch({ type: LOAD_POST_REQUEST })
     }
   }, [])
 
@@ -75,10 +73,24 @@ const PostList = () => {
     <Grid container className={classes.root} spacing={1}>
       {postList.map((v) => (
         <Grid key={v.id} item xs={6} sm={3}>
-          <Link href={`/view/${v.id}`}>
+          <Link
+            href={{
+              pathname: `/view/${v.id}`,
+              query: { post: JSON.stringify(v) },
+            }}
+            as={`/view/${v.id}}`}
+          >
             <a>
               <ListPoster>
-                <img src={v.Images[0].src} width="100%" />
+                <img
+                  src={
+                    v.Images[0].src.includes("https://")
+                      ? v.Images[0].src
+                      : `http://localhost:3063/${v.Images[0].src}`
+                  }
+                  width="100%"
+                  alt={v.title}
+                />
               </ListPoster>
               <ListContent>
                 <p>{v.title}</p>

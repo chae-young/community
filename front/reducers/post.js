@@ -13,10 +13,16 @@ export const initialState = {
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
-  postCount: false,
+  postCount: 0,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
 }
 
 export const dummyList = (num) =>
@@ -78,6 +84,14 @@ export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST"
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS"
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE"
 
+export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST"
+export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS"
+export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE"
+
+export const UNLIKE_POST_REQUEST = "UNLIKE_POST_REQUEST"
+export const UNLIKE_POST_SUCCESS = "UNLIKE_POST_SUCCESS"
+export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE"
+
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
@@ -119,8 +133,8 @@ const reducer = (state = initialState, action) =>
         draft.loadPostLoading = false
         const posts = [...action.data, ...draft.postList]
         draft.postList = posts
-        ;(draft.postCount = action.data.length === 10),
-          (draft.loadPostDone = true)
+        draft.postCount = action.data.length
+        draft.loadPostDone = true
         break
       }
       case LOAD_POST_FAILURE:
@@ -141,6 +155,32 @@ const reducer = (state = initialState, action) =>
       case ADD_COMMENT_FAILURE:
         draft.addCommentDone = false
         draft.addCommentError = action.error
+        break
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true
+        draft.likePostDone = false
+        break
+      case LIKE_POST_SUCCESS:
+        draft.likePostLoading = false
+        draft.likePostDone = true
+        const post = draft.postList.find((v) => v.id === action.data.PostId)
+        post.Likers.unshift({ id: action.data.UserId })
+        break
+      case LIKE_POST_FAILURE:
+        draft.likePostDone = false
+        draft.likePostError = action.error
+        break
+      case UNLIKE_POST_REQUEST:
+        draft.unlikePostLoading = true
+        draft.unlikePostDone = false
+        break
+      case UNLIKE_POST_SUCCESS:
+        draft.unlikePostLoading = false
+        draft.unlikePostDone = true
+        break
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostDone = false
+        draft.unlikePostError = action.error
         break
       default:
         break
