@@ -11,7 +11,8 @@ import red from "@material-ui/core/colors/red"
 import Layout from "../../components/Layout"
 import CommentForm from "../../components/CommentForm"
 import CommentList from "../../components/CommentList"
-import { LIKE_POST_REQUEST } from "../../reducers/post"
+import { LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from "../../reducers/post"
+import PopularList from "../../components/PopularList"
 
 const useStyles = makeStyles({
   root: {
@@ -24,25 +25,27 @@ const useStyles = makeStyles({
 const View = () => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { me } = useSelector((state) => state.user)
-  const { post } = router.query
-  const currentPost = JSON.parse(post)
-
   const classes = useStyles()
 
-  const [value, setValue] = useState(4.66)
+  const { me } = useSelector((state) => state.user)
+  const { postList } = useSelector((state) => state.post)
+  const { id } = router.query
+  const post = postList.find((v) => v.id === parseInt(id))
+  const img = post.Images[0].src
 
-  const Liked = currentPost.Likers.find((v) => v.id === me.id)
-  console.log(Liked)
+  const Liked = post.Likers.find((v) => v.id === me.id)
   const onUnLike = useCallback(() => {
     console.log("좋아요 취소")
-    //setLike((prev) => !prev)
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: { postId: post.id, count: post.Likers.length - 1 },
+    })
   }, [])
   const onLike = useCallback(() => {
     console.log("좋아요")
     dispatch({
       type: LIKE_POST_REQUEST,
-      data: currentPost.id,
+      data: { postId: post.id, count: post.Likers.length + 1 },
     })
   }, [])
 
@@ -50,16 +53,21 @@ const View = () => {
     <Layout>
       <Grid container className={classes.root} spacing={3}>
         <Grid item xs={8}>
-          <h2>{currentPost.title}</h2>
+          <h2>{post.title}</h2>
           <div>
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             <span>id</span>
             <span>날짜</span>
-            <Rating value={value} precision={0.1} readOnly />
+            <Rating value={post.rating} precision={0.1} readOnly />
           </div>
           <div>
-            <img />
-            컨텐츠
+            <img
+              src={
+                img.includes("https://") ? img : `http://localhost:3063/${img}`
+              }
+              alt={post.title}
+            />
+            <p>{post.content}</p>
           </div>
           <div>
             <button type="button">
@@ -69,13 +77,13 @@ const View = () => {
                 <FavoriteBorder onClick={onLike} />
               )}
             </button>
-            {currentPost.Likers.length}명이 좋아합니다
+            {post.Likers.length}명이 좋아합니다
           </div>
-          <CommentList id={currentPost.id} />
-          <CommentForm id={currentPost.id} />
+          <CommentList id={post.id} />
+          <CommentForm id={post.id} />
         </Grid>
         <Grid item xs={4}>
-          인기 게시글~~
+          <PopularList />
         </Grid>
       </Grid>
     </Layout>

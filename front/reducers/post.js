@@ -3,6 +3,7 @@ import shortid from "shortid"
 
 export const initialState = {
   postList: [],
+  popularPosts: [],
   imagePath: "",
   postAddLoading: false,
   postAddDone: false,
@@ -13,6 +14,9 @@ export const initialState = {
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
+  popularPostsLoading: false,
+  popularPostsDone: false,
+  popularPostsError: null,
   postCount: 0,
   addCommentLoading: false,
   addCommentDone: false,
@@ -80,6 +84,10 @@ export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST"
 export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS"
 export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE"
 
+export const POPULAR_POSTS_REQUEST = "POPULAR_POSTS_REQUEST"
+export const POPULAR_POSTS_SUCCESS = "POPULAR_POSTS_SUCCESS"
+export const POPULAR_POSTS_FAILURE = "POPULAR_POSTS_FAILURE"
+
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST"
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS"
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE"
@@ -102,7 +110,7 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_SUCCESS:
         draft.postAddLoading = false
         draft.postAddDone = true
-        draft.postList.concat(action.data)
+        draft.postList.unshift(action.data)
         break
       case ADD_POST_FAILURE:
         draft.postAddDone = false
@@ -141,6 +149,20 @@ const reducer = (state = initialState, action) =>
         draft.loadPostDone = false
         draft.loadPostError = action.error
         break
+      case POPULAR_POSTS_REQUEST:
+        draft.popularPostsLoading = true
+        draft.popularPostsDone = false
+        break
+      case POPULAR_POSTS_SUCCESS: {
+        draft.popularPostsLoading = false
+        draft.popularPosts = draft.popularPosts.concat(action.data)
+        draft.popularPostsDone = true
+        break
+      }
+      case POPULAR_POSTS_FAILURE:
+        draft.popularPostsDone = false
+        draft.popularPostsError = action.error
+        break
       case ADD_COMMENT_REQUEST:
         draft.addCommentLoading = true
         draft.addCommentDone = false
@@ -160,12 +182,13 @@ const reducer = (state = initialState, action) =>
         draft.likePostLoading = true
         draft.likePostDone = false
         break
-      case LIKE_POST_SUCCESS:
+      case LIKE_POST_SUCCESS: {
         draft.likePostLoading = false
         draft.likePostDone = true
         const post = draft.postList.find((v) => v.id === action.data.PostId)
         post.Likers.unshift({ id: action.data.UserId })
         break
+      }
       case LIKE_POST_FAILURE:
         draft.likePostDone = false
         draft.likePostError = action.error
@@ -174,10 +197,13 @@ const reducer = (state = initialState, action) =>
         draft.unlikePostLoading = true
         draft.unlikePostDone = false
         break
-      case UNLIKE_POST_SUCCESS:
+      case UNLIKE_POST_SUCCESS: {
         draft.unlikePostLoading = false
         draft.unlikePostDone = true
+        const post = draft.postList.find((v) => v.id === action.data.PostId)
+        post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId)
         break
+      }
       case UNLIKE_POST_FAILURE:
         draft.unlikePostDone = false
         draft.unlikePostError = action.error

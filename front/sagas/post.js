@@ -30,6 +30,9 @@ import {
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
   UNLIKE_POST_FAILURE,
+  POPULAR_POSTS_REQUEST,
+  POPULAR_POSTS_SUCCESS,
+  POPULAR_POSTS_FAILURE,
 } from "../reducers/post"
 
 function addPostAPI(data) {
@@ -91,6 +94,25 @@ function* loadPost(action) {
   }
 }
 
+function popularPostsAPI() {
+  return axios.get("/posts/popular")
+}
+function* popularPosts(action) {
+  try {
+    const result = yield call(popularPostsAPI, action.data)
+    yield put({
+      type: POPULAR_POSTS_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: POPULAR_POSTS_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function addCommentAPI(data) {
   return axios.post("/post/image", data)
 }
@@ -112,7 +134,7 @@ function* addComment(action) {
 }
 
 function likePostAPI(data) {
-  return axios.patch(`/post/${data}/like`)
+  return axios.patch(`/post/${data.postId}/like`, data)
 }
 function* likePost(action) {
   try {
@@ -131,15 +153,14 @@ function* likePost(action) {
 }
 
 function unlikePostAPI(data) {
-  return axios.patch(`/post/${data}/unlike`)
+  return axios.delete(`/post/${data.postId}/like`, data)
 }
 function* unlikePost(action) {
   try {
-    //const result = yield call(addCommentAPI, action.data)
-    yield delay(1000)
+    const result = yield call(unlikePostAPI, action.data)
     yield put({
       type: UNLIKE_POST_SUCCESS,
-      data: action.data,
+      data: result.data,
     })
   } catch (err) {
     console.error(err)
@@ -159,6 +180,9 @@ function* watchImageUpload() {
 function* watchLoadPost() {
   yield throttle(3000, LOAD_POST_REQUEST, loadPost)
 }
+function* watchPopularPosts() {
+  yield throttle(3000, POPULAR_POSTS_REQUEST, popularPosts)
+}
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment)
 }
@@ -174,6 +198,7 @@ export default function* postSaga() {
     fork(watchAddPost),
     fork(watchImageUpload),
     fork(watchLoadPost),
+    fork(watchPopularPosts),
     fork(watchAddComment),
     fork(watchLikePost),
     fork(watchUnlikePost),
