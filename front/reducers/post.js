@@ -18,9 +18,16 @@ export const initialState = {
   popularPostsDone: false,
   popularPostsError: null,
   postCount: 0,
+  currentPost: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  editCommentLoading: false,
+  editCommentDone: false,
+  editCommentError: null,
+  removeCommentLoading: false,
+  removeCommentDone: false,
+  removeCommentError: null,
   likePostLoading: false,
   likePostDone: false,
   likePostError: null,
@@ -91,6 +98,14 @@ export const POPULAR_POSTS_FAILURE = "POPULAR_POSTS_FAILURE"
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST"
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS"
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE"
+
+export const EDIT_COMMENT_REQUEST = "EDIT_COMMENT_REQUEST"
+export const EDIT_COMMENT_SUCCESS = "EDIT_COMMENT_SUCCESS"
+export const EDIT_COMMENT_FAILURE = "EDIT_COMMENT_FAILURE"
+
+export const REMOVE_COMMENT_REQUEST = "REMOVE_COMMENT_REQUEST"
+export const REMOVE_COMMENT_SUCCESS = "REMOVE_COMMENT_SUCCESS"
+export const REMOVE_COMMENT_FAILURE = "REMOVE_COMMENT_FAILURE"
 
 export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST"
 export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS"
@@ -168,8 +183,8 @@ const reducer = (state = initialState, action) =>
         draft.addCommentDone = false
         break
       case ADD_COMMENT_SUCCESS: {
-        const post = draft.postList.find((v) => v.id === action.data.postId)
-        post.Comments.unshift(dummyComment(action.data))
+        const post = draft.postList.find((v) => v.id === action.data.PostId)
+        post.Comments.unshift(action.data)
         draft.addCommentLoading = false
         draft.addCommentDone = true
         break
@@ -177,6 +192,46 @@ const reducer = (state = initialState, action) =>
       case ADD_COMMENT_FAILURE:
         draft.addCommentDone = false
         draft.addCommentError = action.error
+        break
+      case EDIT_COMMENT_REQUEST:
+        draft.editCommentLoading = true
+        draft.editCommentDone = false
+        break
+      case EDIT_COMMENT_SUCCESS: {
+        const post = draft.postList.find((v) => v.id === action.data.PostId)
+        const comment = post.Comments.find(
+          (v) => v.id === action.data.CommentId,
+        )
+        comment.content = action.data.content
+        draft.editCommentLoading = false
+        draft.editCommentDone = true
+        break
+      }
+      case EDIT_COMMENT_FAILURE:
+        draft.editCommentDone = false
+        draft.editCommentError = action.error
+        break
+      case REMOVE_COMMENT_REQUEST: {
+        const postIndex = draft.postList.findIndex(
+          (v) => v.id === action.data.postId,
+        )
+        draft.currentPost = postIndex
+        draft.removeCommentLoading = true
+        draft.removeCommentDone = false
+        break
+      }
+      case REMOVE_COMMENT_SUCCESS: {
+        const post = draft.postList[draft.currentPost]
+        post.Comments = post.Comments.filter(
+          (v) => v.id !== action.data.CommentId,
+        )
+        draft.removeCommentLoading = false
+        draft.removeCommentDone = true
+        break
+      }
+      case REMOVE_COMMENT_FAILURE:
+        draft.removeCommentDone = false
+        draft.removeCommentError = action.error
         break
       case LIKE_POST_REQUEST:
         draft.likePostLoading = true

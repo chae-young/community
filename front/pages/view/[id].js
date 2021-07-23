@@ -79,8 +79,8 @@ const View = () => {
             </button>
             {post.Likers.length}명이 좋아합니다
           </div>
-          <CommentList id={post.id} />
-          <CommentForm id={post.id} />
+          <CommentList currentPostId={post.id} comments={post.Comments} />
+          <CommentForm currentPostId={post.id} comments={post.Comments} />
         </Grid>
         <Grid item xs={4}>
           <PopularList />

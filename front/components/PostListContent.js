@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from "react"
+import React from "react"
 import Link from "next/link"
-import { useSelector } from "react-redux"
 
 import { Grid } from "@material-ui/core"
 import { Rating } from "@material-ui/lab"

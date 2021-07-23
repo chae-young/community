@@ -33,6 +33,12 @@ import {
   POPULAR_POSTS_REQUEST,
   POPULAR_POSTS_SUCCESS,
   POPULAR_POSTS_FAILURE,
+  EDIT_COMMENT_REQUEST,
+  EDIT_COMMENT_SUCCESS,
+  EDIT_COMMENT_FAILURE,
+  REMOVE_COMMENT_SUCCESS,
+  REMOVE_COMMENT_FAILURE,
+  REMOVE_COMMENT_REQUEST,
 } from "../reducers/post"
 
 function addPostAPI(data) {
@@ -114,20 +120,59 @@ function* popularPosts(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.post("/post/image", data)
+  return axios.post(`/post/${data.postId}/comment`, data)
 }
 function* addComment(action) {
   try {
-    //const result = yield call(addCommentAPI, action.data)
-    yield delay(1000)
+    const result = yield call(addCommentAPI, action.data)
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     })
   } catch (err) {
     console.error(err)
     yield put({
       type: ADD_COMMENT_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function editCommentAPI(data) {
+  return axios.patch(`/post/${data.commentId}/comment`, data)
+}
+function* editComment(action) {
+  try {
+    const result = yield call(editCommentAPI, action.data)
+    //yield delay(1000)
+    yield put({
+      type: EDIT_COMMENT_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: EDIT_COMMENT_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function removeCommentAPI(data) {
+  return axios.delete(`/post/${data.commentId}/comment`)
+}
+function* removeComment(action) {
+  try {
+    const result = yield call(removeCommentAPI, action.data)
+    //yield delay(1000)
+    yield put({
+      type: REMOVE_COMMENT_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: REMOVE_COMMENT_FAILURE,
       error: err.response.data,
     })
   }
@@ -186,6 +231,12 @@ function* watchPopularPosts() {
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment)
 }
+function* watchEditComment() {
+  yield takeLatest(EDIT_COMMENT_REQUEST, editComment)
+}
+function* watchRemoveComment() {
+  yield takeLatest(REMOVE_COMMENT_REQUEST, removeComment)
+}
 function* watchLikePost() {
   yield takeLatest(LIKE_POST_REQUEST, likePost)
 }
@@ -200,6 +251,8 @@ export default function* postSaga() {
     fork(watchLoadPost),
     fork(watchPopularPosts),
     fork(watchAddComment),
+    fork(watchEditComment),
+    fork(watchRemoveComment),
     fork(watchLikePost),
     fork(watchUnlikePost),
   ])

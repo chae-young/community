@@ -1,21 +1,34 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import PropTypes from "prop-types"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 
 import { Button } from "@material-ui/core"
 
-import { ADD_COMMENT_REQUEST } from "../reducers/post"
+import { ADD_COMMENT_REQUEST, EDIT_COMMENT_REQUEST } from "../reducers/post"
 
-const CommentForm = ({ id }) => {
+const CommentForm = ({ ...obj }) => {
+  const { currentPostId, comment, edit, content } = obj
+  //const currentComment = comments.find((v) => v.PostId === id)
   const dispatch = useDispatch()
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      text: content,
+    },
+  })
 
   const onSubmit = (data) => {
-    dispatch({
-      type: ADD_COMMENT_REQUEST,
-      data: { postId: id, text: data.text },
-    })
+    if (edit) {
+      dispatch({
+        type: EDIT_COMMENT_REQUEST,
+        data: { commentId: comment.id, content: data.text },
+      })
+    } else {
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        data: { postId: currentPostId, content: data.text },
+      })
+    }
   }
   return (
     <>
@@ -30,7 +43,9 @@ const CommentForm = ({ id }) => {
 }
 
 CommentForm.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  edit: PropTypes.bool.isRequired,
+  content: PropTypes.string.isRequired,
 }
 
 export default CommentForm
