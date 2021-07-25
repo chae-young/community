@@ -4,6 +4,7 @@ import shortid from "shortid"
 export const initialState = {
   postList: [],
   popularPosts: [],
+  singlePost: null,
   imagePath: "",
   postAddLoading: false,
   postAddDone: false,
@@ -11,6 +12,9 @@ export const initialState = {
   imageUploadLoading: false,
   imageUploadDone: false,
   imageUploadError: null,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
@@ -87,6 +91,10 @@ export const IMAGE_UPLOAD_FAILURE = "IMAGE_UPLOAD_FAILURE"
 
 export const SRH_IMAGE_UPLOAD = "SRH_IMAGE_UPLOAD"
 
+export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST"
+export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS"
+export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE"
+
 export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST"
 export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS"
 export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE"
@@ -148,18 +156,31 @@ const reducer = (state = initialState, action) =>
       case SRH_IMAGE_UPLOAD:
         draft.imagePath = action.data
         break
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true
+        draft.loadPostsDone = false
+        break
+      case LOAD_POSTS_SUCCESS: {
+        draft.loadPostsLoading = false
+        const posts = [...action.data, ...draft.postList]
+        draft.postList = posts
+        draft.postCount = action.data.length
+        draft.loadPostsDone = true
+        break
+      }
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsDone = false
+        draft.loadPostsError = action.error
+        break
       case LOAD_POST_REQUEST:
         draft.loadPostLoading = true
         draft.loadPostDone = false
         break
-      case LOAD_POST_SUCCESS: {
+      case LOAD_POST_SUCCESS:
         draft.loadPostLoading = false
-        const posts = [...action.data, ...draft.postList]
-        draft.postList = posts
-        draft.postCount = action.data.length
+        draft.singlePost = action.data
         draft.loadPostDone = true
         break
-      }
       case LOAD_POST_FAILURE:
         draft.loadPostDone = false
         draft.loadPostError = action.error
