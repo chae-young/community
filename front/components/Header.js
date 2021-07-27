@@ -12,6 +12,8 @@ import Signup from "./Signup"
 import MypopOver from "./MypopOver"
 import { CloseBtn } from "../styles/style"
 
+import SearchPopup from "./SearchPopup"
+
 const Logo = styled.h1`
   display: flex;
   justify-content: center;
@@ -40,54 +42,71 @@ const Header = () => {
   const onClose = useCallback(() => {
     setLoginOn(false)
   }, [])
-
   const open = Boolean(anchorEl)
   const id = open ? "simple-popover" : undefined
 
+  const [searchopen, setSearchopen] = useState(false)
+  const onSearch = useCallback(() => {
+    setSearchopen(true)
+  }, [])
+  const onSearchClose = useCallback(() => {
+    setSearchopen(false)
+  }, [])
+
   return (
-    <header>
-      <Logo>
-        <Link href="/">
-          <a>MovieFeeds</a>
-        </Link>
-      </Logo>
-      <nav>
-        <HeaderUtillMenu>
-          <li>
-            <button type="button" variant="contained" onClick={loginOnClick}>
-              {me ? (
-                <Avatar
-                  alt={me.nickname}
-                  src={`http://localhost:3063/profile/${me.src}`}
-                />
-              ) : (
-                <AccountCircleOutlined fontSize="large" />
+    <>
+      <header>
+        <Logo>
+          <Link href="/">
+            <a>MovieFeeds</a>
+          </Link>
+        </Logo>
+        <nav>
+          <HeaderUtillMenu>
+            <li>
+              <Link href="/board">
+                <a>review</a>
+              </Link>
+            </li>
+            <li>
+              <button type="button" variant="contained" onClick={loginOnClick}>
+                {me ? (
+                  <Avatar
+                    alt={me.nickname}
+                    src={`http://localhost:3063/profile/${me.src}`}
+                  />
+                ) : (
+                  <AccountCircleOutlined fontSize="large" />
+                )}
+              </button>
+              {me && (
+                <MypopOver options={{ id, open, anchorEl, setAnchorEl }} />
               )}
-            </button>
-            {me && <MypopOver options={{ id, open, anchorEl, setAnchorEl }} />}
-          </li>
-          <li>
-            <button type="button">
-              <Search fontSize="large" />
-            </button>
-          </li>
-        </HeaderUtillMenu>
-      </nav>
-      <Aside toggle={loginOn}>
-        <CloseBtn onClick={onClose}>
-          <Close fontSize="large" />
-        </CloseBtn>
-        계정이 없으신가요?
-        <button type="button" onClick={onToggle}>
-          {isToggleOn ? "회원가입하기" : "로그인하기"}
-        </button>
-        {isToggleOn ? (
-          <LoginForm setLoginOn={setLoginOn} />
-        ) : (
-          <Signup setLoginOn={setLoginOn} />
-        )}
-      </Aside>
-    </header>
+            </li>
+            <li>
+              <button type="button" onClick={onSearch}>
+                <Search fontSize="large" />
+              </button>
+            </li>
+          </HeaderUtillMenu>
+        </nav>
+        <Aside toggle={loginOn}>
+          <CloseBtn onClick={onClose}>
+            <Close fontSize="large" />
+          </CloseBtn>
+          계정이 없으신가요?
+          <button type="button" onClick={onToggle}>
+            {isToggleOn ? "회원가입하기" : "로그인하기"}
+          </button>
+          {isToggleOn ? (
+            <LoginForm setLoginOn={setLoginOn} />
+          ) : (
+            <Signup setLoginOn={setLoginOn} />
+          )}
+        </Aside>
+      </header>
+      <SearchPopup searchopen={searchopen} onSearchClose={onSearchClose} />
+    </>
   )
 }
 
