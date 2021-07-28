@@ -205,7 +205,7 @@ const reducer = (state = initialState, action) =>
         break
       case ADD_COMMENT_SUCCESS: {
         const post = draft.postList.find((v) => v.id === action.data.PostId)
-        post.Comments.unshift(action.data)
+        draft.singlePost.Comments.unshift(action.data)
         draft.addCommentLoading = false
         draft.addCommentDone = true
         break
@@ -220,10 +220,11 @@ const reducer = (state = initialState, action) =>
         break
       case EDIT_COMMENT_SUCCESS: {
         const post = draft.postList.find((v) => v.id === action.data.PostId)
-        const comment = post.Comments.find(
+        const comment = draft.singlePost.Comments.find(
           (v) => v.id === action.data.CommentId,
         )
         comment.content = action.data.content
+        //comment.content = action.data.content
         draft.editCommentLoading = false
         draft.editCommentDone = true
         break
@@ -233,17 +234,17 @@ const reducer = (state = initialState, action) =>
         draft.editCommentError = action.error
         break
       case REMOVE_COMMENT_REQUEST: {
-        const postIndex = draft.postList.findIndex(
-          (v) => v.id === action.data.postId,
-        )
-        draft.currentPost = postIndex
+        // const postIndex = draft.postList.findIndex(
+        //   (v) => v.id === action.data.postId,
+        // )
+        // draft.currentPost = postIndex
         draft.removeCommentLoading = true
         draft.removeCommentDone = false
         break
       }
       case REMOVE_COMMENT_SUCCESS: {
         const post = draft.postList[draft.currentPost]
-        post.Comments = post.Comments.filter(
+        draft.singlePost.Comments = draft.singlePost.Comments.filter(
           (v) => v.id !== action.data.CommentId,
         )
         draft.removeCommentLoading = false
@@ -261,8 +262,9 @@ const reducer = (state = initialState, action) =>
       case LIKE_POST_SUCCESS: {
         draft.likePostLoading = false
         draft.likePostDone = true
-        const post = draft.postList.find((v) => v.id === action.data.PostId)
-        post.Likers.unshift({ id: action.data.UserId })
+        //const post = draft.postList.find((v) => v.id === action.data.PostId)
+        //post.Likers.unshift({ id: action.data.UserId })
+        draft.singlePost.Likers.unshift({ id: action.data.UserId })
         break
       }
       case LIKE_POST_FAILURE:
@@ -276,8 +278,11 @@ const reducer = (state = initialState, action) =>
       case UNLIKE_POST_SUCCESS: {
         draft.unlikePostLoading = false
         draft.unlikePostDone = true
-        const post = draft.postList.find((v) => v.id === action.data.PostId)
-        post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId)
+        //const post = draft.postList.find((v) => v.id === action.data.PostId)
+        //post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId)
+        draft.singlePost.Likers = draft.singlePost.Likers.filter(
+          (v) => v.id !== action.data.UserId,
+        )
         break
       }
       case UNLIKE_POST_FAILURE:
