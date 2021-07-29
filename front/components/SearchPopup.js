@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useDispatch } from "react-redux"
 
 import { Search, Close } from "@material-ui/icons"
 import styled from "styled-components"
@@ -32,9 +33,14 @@ const SearchBtn = styled.div`
 `
 
 const SearchPopup = ({ searchopen, onSearchClose }) => {
-  console.log(onSearchClose)
+  const dispatch = useDispatch()
   const { register, handleSubmit } = useForm()
-  const onSubmit = useCallback((data) => {}, [])
+  const onSubmit = useCallback((data) => {
+    dispatch({
+      type: REVIEW_SEARCH_REQUEST,
+      data: data.searchText,
+    })
+  }, [])
 
   return (
     <SearchBox searchopen={searchopen}>
@@ -42,7 +48,7 @@ const SearchPopup = ({ searchopen, onSearchClose }) => {
         <div>
           <Input
             placeholder="영화제목을 검색해주세요"
-            {...register("search")}
+            {...register("searchText")}
           />
           <SearchBtn>
             <button type="submit" onClick={onSubmit}>
