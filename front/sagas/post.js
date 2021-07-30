@@ -42,6 +42,9 @@ import {
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
   LOAD_POST_FAILURE,
+  REVIEW_SEARCH_REQUEST,
+  REVIEW_SEARCH_SUCCESS,
+  REVIEW_SEARCH_FAILURE,
 } from "../reducers/post"
 
 function addPostAPI(data) {
@@ -238,6 +241,26 @@ function* unlikePost(action) {
   }
 }
 
+function reviewSearchAPI(data) {
+  return axios.get(`/posts/search/${data}`)
+}
+function* reviewSearch(action) {
+  try {
+    const result = yield call(reviewSearchAPI, action.data)
+    //yield delay(1000)
+    yield put({
+      type: REVIEW_SEARCH_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: REVIEW_SEARCH_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost)
 }
@@ -268,6 +291,9 @@ function* watchLikePost() {
 function* watchUnlikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost)
 }
+function* watchReviewSearch() {
+  yield takeLatest(REVIEW_SEARCH_REQUEST, reviewSearch)
+}
 
 export default function* postSaga() {
   yield all([
@@ -280,6 +306,6 @@ export default function* postSaga() {
     fork(watchEditComment),
     fork(watchRemoveComment),
     fork(watchLikePost),
-    fork(watchUnlikePost),
+    fork(watchReviewSearch),
   ])
 }
