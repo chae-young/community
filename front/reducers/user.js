@@ -5,6 +5,9 @@ export const initialState = {
   loadUserLoading: false,
   loadUserDone: false,
   loadUserError: null,
+  userInfoLoading: false,
+  userInfoDone: false,
+  userInfoError: null,
   loginLoading: false,
   loginDone: false,
   loginError: null,
@@ -21,10 +24,15 @@ export const initialState = {
   profileEditDone: false,
   profileEditError: null,
   me: null,
+  userInfo: null,
 }
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST"
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS"
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE"
+
+export const USER_INFO_REQUEST = "USER_INFO_REQUEST"
+export const USER_INFO_SUCCESS = "USER_INFO_SUCCESS"
+export const USER_INFO_FAILURE = "USER_INFO_FAILURE"
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST"
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS"
@@ -79,6 +87,20 @@ const reducer = (state = initialState, action) =>
       case LOAD_USER_FAILURE:
         draft.loadUserLoading = false
         draft.loadUserError = action.error
+        break
+      case USER_INFO_REQUEST:
+        draft.userInfoLoading = true
+        draft.userInfoError = null
+        draft.userInfoDone = false
+        break
+      case USER_INFO_SUCCESS:
+        draft.userInfoLoading = false
+        draft.userInfo = action.data
+        draft.userInfoDone = true
+        break
+      case USER_INFO_FAILURE:
+        draft.userInfoLoading = false
+        draft.userInfoError = action.error
         break
       case LOG_IN_REQUEST:
         draft.loginLoading = true

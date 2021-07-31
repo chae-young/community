@@ -13,6 +13,9 @@ import {
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
   LOAD_USER_REQUEST,
+  USER_INFO_REQUEST,
+  USER_INFO_SUCCESS,
+  USER_INFO_FAILURE,
   PROFILE_EDIT_REQUEST,
   PROFILE_EDIT_SUCCESS,
   PROFILE_EDIT_FAILURE,
@@ -21,7 +24,6 @@ import {
 function loadUserAPI() {
   return axios.get("/user")
 }
-
 function* loadUser(action) {
   try {
     const result = yield call(loadUserAPI, action.data)
@@ -33,6 +35,25 @@ function* loadUser(action) {
     console.error(err)
     yield put({
       type: LOAD_USER_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function userInfoAPI() {
+  return axios.get(`/user/${data}`)
+}
+function* userInfo(action) {
+  try {
+    //const result = yield call(userInfoAPI, action.data)
+    yield put({
+      type: USER_INFO_SUCCESS,
+      data: action.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: USER_INFO_FAILURE,
       error: err.response.data,
     })
   }
@@ -120,6 +141,9 @@ function* profileEdit(action) {
 function* watchLoadUser() {
   yield takeLatest(LOAD_USER_REQUEST, loadUser)
 }
+function* watchUserInfo() {
+  yield takeLatest(USER_INFO_REQUEST, userInfo)
+}
 function* watchLogin() {
   yield takeLatest(LOG_IN_REQUEST, login)
 }
@@ -137,6 +161,7 @@ export default function* userSaga() {
     fork(watchLogin),
     fork(watchSignup),
     fork(watchLoadUser),
+    fork(watchUserInfo),
     fork(watchProfileImg),
     fork(watchProfileEdit),
   ])
