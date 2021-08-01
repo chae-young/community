@@ -242,7 +242,7 @@ function* unlikePost(action) {
 }
 
 function reviewSearchAPI(data) {
-  return axios.get(`/posts/search/${data}`)
+  return axios.get(encodeURI(`/posts/search/${data}`))
 }
 function* reviewSearch(action) {
   try {
@@ -306,6 +306,7 @@ export default function* postSaga() {
     fork(watchEditComment),
     fork(watchRemoveComment),
     fork(watchLikePost),
+    fork(watchUnlikePost),
     fork(watchReviewSearch),
   ])
 }

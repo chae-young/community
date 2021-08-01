@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 
-import { LOAD_POST_REQUEST } from "../reducers/post"
+import { LOAD_POSTS_REQUEST } from "../reducers/post"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 import PostListContent from "./PostListContent"
 
@@ -25,7 +25,7 @@ const PostList = () => {
   useEffect(() => {
     dispatch({ type: LOAD_USER_REQUEST })
     if (postCount === 0 || postCount === 10) {
-      dispatch({ type: LOAD_POST_REQUEST })
+      dispatch({ type: LOAD_POSTS_REQUEST })
     }
   }, [])
 
@@ -40,7 +40,7 @@ const PostList = () => {
         if (!flag && !loadPostLoading) {
           const lastId = postList[postList.length - 1].id
           dispatch({
-            type: LOAD_POST_REQUEST,
+            type: LOAD_POSTS_REQUEST,
             lastId,
           })
           setFlag(true)

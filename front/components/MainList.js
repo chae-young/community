@@ -11,19 +11,20 @@ import { NOW_SCREENING_MOVIE_REQUEST } from "../reducers/movie"
 
 SwiperCore.use([Navigation])
 const RateStar = styled.div``
+
 const PostList = () => {
   const dispatch = useDispatch()
   const { nowScreeningMovie, nowScreeningMovieDone } = useSelector(
     (state) => state.movie,
   )
 
-  useEffect(() => {
-    if (!nowScreeningMovie.length) {
-      dispatch({
-        type: NOW_SCREENING_MOVIE_REQUEST,
-      })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!nowScreeningMovie.length) {
+  //     dispatch({
+  //       type: NOW_SCREENING_MOVIE_REQUEST,
+  //     })
+  //   }
+  // }, [])
 
   const breakpoints = {
     320: {
@@ -42,6 +43,7 @@ const PostList = () => {
         slidesPerGroup={1}
         className="mySwiper"
         breakpoints={breakpoints}
+        style={{ margin: "100px 0 0 0" }}
       >
         {nowScreeningMovie.map((v) => (
           <SwiperSlide>

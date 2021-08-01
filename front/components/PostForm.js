@@ -61,9 +61,8 @@ export const theme = {
 
 const PostForm = () => {
   const dispatch = useDispatch()
-  const { movieSrhList } = useSelector((state) => state.movie)
   const { imagePath } = useSelector((state) => state.post)
-  const { register, errors, trigger, handleSubmit } = useForm()
+  const { register, trigger, handleSubmit } = useForm()
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   // 1이면 api 2이면 file

@@ -1,9 +1,11 @@
 import React, { useCallback, useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
+import { useRouter } from "next/router"
 
 import { Search, Close } from "@material-ui/icons"
 import styled from "styled-components"
+import { REVIEW_SEARCH_REQUEST } from "../reducers/post"
 
 const SearchBox = styled.div`
   width: ${(props) => (props.searchopen ? "20vw" : 0)};
@@ -34,20 +36,29 @@ const SearchBtn = styled.div`
 
 const SearchPopup = ({ searchopen, onSearchClose }) => {
   const dispatch = useDispatch()
-  const { register, handleSubmit } = useForm()
-  const onSubmit = useCallback((data) => {
-    dispatch({
-      type: REVIEW_SEARCH_REQUEST,
-      data: data.searchText,
+  const router = useRouter()
+  const { register, handleSubmit, watch } = useForm()
+  //const watchAllFields = watch()
+  const watchShowText = watch("searchText", false)
+  const onSubmit = (data) => {
+    //    console.log(data, watchShowText)
+    // dispatch({
+    //   type: REVIEW_SEARCH_REQUEST,
+    //   data: data.searchText,
+    // })
+    router.push({
+      pathname: `/search/${watchShowText}`,
+      //query: { word: data.searchText },
     })
-  }, [])
+    //Router.push("/search", `/search/${data.searchText}`)
+  }
 
   return (
     <SearchBox searchopen={searchopen}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Input
-            placeholder="영화제목을 검색해주세요"
+            placeholder="보고싶은 리뷰 영화제목을 검색해주세요"
             {...register("searchText")}
           />
           <SearchBtn>

@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 import Link from "next/link"
 
 import { Grid } from "@material-ui/core"
@@ -25,14 +26,8 @@ const PostListContent = ({ post, ...rest }) => {
   const { xs, sm } = rest
 
   return (
-    <Grid key={post.id} item xs={xs} sm={sm}>
-      <Link
-        href={{
-          pathname: `/view/${post.id}`,
-          //query: { id: post.id, post: JSON.stringify(v) },
-        }}
-        //as={`/view/${post.id}}`}
-      >
+    <Grid item xs={xs} sm={sm}>
+      <Link href={`/post/${post.id}`}>
         <a>
           <ListPoster>
             <img
@@ -50,7 +45,7 @@ const PostListContent = ({ post, ...rest }) => {
             <Rating
               name="read-only"
               precision={0.5}
-              value={post.rating}
+              value={parseInt(post.rating, 10)}
               readOnly
             />
             {post.rating}
@@ -59,6 +54,14 @@ const PostListContent = ({ post, ...rest }) => {
       </Link>
     </Grid>
   )
+}
+
+PostListContent.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    rating: PropTypes.string,
+  }).isRequired,
 }
 
 export default PostListContent
