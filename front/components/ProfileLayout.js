@@ -16,29 +16,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ProfileLayout = ({ children }) => {
-  const { me } = useSelector((state) => state.user)
+const ProfileLayout = ({ children, userInfo = null }) => {
   const classes = useStyles()
+  const { me } = useSelector((state) => state.user)
 
   return (
     <Layout>
-      <h2>{}님 프로필</h2>
-      <Link href="/profile/edit">
-        <a>
-          <Avatar
-            alt={me.nickname}
-            src={`http://localhost:3063/profile/${me.src}`}
-            className={classes.size}
-          />
-        </a>
-      </Link>
+      <h2>{userInfo.nickname}님 프로필</h2>
+      {me ? (
+        <Link href="/profile/edit">
+          <a>
+            <Avatar
+              alt={userInfo.nickname}
+              src={userInfo && `http://localhost:3063/${userInfo.src}`}
+              className={classes.size}
+            />
+          </a>
+        </Link>
+      ) : (
+        <Avatar
+          alt={userInfo.nickname}
+          src={userInfo && `http://localhost:3063/${userInfo.src}`}
+          className={classes.size}
+        />
+      )}
+      <ul>
+        <li>
+          <Link href={`/users/${userInfo.id}/contents/posts`}>
+            <a>게시글 {userInfo.Posts}</a>
+          </Link>
+        </li>
+        <li>팔로워 {userInfo.Followers}</li>
+        <li>팔로잉 {userInfo.Followings}</li>
+      </ul>
       {children}
     </Layout>
   )
 }
 
+ProfileLayout.defaultProps = {
+  userInfo: null,
+}
+
 ProfileLayout.propTypes = {
   children: PropTypes.node.isRequired,
+  userInfo: PropTypes.shape({
+    nickname: PropTypes.string,
+  }),
 }
 
 export default ProfileLayout

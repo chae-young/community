@@ -45,6 +45,7 @@ import {
   REVIEW_SEARCH_REQUEST,
   REVIEW_SEARCH_SUCCESS,
   REVIEW_SEARCH_FAILURE,
+  USER_POSTS_REQUEST,
 } from "../reducers/post"
 
 function addPostAPI(data) {
@@ -120,6 +121,25 @@ function* loadPost(action) {
     console.error(err)
     yield put({
       type: LOAD_POST_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function userPostsAPI(data, lastId) {
+  return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`)
+}
+function* userPosts(action) {
+  try {
+    const result = yield call(userPostsAPI, action.data, action.lastId)
+    yield put({
+      type: LOAD_POSTS_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: LOAD_POSTS_FAILURE,
       error: err.response.data,
     })
   }
@@ -273,6 +293,9 @@ function* watchLoadPosts() {
 function* watchLoadPost() {
   yield throttle(3000, LOAD_POST_REQUEST, loadPost)
 }
+function* watchUserPosts() {
+  yield throttle(3000, USER_POSTS_REQUEST, userPosts)
+}
 function* watchPopularPosts() {
   yield throttle(3000, POPULAR_POSTS_REQUEST, popularPosts)
 }
@@ -301,6 +324,7 @@ export default function* postSaga() {
     fork(watchImageUpload),
     fork(watchLoadPosts),
     fork(watchLoadPost),
+    fork(watchUserPosts),
     fork(watchPopularPosts),
     fork(watchAddComment),
     fork(watchEditComment),

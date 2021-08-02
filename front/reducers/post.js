@@ -102,6 +102,10 @@ export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST"
 export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS"
 export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE"
 
+export const USER_POSTS_REQUEST = "USER_POSTS_REQUEST"
+export const USER_POSTS_SUCCESS = "USER_POSTS_SUCCESS"
+export const USER_POSTS_FAILURE = "USER_POSTS_FAILURE"
+
 export const POPULAR_POSTS_REQUEST = "POPULAR_POSTS_REQUEST"
 export const POPULAR_POSTS_SUCCESS = "POPULAR_POSTS_SUCCESS"
 export const POPULAR_POSTS_FAILURE = "POPULAR_POSTS_FAILURE"
@@ -164,10 +168,12 @@ const reducer = (state = initialState, action) =>
         draft.imagePath = action.data
         break
       case LOAD_POSTS_REQUEST:
+      case USER_POSTS_REQUEST:
         draft.loadPostsLoading = true
         draft.loadPostsDone = false
         break
-      case LOAD_POSTS_SUCCESS: {
+      case LOAD_POSTS_SUCCESS:
+      case USER_POSTS_SUCCESS: {
         draft.loadPostsLoading = false
         const posts = [...action.data, ...draft.postList]
         draft.postList = posts
@@ -176,6 +182,7 @@ const reducer = (state = initialState, action) =>
         break
       }
       case LOAD_POSTS_FAILURE:
+      case USER_POSTS_FAILURE:
         draft.loadPostsDone = false
         draft.loadPostsError = action.error
         break
@@ -189,6 +196,19 @@ const reducer = (state = initialState, action) =>
         draft.loadPostDone = true
         break
       case LOAD_POST_FAILURE:
+        draft.loadPostDone = false
+        draft.loadPostError = action.error
+        break
+      case USER_POSTS_REQUEST:
+        draft.loadPostLoading = true
+        draft.loadPostDone = false
+        break
+      case USER_POSTS_SUCCESS:
+        draft.loadPostLoading = false
+        //draft.singlePost = action.data
+        draft.loadPostDone = true
+        break
+      case USER_POSTS_FAILURE:
         draft.loadPostDone = false
         draft.loadPostError = action.error
         break

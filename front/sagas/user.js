@@ -40,15 +40,15 @@ function* loadUser(action) {
   }
 }
 
-function userInfoAPI() {
+function userInfoAPI(data) {
   return axios.get(`/user/${data}`)
 }
 function* userInfo(action) {
   try {
-    //const result = yield call(userInfoAPI, action.data)
+    const result = yield call(userInfoAPI, action.data)
     yield put({
       type: USER_INFO_SUCCESS,
-      data: action.data,
+      data: result.data,
     })
   } catch (err) {
     console.error(err)
