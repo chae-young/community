@@ -19,6 +19,12 @@ import {
   PROFILE_EDIT_REQUEST,
   PROFILE_EDIT_SUCCESS,
   PROFILE_EDIT_FAILURE,
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAILURE,
+  FOLLOWING_REQUEST,
+  FOLLOWING_SUCCESS,
+  FOLLOWING_FAILURE,
 } from "../reducers/user"
 
 function loadUserAPI() {
@@ -138,6 +144,46 @@ function* profileEdit(action) {
   }
 }
 
+function followAPI(data) {
+  return axios.patch(`/user/${data}follow`)
+}
+function* follow(action) {
+  try {
+    const result = yield call(followAPI, action.data)
+
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: FOLLOW_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function followingAPI(data) {
+  return axios.delete(`/user/${data}following`)
+}
+function* following(action) {
+  try {
+    const result = yield call(followingAPI, action.data)
+
+    yield put({
+      type: FOLLOWING_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: FOLLOWING_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function* watchLoadUser() {
   yield takeLatest(LOAD_USER_REQUEST, loadUser)
 }
@@ -156,6 +202,12 @@ function* watchProfileImg() {
 function* watchProfileEdit() {
   yield takeLatest(PROFILE_EDIT_REQUEST, profileEdit)
 }
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow)
+}
+function* watchFollowing() {
+  yield takeLatest(FOLLOWING_REQUEST, following)
+}
 export default function* userSaga() {
   yield all([
     fork(watchLogin),
@@ -164,5 +216,7 @@ export default function* userSaga() {
     fork(watchUserInfo),
     fork(watchProfileImg),
     fork(watchProfileEdit),
+    fork(watchFollow),
+    fork(watchFollowing),
   ])
 }

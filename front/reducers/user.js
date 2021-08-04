@@ -54,6 +54,14 @@ export const PROFILE_EDIT_REQUEST = "PROFILE_EDIT_REQUEST"
 export const PROFILE_EDIT_SUCCESS = "PROFILE_EDIT_SUCCESS"
 export const PROFILE_EDIT_FAILURE = "PROFILE_EDIT_FAILURE"
 
+export const FOLLOW_REQUEST = "FOLLOW_REQUEST"
+export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS"
+export const FOLLOW_FAILURE = "FOLLOW_FAILURE"
+
+export const FOLLOWING_REQUEST = "FOLLOWING_REQUEST"
+export const FOLLOWING_SUCCESS = "FOLLOWING_SUCCESS"
+export const FOLLOWING_FAILURE = "FOLLOWING_FAILURE"
+
 export const LoginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
   ...data,
@@ -170,6 +178,36 @@ const reducer = (state = initialState, action) =>
       case PROFILE_EDIT_FAILURE:
         draft.profileEditLoading = false
         draft.profileEditError = action.error
+        break
+      case FOLLOW_REQUEST:
+        draft.followLoading = true
+        draft.followDone = false
+        draft.followError = null
+        break
+      case FOLLOW_SUCCESS:
+        draft.followLoading = false
+        draft.me.Followings.unshift({ id: action.data.UserId })
+        draft.followDone = true
+        break
+      case FOLLOW_FAILURE:
+        draft.followLoading = false
+        draft.followError = action.error
+        break
+      case FOLLOWING_REQUEST:
+        draft.followingLoading = true
+        draft.followingDone = false
+        draft.followingError = null
+        break
+      case FOLLOWING_SUCCESS:
+        draft.followingLoading = false
+        draft.me.Followings = draft.me.Followings.filter(
+          (v) => v.id !== action.data.UserId,
+        )
+        draft.followingDone = true
+        break
+      case FOLLOWING_FAILURE:
+        draft.followingLoading = false
+        draft.followingError = action.error
         break
       default:
         break
