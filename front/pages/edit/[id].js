@@ -1,6 +1,8 @@
 import React, { useCallback, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
+import { END } from "redux-saga"
+import axios from "axios"
 
 import { Avatar, TextField, Button } from "@material-ui/core"
 
@@ -9,12 +11,14 @@ import {
   LOAD_USER_REQUEST,
   PROFILE_EDIT_REQUEST,
   PROFILE_IMG_REQUEST,
+  USER_INFO_REQUEST,
 } from "../../reducers/user"
+import wrapper from "../../store/configureStore"
 
 const edit = () => {
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch()
-  const { me } = useSelector((state) => state.user)
+  const { me, userInfo } = useSelector((state) => state.user)
 
   const inputFile = useRef(null)
   const onFileUpload = () => {
@@ -26,8 +30,8 @@ const edit = () => {
   const onSubmit = (data) => {
     const editFormData = new FormData()
     editFormData.append("nickname", data.nickname)
-    editFormData.append("image", me.Image)
-
+    editFormData.append("image", me.src)
+    console.log(data.nickname, me.Image)
     dispatch({
       type: PROFILE_EDIT_REQUEST,
       data: editFormData,
@@ -44,7 +48,7 @@ const edit = () => {
   }, [])
 
   return (
-    <ProfileLayout>
+    <ProfileLayout userInfo={userInfo}>
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <button type="button" onClick={onFileUpload}>
           <Avatar
@@ -74,4 +78,25 @@ const edit = () => {
     </ProfileLayout>
   )
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : ""
+    axios.defaults.headers.Cookie = ""
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie
+    }
+    context.store.dispatch({
+      type: LOAD_USER_REQUEST,
+    })
+    context.store.dispatch({
+      type: USER_INFO_REQUEST,
+      data: context.params.id,
+    })
+    context.store.dispatch(END)
+    await context.store.sagaTask.toPromise()
+    return { props: {} }
+  },
+)
+
 export default edit
