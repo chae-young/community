@@ -145,8 +145,8 @@ function* userPosts(action) {
   }
 }
 
-function popularPostsAPI() {
-  return axios.get("/posts/popular")
+function popularPostsAPI(data) {
+  return axios.get(`/posts/popular?limit=${data}`)
 }
 function* popularPosts(action) {
   try {

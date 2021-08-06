@@ -1,5 +1,13 @@
 import axios from "axios"
-import { all, call, delay, fork, put, takeLatest } from "redux-saga/effects"
+import {
+  all,
+  call,
+  delay,
+  throttle,
+  fork,
+  put,
+  takeLatest,
+} from "redux-saga/effects"
 import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -25,6 +33,13 @@ import {
   FOLLOWING_REQUEST,
   FOLLOWING_SUCCESS,
   FOLLOWING_FAILURE,
+  LOG_OUT_SUCCESS,
+  LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
+  FOLLOW_LIST_REQUEST,
+  FOLLOW_LIST_SUCCESS,
+  FOLLOW_LIST_FAILURE,
+  dummyFollow,
 } from "../reducers/user"
 
 function loadUserAPI() {
@@ -84,16 +99,34 @@ function* login(action) {
   }
 }
 
+function logOutAPI() {
+  return axios.post("/user/logout")
+}
+
+function* logOut() {
+  try {
+    yield call(logOutAPI)
+    yield put({
+      type: LOG_OUT_SUCCESS,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: LOG_OUT_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function signUpAPI(data) {
-  //return axios.post("/user", data)
+  return axios.post("/user", data)
 }
 function* signUp(action) {
   try {
-    const result = yield call(signUpAPI, action.data)
-    //yield delay(1000)
+    yield call(signUpAPI, action.data)
     yield put({
       type: SIGN_UP_SUCCESS,
-      //data: action.data,
+      //data: result.data,
     })
   } catch (err) {
     console.error(err)
@@ -145,7 +178,7 @@ function* profileEdit(action) {
 }
 
 function followAPI(data) {
-  return axios.patch(`/user/${data}follow`)
+  return axios.patch(`/user/${data}/follow`)
 }
 function* follow(action) {
   try {
@@ -165,7 +198,7 @@ function* follow(action) {
 }
 
 function followingAPI(data) {
-  return axios.delete(`/user/${data}following`)
+  return axios.delete(`/user/${data}/follow`)
 }
 function* following(action) {
   try {
@@ -184,6 +217,26 @@ function* following(action) {
   }
 }
 
+function followListAPI(data) {
+  return axios.get(`/user/${data.userId}/${data.name}?limit=${data.limit}`)
+}
+function* followList(action) {
+  try {
+    const result = yield call(followListAPI, action.data)
+    yield delay(1000)
+    yield put({
+      type: FOLLOW_LIST_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: FOLLOW_LIST_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function* watchLoadUser() {
   yield takeLatest(LOAD_USER_REQUEST, loadUser)
 }
@@ -192,6 +245,9 @@ function* watchUserInfo() {
 }
 function* watchLogin() {
   yield takeLatest(LOG_IN_REQUEST, login)
+}
+function* watchLogOut() {
+  yield takeLatest(LOG_OUT_REQUEST, logOut)
 }
 function* watchSignup() {
   yield takeLatest(SIGN_UP_REQUEST, signUp)
@@ -208,9 +264,13 @@ function* watchFollow() {
 function* watchFollowing() {
   yield takeLatest(FOLLOWING_REQUEST, following)
 }
+function* watchFollowList() {
+  yield throttle(3000, FOLLOW_LIST_REQUEST, followList)
+}
 export default function* userSaga() {
   yield all([
     fork(watchLogin),
+    fork(watchLogOut),
     fork(watchSignup),
     fork(watchLoadUser),
     fork(watchUserInfo),
@@ -218,5 +278,6 @@ export default function* userSaga() {
     fork(watchProfileEdit),
     fork(watchFollow),
     fork(watchFollowing),
+    fork(watchFollowList),
   ])
 }
