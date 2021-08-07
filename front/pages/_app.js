@@ -4,6 +4,7 @@ import Head from "next/head"
 
 import { ThemeProvider } from "@material-ui/core/styles"
 
+import "../styles/swiper.css"
 import GlobalStyle from "../styles/GlobalStyle"
 import wrapper from "../store/configureStore"
 
@@ -18,8 +19,8 @@ const App = ({ Component }) => {
   return (
     <>
       <Head>
-        <meta charSet="utf-8" />
-        <title>?? COMMUNITY</title>
+        <title>moviefeeds</title>
+        <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <ThemeProvider>
         <GlobalStyle />
