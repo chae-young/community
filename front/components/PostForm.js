@@ -5,66 +5,85 @@ import { useDispatch, useSelector } from "react-redux"
 import Router from "next/router"
 
 import Rating from "@material-ui/lab/Rating"
-import Container from "@material-ui/core/Container"
+import { makeStyles } from "@material-ui/core/styles"
+import { Container, Grid } from "@material-ui/core"
 import { Attachment } from "@material-ui/icons"
-import styled, { ThemeProvider } from "styled-components"
+import styled from "styled-components"
 
 import { ADD_POST_REQUEST, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
 import MovieSrhModal from "./MovieSrhModal"
 import basicPoster from "../images/noimage.png"
+import { InputStyle, StyledRating, ButtonStyle } from "../styles/style"
 
-const PostFormHead = styled.div`
-  display: flex;
-  padding: 2rem 0;
-`
+const useStyles = makeStyles((theme) => ({
+  imgBox: {
+    padding: "2rem",
+    borderRight: "1px solid rgb(0,0,0)",
+  },
+  textBox: {
+    padding: "6rem",
+  },
+  iconStyle: {
+    padding: "0 0.5rem",
+  },
+}))
+
 const PostFormImg = styled.div`
-  flex: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const PostFormImgBtn = styled.div`
   display: flex;
+  width: 100%;
+  margin-top: 2rem;
+
   & button {
     flex: 1;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+    font-weigth: bold;
   }
 `
-const PostFormTit = styled.div`
-  flex: 7;
-  padding: 0 2rem;
-`
+const PostFormTit = styled.div``
 const PostFormInput = styled.input`
   width: 100%;
   height: 40px;
   margin-bottom: 15px;
-  border: ${(props) => props.theme.border};
+  ${InputStyle}
 `
 const PostTextArea = styled.textarea`
   width: 100%;
-  height: 200px;
+  height: 50vh;
+  margin-top: 2rem;
   padding: 2rem;
+  overflow-y: auto;
+  background: none;
+  border: 1px solid rgb(0, 0, 0);
   box-sizing: border-box;
   resize: none;
-  border: ${(props) => props.theme.border};
 `
 const Button = styled.button`
   display: block;
-  width: 150px;
-  height: 40px;
-  line-height: 40px;
+  width: 100%;
+  height: 65px;
+  line-height: 65px;
   margin: 2em auto 0;
   text-align: center;
-  border: ${(props) => props.theme.border};
+  ${ButtonStyle}
+
+  &:hover {
+    background: rgb(0, 0, 0);
+  }
 `
-export const theme = {
-  border: "1px solid #d7d7d7",
-}
 
 const PostForm = () => {
   const dispatch = useDispatch()
+  const classes = useStyles()
   const { imagePath } = useSelector((state) => state.post)
   const { register, trigger, handleSubmit } = useForm()
 
-  const [selectedIndex, setSelectedIndex] = useState(0)
   // 1이면 api 2이면 file
   const [selectedCheck, setSelectedCheck] = useState(null)
 
@@ -121,51 +140,49 @@ const PostForm = () => {
       default:
         return basicPoster
     }
-  }, [selectedCheck])
+  }, [selectedCheck, imagePath])
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="sm">
-        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-          <PostFormHead>
-            <PostFormImg>
-              <div>
-                <img src={imgSrc()} width="100%" />
-              </div>
-              <PostFormImgBtn>
-                <MovieSrhModal
-                  setSelectedIndex={setSelectedIndex}
-                  setSelectedCheck={setSelectedCheck}
-                />
-                <input
-                  type="file"
-                  ref={inputFile}
-                  style={{ display: "none" }}
-                  onChange={onChangeImage}
-                  onClick={onClickImage}
-                />
-                <button type="button" onClick={onFileUpload}>
-                  내 이미지 <Attachment font-size="small" />
-                </button>
-              </PostFormImgBtn>
-            </PostFormImg>
-            <PostFormTit>
-              <PostFormInput
-                {...register("title", {
-                  required: true,
-                })}
-                placeholder="영화제목을 입력해주세요."
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <Grid container>
+        <Grid item xs={12} sm={6} className={classes.imgBox}>
+          <PostFormImg>
+            <div>
+              <img src={imgSrc()} style={{ maxWidth: "100%" }} />
+            </div>
+            <PostFormImgBtn>
+              <MovieSrhModal setSelectedCheck={setSelectedCheck} />
+              <input
+                type="file"
+                ref={inputFile}
+                style={{ display: "none" }}
+                onChange={onChangeImage}
+                onClick={onClickImage}
               />
-              <Rating
-                value={rating}
-                precision={0.5}
-                size="large"
-                onChange={(_event, newValue) => {
-                  setRating(newValue)
-                }}
-              />
-            </PostFormTit>
-          </PostFormHead>
+              <button type="button" onClick={onFileUpload}>
+                내 이미지
+                <Attachment font-size="small" className={classes.iconStyle} />
+              </button>
+            </PostFormImgBtn>
+          </PostFormImg>
+        </Grid>
+        <Grid item xs={12} sm={6} className={classes.textBox}>
+          <PostFormTit>
+            <PostFormInput
+              {...register("title", {
+                required: true,
+              })}
+              placeholder="영화제목을 입력해주세요."
+            />
+            <StyledRating
+              value={rating}
+              precision={0.5}
+              size="large"
+              onChange={(_event, newValue) => {
+                setRating(newValue)
+              }}
+            />
+          </PostFormTit>
           <PostTextArea
             {...register("content", {
               required: true,
@@ -188,15 +205,16 @@ const PostForm = () => {
           >
             등록
           </Button>
-        </form>
-      </Container>
-    </ThemeProvider>
+        </Grid>
+      </Grid>
+    </form>
   )
 }
 
 export default PostForm
 
-// import React, { useCallback, useState} from 'react';
+{
+  /* // import React, { useCallback, useState} from 'react';
 // import TextField from '@material-ui/core/TextField';
 // import Link from 'next/link';
 // import dynamic from 'next/dynamic';
@@ -206,10 +224,14 @@ export default PostForm
 
 // const SunEditor = dynamic(() => import('suneditor-react'), {
 //   ssr: false,
-// });
-
-// const PostForm = () => {
-//   const dispatch = useDispatch();
+// }); */
+}
+{
+  /* 
+// const PostForm = () => { */
+}
+{
+  /* //   const dispatch = useDispatch();
 
 //   const [boardTitle, setBoardTitle] = useState('');
 //   const [boardText, setBoardText] = useState('');
@@ -258,4 +280,5 @@ export default PostForm
 //   );
 // };
 
-// export default PostForm;
+// export default PostForm; */
+}

@@ -1,4 +1,6 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
+import { withStyles } from "@material-ui/core/styles"
+import Rating from "@material-ui/lab/Rating"
 
 const size = {
   mobileS: "320px",
@@ -8,11 +10,35 @@ const size = {
   desktop: "2560px",
 }
 
+export const pointColor = {
+  purple: "rgb(173 134 196)",
+  border: "1px solid rgb(0, 0, 0)",
+}
 export const device = {
   mobile: `(min-width: ${size.mobileS} and max-width: ${size.tablt})`,
   tablet: `(min-width: ${size.tablet})`,
   desktop: `(min-width: ${size.desktop})`,
 }
+
+export const InputStyle = css`
+  padding: 0;
+  background: none;
+  border: 0;
+  border-bottom: ${pointColor.border};
+`
+export const ButtonStyle = css`
+  border: ${pointColor.border};
+  background: ${pointColor.purple};
+  color: rgb(255, 255, 255);
+`
+export const StyledRating = withStyles({
+  iconFilled: {
+    color: "rgb(252,145,72)",
+  },
+  iconHover: {
+    color: "rgb(252,145,72)",
+  },
+})(Rating)
 
 export const CloseBtn = styled.button`
   position: absolute;

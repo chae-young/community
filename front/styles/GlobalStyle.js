@@ -8,6 +8,9 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
         font-size:10px;
     };
+    body{
+        background:#f5f0e4;        
+    }
     button{
         display: flex;
         cursor: pointer;
