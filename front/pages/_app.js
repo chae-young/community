@@ -2,11 +2,17 @@ import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 import Head from "next/head"
 
-import { ThemeProvider } from "@material-ui/core/styles"
+import styled, { ThemeProvider } from "styled-components"
+import {
+  StylesProvider,
+  ThemeProvider as MuiThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core"
 
 import "../styles/swiper.css"
 import GlobalStyle from "../styles/GlobalStyle"
 import wrapper from "../store/configureStore"
+import theme from "../styles/theme"
 
 const App = ({ Component }) => {
   useEffect(() => {
@@ -16,16 +22,23 @@ const App = ({ Component }) => {
     }
   }, [])
 
+  const myTheme = createMuiTheme()
+
   return (
     <>
       <Head>
         <title>moviefeeds</title>
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
-      <ThemeProvider>
-        <GlobalStyle />
-        <Component />
-      </ThemeProvider>
+
+      <StylesProvider injectFirst>
+        <MuiThemeProvider theme={myTheme}>
+          <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <Component />
+          </ThemeProvider>
+        </MuiThemeProvider>
+      </StylesProvider>
     </>
   )
 }

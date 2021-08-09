@@ -4,18 +4,17 @@ import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import Router from "next/router"
 
-import Rating from "@material-ui/lab/Rating"
 import { makeStyles } from "@material-ui/core/styles"
-import { Container, Grid } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import { Attachment } from "@material-ui/icons"
 import styled from "styled-components"
 
 import { ADD_POST_REQUEST, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
 import MovieSrhModal from "./MovieSrhModal"
 import basicPoster from "../images/noimage.png"
-import { InputStyle, StyledRating, ButtonStyle } from "../styles/style"
+import { FormInput, StyledRating, ButtonStyle } from "../styles/style"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   imgBox: {
     padding: "2rem",
     borderRight: "1px solid rgb(0,0,0)",
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   iconStyle: {
     padding: "0 0.5rem",
   },
-}))
+})
 
 const PostFormImg = styled.div`
   display: flex;
@@ -47,12 +46,7 @@ const PostFormImgBtn = styled.div`
   }
 `
 const PostFormTit = styled.div``
-const PostFormInput = styled.input`
-  width: 100%;
-  height: 40px;
-  margin-bottom: 15px;
-  ${InputStyle}
-`
+
 const PostTextArea = styled.textarea`
   width: 100%;
   height: 50vh;
@@ -168,7 +162,7 @@ const PostForm = () => {
         </Grid>
         <Grid item xs={12} sm={6} className={classes.textBox}>
           <PostFormTit>
-            <PostFormInput
+            <FormInput
               {...register("title", {
                 required: true,
               })}

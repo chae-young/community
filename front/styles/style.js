@@ -1,35 +1,33 @@
 import styled, { css } from "styled-components"
 import { withStyles } from "@material-ui/core/styles"
 import Rating from "@material-ui/lab/Rating"
-
-const size = {
-  mobileS: "320px",
-  mobileM: "375px",
-  mobileL: "425px",
-  tablet: "768px",
-  desktop: "2560px",
-}
-
-export const pointColor = {
-  purple: "rgb(173 134 196)",
-  border: "1px solid rgb(0, 0, 0)",
-}
-export const device = {
-  mobile: `(min-width: ${size.mobileS} and max-width: ${size.tablt})`,
-  tablet: `(min-width: ${size.tablet})`,
-  desktop: `(min-width: ${size.desktop})`,
-}
+import theme from "./theme"
 
 export const InputStyle = css`
   padding: 0;
   background: none;
   border: 0;
-  border-bottom: ${pointColor.border};
+  border-bottom: ${theme.pointColor.border};
 `
 export const ButtonStyle = css`
-  border: ${pointColor.border};
-  background: ${pointColor.purple};
+  border: ${theme.pointColor.border};
+  background: ${theme.pointColor.purple};
   color: rgb(255, 255, 255);
+`
+export const ListPoster = styled.div`
+  width: 100%;
+  padding: 0 0 20px 0;
+  height: ${(props) => props.heightVal};
+  box-sizing: border-box;
+  overflow: hidden;
+  & img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: auto;
+  }
 `
 export const StyledRating = withStyles({
   iconFilled: {
@@ -40,16 +38,26 @@ export const StyledRating = withStyles({
   },
 })(Rating)
 
+export const FormInput = styled.input`
+  width: 100%;
+  height: 40px;
+  margin-bottom: 15px;
+  ${InputStyle}
+`
+
 export const CloseBtn = styled.button`
   position: absolute;
   right: 0;
   top: 0;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
 `
 
 export const HeaderUtillMenu = styled.ul`
-  position: absolute;
-  right: 0;
-  top: 0;
+  float: right;
   display: flex;
 `
 export const Aside = styled.aside`
