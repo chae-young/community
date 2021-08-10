@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react"
+import PropTypes from "prop-types"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { useRouter } from "next/router"
@@ -8,19 +9,29 @@ import styled from "styled-components"
 import { REVIEW_SEARCH_REQUEST } from "../reducers/post"
 
 const SearchBox = styled.div`
-  width: ${(props) => (props.searchopen ? "20vw" : 0)};
-  position: absolute;
+  width: 100%;
+  position: fixed;
   right: 0;
   top: 0;
-  transition: all 0.5s ease;
+  z-index: 11;
+  transform: ${(props) =>
+    props.searchopen ? "translateY(0)" : "translateY(-100%)"};
   visibility: ${(props) => (props.searchopen ? "visible" : "hidden")};
+  background: rgb(0, 0, 0);
+
+  & .inner {
+    position: relative;
+    height: 65px;
+    margin: 0 20px;
+  }
 `
 const Input = styled.input`
   width: 100%;
-  padding: 10px 20px;
+  height: 100%;
+  border: 0;
   background: #000;
   color: #fff;
-
+  box-sizing: border-box;
   &::placeholder {
     color: #fff;
   }
@@ -56,17 +67,18 @@ const SearchPopup = ({ searchopen, onSearchClose }) => {
   return (
     <SearchBox searchopen={searchopen}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div className="inner">
           <Input
             placeholder="보고싶은 리뷰 영화제목을 검색해주세요"
             {...register("searchText")}
+            autoFocus
           />
           <SearchBtn>
             <button type="submit" onClick={onSubmit}>
-              <Search style={{ color: "#fff" }} />
+              <Search style={{ color: "#fff" }} fontSize="large" />
             </button>
             <button type="button" onClick={onSearchClose}>
-              <Close style={{ color: "#fff" }} />
+              <Close style={{ color: "#fff" }} fontSize="large" />
             </button>
           </SearchBtn>
         </div>
@@ -74,5 +86,8 @@ const SearchPopup = ({ searchopen, onSearchClose }) => {
     </SearchBox>
   )
 }
-
+SearchPopup.propTypes = {
+  searchopen: PropTypes.bool.isRequired,
+  onSearchClose: PropTypes.func.isRequired,
+}
 export default SearchPopup

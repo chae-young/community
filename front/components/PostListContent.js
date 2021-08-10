@@ -2,37 +2,32 @@ import React from "react"
 import PropTypes from "prop-types"
 import Link from "next/link"
 
+import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
-import { Rating } from "@material-ui/lab"
 
-import styled from "styled-components"
+import { ListPoster, StyledRating, Ratebox, ListContent } from "../styles/style"
 
-const ListPoster = styled.div`
-  width: 100%;
-  height: 25em;
-  overflow: hidden;
-  & img {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 100%;
-    width: auto;
-  }
-`
-const ListContent = styled.div``
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(6, 5),
+    [theme.breakpoints.down("xs")]: {
+      padding: theme.spacing(5, 2),
+    },
+  },
+}))
 
 const PostListContent = ({ post, ...rest }) => {
   const { xs, sm } = rest
+  const classes = useStyles()
 
   return (
-    <Grid item xs={xs} sm={sm}>
+    <Grid item xs={xs} sm={sm} className={classes.root}>
       <Link href={`/post/${post.id}`}>
         <a>
-          <ListPoster>
+          <ListPoster heightVal="25em">
             <img
               src={
-                post.Images[0].src.includes("https://")
+                post.Images[0].src.includes("http")
                   ? post.Images[0].src
                   : `http://localhost:3063/${post.Images[0].src}`
               }
@@ -42,13 +37,10 @@ const PostListContent = ({ post, ...rest }) => {
           </ListPoster>
           <ListContent>
             <p>{post.title}</p>
-            <Rating
-              name="read-only"
-              precision={0.5}
-              value={parseInt(post.rating, 10)}
-              readOnly
-            />
-            {post.rating}
+            <Ratebox>
+              <StyledRating precision={0.1} value={post.rating} readOnly />
+              <span>{post.rating.substring(0, 3)}</span>
+            </Ratebox>
           </ListContent>
         </a>
       </Link>
@@ -61,6 +53,7 @@ PostListContent.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
     rating: PropTypes.string,
+    Images: PropTypes.array,
   }).isRequired,
 }
 

@@ -41,7 +41,7 @@ const MypopOver = ({ options }) => {
             />
           </div>
           <PopoverInfo>
-            <Link href="/profile">
+            <Link href="/users/[id]" as={`/users/${me.id}`}>
               <a className="profile-nick">{me.nickname}</a>
             </Link>
             <Link href="/write">

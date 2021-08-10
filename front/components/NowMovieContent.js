@@ -1,10 +1,8 @@
 import React from "react"
+import PropTypes from "prop-types"
 
-import Rating from "@material-ui/lab/Rating"
+import { StyledRating, Ratebox, ListContent } from "../styles/style"
 
-import styled from "styled-components"
-
-const RateStar = styled.div``
 const NowMovieContent = ({ post }) => {
   return (
     <>
@@ -13,22 +11,28 @@ const NowMovieContent = ({ post }) => {
         target="_balnk"
         rel="noopener noreferrer"
       >
-        <figure>
-          <img src={post.img} alt={post.title} />
-          <figcaption>{post.title}</figcaption>
-        </figure>
-        <RateStar>
-          <Rating
-            value={post.star && Number(post.star.substring(0, 4)) / 2}
-            precision={0.1}
-            size="large"
-            readOnly
-          />
-          <span>{post.star && Number(post.star.substring(0, 4))}</span>
-        </RateStar>
+        <img src={post.img} alt={post.title} width="100%" />
+        <ListContent>
+          <p>{post.title}</p>
+          <Ratebox>
+            <StyledRating
+              value={post.star && Number(post.star.substring(0, 4)) / 2}
+              precision={0.1}
+              size="large"
+              readOnly
+            />
+            <span>{post.star && Number(post.star.substring(0, 4))}</span>
+          </Ratebox>
+        </ListContent>
       </a>
     </>
   )
 }
-
+NowMovieContent.propTypes = {
+  post: PropTypes.shape({
+    title: PropTypes.string,
+    star: PropTypes.string,
+    img: PropTypes.string,
+  }).isRequired,
+}
 export default NowMovieContent

@@ -10,13 +10,14 @@ const PopularList = () => {
   const dispatch = useDispatch()
   const { popularPosts } = useSelector((state) => state.post)
 
-  useEffect(() => {
-    if (!popularPosts.length) {
-      dispatch({
-        type: POPULAR_POSTS_REQUEST,
-      })
-    }
-  }, [popularPosts])
+  // useEffect(() => {
+  //   if (!popularPosts.length) {
+  //     dispatch({
+  //       type: POPULAR_POSTS_REQUEST,
+  //       data: 3,
+  //     })
+  //   }
+  // }, [popularPosts])
   return (
     <>
       {popularPosts.map((v) => (

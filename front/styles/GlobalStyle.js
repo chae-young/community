@@ -26,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
     }
     a{
         text-decoration:none;
+        color:rgb(0,0,0);
     }
 `
 export default GlobalStyle

@@ -16,7 +16,6 @@ export const ButtonStyle = css`
 `
 export const ListPoster = styled.div`
   width: 100%;
-  padding: 0 0 20px 0;
   height: ${(props) => props.heightVal};
   box-sizing: border-box;
   overflow: hidden;
@@ -27,6 +26,21 @@ export const ListPoster = styled.div`
     transform: translate(-50%, -50%);
     height: 100%;
     width: auto;
+  }
+`
+export const ListContent = styled.div`
+  padding: 20px 0 0;
+  font-size: 1.2rem;
+  color: rgb(0, 0, 0);
+  > p {
+    margin-bottom: 0.5em;
+  }
+`
+export const Ratebox = styled.div`
+  display: flex;
+  > span {
+    align-self: flex-end;
+    padding-right: 0.3em;
   }
 `
 export const StyledRating = withStyles({
@@ -59,21 +73,14 @@ export const CloseBtn = styled.button`
 export const HeaderUtillMenu = styled.ul`
   float: right;
   display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  > li:first-child {
+    padding: 0 2rem;
+    font-weight: bold;
+  }
 `
-export const Aside = styled.aside`
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 9;
-  width: 50vw;
-  height: 100%;
-  padding: 2rem;
-  background: #fff;
-  transform: ${(props) =>
-    props.toggle ? "translateX(0)" : "translateX(100%)"};
-  transition: all 0.5s ease;
-  box-sizing: border-box;
-`
+
 export const ErrorMsg = styled.div`
   color: red;
 `

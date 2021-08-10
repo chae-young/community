@@ -2,16 +2,15 @@ import React, { useState, useCallback, useEffect } from "react"
 import { useSelector } from "react-redux"
 import Link from "next/link"
 
-import { Close, AccountCircleOutlined, Search } from "@material-ui/icons"
+import { Search } from "@material-ui/icons"
 import { Avatar } from "@material-ui/core"
 
 import styled from "styled-components"
-import { HeaderUtillMenu, Aside, CloseBtn } from "../styles/style"
-import LoginForm from "./LoginForm"
-import Signup from "./Signup"
+import { HeaderUtillMenu } from "../styles/style"
 import MypopOver from "./MypopOver"
-
+import UserImg from "../images/common/icon_user.png"
 import SearchPopup from "./SearchPopup"
+import HeaderAside from "./HeaderAside"
 
 const Logo = styled.h1`
   position: absolute;
@@ -23,10 +22,13 @@ const HeaderWrap = styled.header`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 10;
   width: 100%;
+  height: 65px;
 `
 const InnerHeader = styled.div`
   position: relative;
+  padding:20px 0;
   border-bottom:1px solid rgb(0,0,0);
   background: rgb(245 240 228 / 70%);
   backdrop-filter: blur(5px);
@@ -35,30 +37,25 @@ const InnerHeader = styled.div`
 const Nav = styled.nav`
   overflow: hidden;
 `
+const UserIcon = styled.i`
+  width: 1.7rem;
+  height: 1.7rem;
+  background: url(${UserImg}) 0 0 / 100% no-repeat;
+`
 
 const Header = () => {
   const { me } = useSelector((state) => state.user)
-
-  const [isToggleOn, setIsToggleOn] = useState(true)
-  const onToggle = useCallback(() => {
-    setIsToggleOn((prev) => !prev)
-  }, [isToggleOn])
-
-  const [loginOn, setLoginOn] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
+  const [loginOn, setLoginOn] = useState(null)
   const loginOnClick = useCallback((e) => {
     if (me) {
       setLoginOn(false)
       setAnchorEl(e.currentTarget)
-      //return
     } else {
       setLoginOn(true)
     }
   })
 
-  const onClose = useCallback(() => {
-    setLoginOn(false)
-  }, [])
   const open = Boolean(anchorEl)
   const id = open ? "simple-popover" : undefined
 
@@ -83,7 +80,7 @@ const Header = () => {
             <HeaderUtillMenu>
               <li>
                 <Link href="/board">
-                  <a>review</a>
+                  <a>REVIEW</a>
                 </Link>
               </li>
               <li>
@@ -98,7 +95,7 @@ const Header = () => {
                       src={`http://localhost:3063/profile/${me.src}`}
                     />
                   ) : (
-                    <AccountCircleOutlined fontSize="large" />
+                    <UserIcon></UserIcon>
                   )}
                 </button>
                 {me && (
@@ -112,22 +109,9 @@ const Header = () => {
               </li>
             </HeaderUtillMenu>
           </Nav>
-          <Aside toggle={loginOn}>
-            <CloseBtn onClick={onClose}>
-              <Close fontSize="large" />
-            </CloseBtn>
-            계정이 없으신가요?
-            <button type="button" onClick={onToggle}>
-              {isToggleOn ? "회원가입하기" : "로그인하기"}
-            </button>
-            {isToggleOn ? (
-              <LoginForm setLoginOn={setLoginOn} />
-            ) : (
-              <Signup setLoginOn={setLoginOn} />
-            )}
-          </Aside>
         </InnerHeader>
       </HeaderWrap>
+      <HeaderAside loginOn={loginOn} setLoginOn={setLoginOn} />
       <SearchPopup searchopen={searchopen} onSearchClose={onSearchClose} />
     </>
   )
