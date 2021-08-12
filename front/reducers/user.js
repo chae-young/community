@@ -23,8 +23,18 @@ export const initialState = {
   profileEditLoading: false,
   profileEditDone: false,
   profileEditError: null,
+  followLoading: false,
+  followDone: false,
+  followError: null,
+  followingLoading: false,
+  followingDone: false,
+  followingError: null,
+  followListLoading: false,
+  followListDone: false,
+  followListError: null,
   me: null,
   userInfo: null,
+  followList: [],
 }
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST"
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS"
@@ -62,22 +72,24 @@ export const FOLLOWING_REQUEST = "FOLLOWING_REQUEST"
 export const FOLLOWING_SUCCESS = "FOLLOWING_SUCCESS"
 export const FOLLOWING_FAILURE = "FOLLOWING_FAILURE"
 
+export const FOLLOW_LIST_REQUEST = "FOLLOW_LIST_REQUEST"
+export const FOLLOW_LIST_SUCCESS = "FOLLOW_LIST_SUCCESS"
+export const FOLLOW_LIST_FAILURE = "FOLLOW_LIST_FAILURE"
+
 export const LoginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
   ...data,
 })
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: "챙",
-  post: [
-    {
-      id: data.id,
-    },
-  ],
-  Followings: [{ nickname: "suzy" }],
-  Followers: [{ nickname: "jenny" }],
-})
+//dummyFollow(10)
+export const dummyFollow = (data) =>
+  Array(data)
+    .fill()
+    .map(() => ({
+      id: 2,
+      nickname: "채영",
+      src: null,
+    }))
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -117,8 +129,8 @@ const reducer = (state = initialState, action) =>
         break
       case LOG_IN_SUCCESS:
         draft.loginLoading = false
-        draft.loginDone = true
         draft.me = action.data
+        draft.loginDone = true
         break
       case LOG_IN_FAILURE:
         draft.loginLoading = false
@@ -208,6 +220,20 @@ const reducer = (state = initialState, action) =>
       case FOLLOWING_FAILURE:
         draft.followingLoading = false
         draft.followingError = action.error
+        break
+      case FOLLOW_LIST_REQUEST:
+        draft.followListLoading = true
+        draft.followListDone = false
+        draft.followListError = null
+        break
+      case FOLLOW_LIST_SUCCESS:
+        draft.followListLoading = false
+        draft.followListDone = true
+        draft.followList = draft.followList.concat(action.data)
+        break
+      case FOLLOW_LIST_FAILURE:
+        draft.followListLoading = false
+        draft.followListError = action.error
         break
       default:
         break
