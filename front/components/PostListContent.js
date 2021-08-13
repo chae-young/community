@@ -8,17 +8,18 @@ import { Grid } from "@material-ui/core"
 import { ListPoster, StyledRating, Ratebox, ListContent } from "../styles/style"
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(6, 5),
+  root: (props) => ({
+    padding: props.d,
     [theme.breakpoints.down("xs")]: {
-      padding: theme.spacing(5, 2),
+      padding: props.m,
     },
-  },
+  }),
 }))
 
 const PostListContent = ({ post, ...rest }) => {
-  const { xs, sm } = rest
-  const classes = useStyles()
+  const { xs, sm, padding } = rest
+  const props = padding
+  const classes = useStyles(props)
 
   return (
     <Grid item xs={xs} sm={sm} className={classes.root}>

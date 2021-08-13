@@ -21,8 +21,13 @@ const PopularList = () => {
   return (
     <>
       {popularPosts.map((v) => (
-        <Grid container wrap="nowrap" spacing={2}>
-          <PostListContent post={v} xs={12} sm={12} />
+        <Grid container wrap="nowrap">
+          <PostListContent
+            post={v}
+            xs={12}
+            sm={12}
+            padding={{ d: "0 0 80px 0", m: "80px 0 0 0" }}
+          />
         </Grid>
       ))}
     </>
