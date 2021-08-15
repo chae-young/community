@@ -58,30 +58,12 @@ const ProfileLayout = ({ children, userInfo }) => {
             </Link>
           </li>
           <li>
-            <Link
-              href={{
-                pathname: "/users/[id]/follow",
-                query: {
-                  id: userInfo.id,
-                  title: "follower",
-                },
-              }}
-              as={`/users/${userInfo.id}/follow`}
-            >
+            <Link href={`/users/${userInfo.id}/followers`}>
               <a>팔로워 {userInfo.Followers}</a>
             </Link>
           </li>
           <li>
-            <Link
-              href={{
-                pathname: "/users/[id]/follow",
-                query: {
-                  id: userInfo.id,
-                  title: "following",
-                },
-              }}
-              as={`/users/${userInfo.id}/follow`}
-            >
+            <Link href={`/users/${userInfo.id}/followings`}>
               <a>팔로잉 {userInfo.Followings}</a>
             </Link>
           </li>
