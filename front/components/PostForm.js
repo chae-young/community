@@ -4,49 +4,74 @@ import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import Router from "next/router"
 
-import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
-import { Attachment } from "@material-ui/icons"
-import styled from "styled-components"
 
+import styled from "styled-components"
 import { ADD_POST_REQUEST, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
 import MovieSrhModal from "./MovieSrhModal"
 import basicPoster from "../images/noimage.png"
-import { FormInput, StyledRating, ButtonStyle } from "../styles/style"
+import {
+  FormInput,
+  StyledRating,
+  ButtonPurple,
+  headerHeight,
+} from "../styles/style"
 
-const useStyles = makeStyles({
-  imgBox: {
-    padding: "2rem",
-    borderRight: "1px solid rgb(0,0,0)",
-  },
-  textBox: {
-    padding: "6rem",
-  },
-  iconStyle: {
-    padding: "0 0.5rem",
-  },
-})
+const ImgGrid = styled(Grid)`
+  position: relative;
+  height: calc(100vh - ${headerHeight});
+  padding: 2rem 2rem 5rem;
+
+  @media ${({ theme }) => theme.device.MinMobile} {
+    border-right: 1px solid rgb(0, 0, 0);
+  }
+  @media ${({ theme }) => theme.device.mobile} {
+    height: 50vh;
+  }
+`
+
+const InputGrid = styled(Grid)`
+  height: calc(100vh - ${headerHeight});
+  padding: 6rem;
+
+  @media ${({ theme }) => theme.device.mobile} {
+    padding: 8rem 2rem 0;
+  }
+`
 
 const PostFormImg = styled.div`
+  height: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 `
 const PostFormImgBtn = styled.div`
   display: flex;
   width: 100%;
-  margin-top: 2rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 
   & button {
     flex: 1;
     justify-content: center;
+    padding: 2rem 0;
+    border: ${({ theme }) => theme.pointColor.border};
+    border-right: 0;
     font-size: 1.4rem;
     font-weigth: bold;
+
+    @media ${({ theme }) => theme.device.mobile} {
+      padding: 1rem 0;
+      border-right: ${({ theme }) => theme.pointColor.border};
+
+      + button {
+        border-left: 0;
+      }
+    }
   }
 `
 const PostFormTit = styled.div``
-
 const PostTextArea = styled.textarea`
   width: 100%;
   height: 50vh;
@@ -58,23 +83,9 @@ const PostTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
 `
-const Button = styled.button`
-  display: block;
-  width: 100%;
-  height: 65px;
-  line-height: 65px;
-  margin: 2em auto 0;
-  text-align: center;
-  ${ButtonStyle}
-
-  &:hover {
-    background: rgb(0, 0, 0);
-  }
-`
 
 const PostForm = () => {
   const dispatch = useDispatch()
-  const classes = useStyles()
   const { imagePath } = useSelector((state) => state.post)
   const { register, trigger, handleSubmit } = useForm()
 
@@ -139,28 +150,28 @@ const PostForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
       <Grid container>
-        <Grid item xs={12} sm={6} className={classes.imgBox}>
+        <ImgGrid item xs={12} sm={6}>
           <PostFormImg>
             <div>
               <img src={imgSrc()} style={{ maxWidth: "100%" }} />
             </div>
-            <PostFormImgBtn>
-              <MovieSrhModal setSelectedCheck={setSelectedCheck} />
-              <input
-                type="file"
-                ref={inputFile}
-                style={{ display: "none" }}
-                onChange={onChangeImage}
-                onClick={onClickImage}
-              />
-              <button type="button" onClick={onFileUpload}>
-                내 이미지
-                <Attachment font-size="small" className={classes.iconStyle} />
-              </button>
-            </PostFormImgBtn>
           </PostFormImg>
-        </Grid>
-        <Grid item xs={12} sm={6} className={classes.textBox}>
+          <PostFormImgBtn>
+            <input
+              type="file"
+              ref={inputFile}
+              style={{ display: "none" }}
+              onChange={onChangeImage}
+              onClick={onClickImage}
+            />
+            <MovieSrhModal setSelectedCheck={setSelectedCheck} />
+            <button type="button" onClick={onFileUpload}>
+              내 이미지
+              {/* <Attachment font-size="small" className={classes.iconStyle} /> */}
+            </button>
+          </PostFormImgBtn>
+        </ImgGrid>
+        <InputGrid item xs={12} sm={6}>
           <PostFormTit>
             <FormInput
               {...register("title", {
@@ -183,8 +194,9 @@ const PostForm = () => {
             })}
             placeholder="내용을 입력해주세요."
           />
-          <Button
+          <ButtonPurple
             type="submit"
+            xs={{ width: "100%", height: "65px", margin: "2em auto 0" }}
             onClick={async () => {
               const titleVal = await trigger("title")
               const contentVal = await trigger("content")
@@ -198,8 +210,8 @@ const PostForm = () => {
             }}
           >
             등록
-          </Button>
-        </Grid>
+          </ButtonPurple>
+        </InputGrid>
       </Grid>
     </form>
   )
