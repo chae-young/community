@@ -11,11 +11,12 @@ import wrapper from "../../../../store/configureStore"
 import { LOAD_USER_REQUEST, USER_INFO_REQUEST } from "../../../../reducers/user"
 import { USER_POSTS_REQUEST } from "../../../../reducers/post"
 import PostListContent from "../../../../components/PostListContent"
+import Layout from "../../../../components/Layout"
+import { PostTitle } from "../../../../styles/style"
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 760,
-    padding: "1.5rem",
+    maxWidth: 1000,
     margin: "auto",
   },
 })
@@ -26,7 +27,7 @@ const Posts = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const { userInfo } = useSelector((state) => state.user)
-  const { postList, postCount, loadPostLoading, loadPostDone } = useSelector(
+  const { postList, postCount, loadPostsLoading, loadPostsDone } = useSelector(
     (state) => state.post,
   )
 
@@ -37,8 +38,8 @@ const Posts = () => {
         Math.round(window.scrollY) + document.documentElement.clientHeight >=
         document.documentElement.scrollHeight - 200
       ) {
-        if (loadPostDone) setFlag(false)
-        if (!flag && !loadPostLoading) {
+        if (loadPostsDone) setFlag(false)
+        if (!flag && !loadPostsLoading) {
           const lastId = postList[postList.length - 1].id
           dispatch({
             type: USER_POSTS_REQUEST,
@@ -52,17 +53,19 @@ const Posts = () => {
     return () => {
       window.removeEventListener("scroll", loadOnScroll)
     }
-  }, [loadPostLoading, flag])
+  }, [postList, loadPostsLoading, flag])
 
   return (
-    <div>
-      {userInfo.nickname}님의 포스트
+    <Layout>
+      <PostTitle>
+        <b>{userInfo.nickname}</b>님의 포스트
+      </PostTitle>
       <Grid container className={classes.root} spacing={1}>
         {postList.map((v) => (
           <PostListContent key={v.id} post={v} xs={6} sm={3} />
         ))}
       </Grid>
-    </div>
+    </Layout>
   )
 }
 

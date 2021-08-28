@@ -57,7 +57,7 @@ const Search = () => {
     return () => {
       window.removeEventListener("scroll", loadOnScroll)
     }
-  }, [reviewSearchLoading, flag])
+  }, [searchList, reviewSearchLoading, flag])
 
   return (
     <Grid container className={classes.root} spacing={1}>

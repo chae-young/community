@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 const Board = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
-  const { postList, postCount, loadPostLoading, loadPostDone } = useSelector(
+  const { postList, postCount, loadPostsLoading, loadPostsDone } = useSelector(
     (state) => state.post,
   )
   const [flag, setFlag] = useState(false)
@@ -32,8 +32,8 @@ const Board = () => {
         Math.round(window.scrollY) + document.documentElement.clientHeight >=
         document.documentElement.scrollHeight - 200
       ) {
-        if (loadPostDone) setFlag(false)
-        if (!flag && !loadPostLoading) {
+        if (loadPostsDone) setFlag(false)
+        if (!flag && !loadPostsLoading) {
           const lastId = postList[postList.length - 1].id
           dispatch({
             type: LOAD_POSTS_REQUEST,
@@ -47,13 +47,19 @@ const Board = () => {
     return () => {
       window.removeEventListener("scroll", loadOnScroll)
     }
-  }, [loadPostLoading, flag])
+  }, [postList, loadPostsLoading, flag])
 
   return (
     <Layout>
       <Grid container className={classes.root}>
         {postList.map((v) => (
-          <PostListContent key={v.id} post={v} xs={6} sm={4} />
+          <PostListContent
+            key={v.id}
+            post={v}
+            xs={6}
+            sm={4}
+            padding={{ d: "0 0 80px 0", m: "0 20px 40px 20px" }}
+          />
         ))}
       </Grid>
     </Layout>
@@ -69,10 +75,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-    //if (postCount === 0 || postCount === 10) {
+    // if (postCount === 0 || postCount === 10) {
     context.store.dispatch({
       type: LOAD_POSTS_REQUEST,
-      //data: context.params.id,
+      // data: context.params.id,
     })
     context.store.dispatch(END)
     await context.store.sagaTask.toPromise()
