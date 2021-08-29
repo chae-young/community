@@ -7,7 +7,11 @@ import Router from "next/router"
 import { Grid } from "@material-ui/core"
 
 import styled from "styled-components"
-import { ADD_POST_REQUEST, IMAGE_UPLOAD_REQUEST } from "../reducers/post"
+import {
+  ADD_POST_REQUEST,
+  EDIT_POST_REQUEST,
+  IMAGE_UPLOAD_REQUEST,
+} from "../reducers/post"
 import MovieSrhModal from "./MovieSrhModal"
 import basicPoster from "../images/noimage.png"
 import {
@@ -86,8 +90,15 @@ const PostTextArea = styled.textarea`
 
 const PostForm = () => {
   const dispatch = useDispatch()
-  const { imagePath } = useSelector((state) => state.post)
+  const { imagePath, singlePost } = useSelector((state) => state.post)
   const { register, trigger, handleSubmit } = useForm()
+
+  const [editMode, setEditMode] = useState(false)
+  useEffect(() => {
+    if (singlePost) {
+      setEditMode(true)
+    }
+  }, [singlePost])
 
   // 1이면 api 2이면 file
   const [selectedCheck, setSelectedCheck] = useState(null)
@@ -97,17 +108,21 @@ const PostForm = () => {
     (data) => {
       const totalData = { ...data, imagePath, rating }
       const formData = new FormData()
-      for (let key in totalData) {
+      for (const key in totalData) {
         formData.append(key, totalData[key])
       }
-      // FormData.append("title",title)
-      // FormData.append("content",content)
-      // FormData.append("rating",rating)
-      // const { title, content } = data
-      dispatch({
-        type: ADD_POST_REQUEST,
-        data: totalData,
-      })
+      if (editMode) {
+        const editData = { ...totalData, postId: singlePost.id }
+        dispatch({
+          type: EDIT_POST_REQUEST,
+          editData,
+        })
+      } else {
+        dispatch({
+          type: ADD_POST_REQUEST,
+          data: totalData,
+        })
+      }
       Router.push("/board")
       window.scrollTo(0, 0)
     },
@@ -136,12 +151,26 @@ const PostForm = () => {
     [imagePath],
   )
 
+  const EditModeImg = useCallback(() => {
+    let img
+    if (singlePost) {
+      selectedCheck(3)
+      img = singlePost.Images[0].src
+      if (!img.includes("http")) {
+        img = `http://localhost:3063/${img}`
+      }
+    }
+    return img
+  }, [])
+
   const imgSrc = useCallback(() => {
     switch (selectedCheck) {
       case 1:
         return imagePath
       case 2:
         return `http://localhost:3063/${imagePath}`
+      case 3:
+        return EditModeImg()
       default:
         return basicPoster
     }
@@ -178,6 +207,7 @@ const PostForm = () => {
                 required: true,
               })}
               placeholder="영화제목을 입력해주세요."
+              defaultValue={singlePost && singlePost.title}
             />
             <StyledRating
               value={rating}
@@ -186,6 +216,7 @@ const PostForm = () => {
               onChange={(_event, newValue) => {
                 setRating(newValue)
               }}
+              defaultValue={singlePost && singlePost.rating}
             />
           </PostFormTit>
           <PostTextArea
@@ -193,6 +224,7 @@ const PostForm = () => {
               required: true,
             })}
             placeholder="내용을 입력해주세요."
+            defaultValue={singlePost && singlePost.content}
           />
           <ButtonPurple
             type="submit"
@@ -218,73 +250,3 @@ const PostForm = () => {
 }
 
 export default PostForm
-
-{
-  /* // import React, { useCallback, useState} from 'react';
-// import TextField from '@material-ui/core/TextField';
-// import Link from 'next/link';
-// import dynamic from 'next/dynamic';
-// import 'suneditor/dist/css/suneditor.min.css';
-// import { useDispatch } from 'react-redux';
-// import { ADD_POST_REQUEST } from '../reducers/post';
-
-// const SunEditor = dynamic(() => import('suneditor-react'), {
-//   ssr: false,
-// }); */
-}
-{
-  /* 
-// const PostForm = () => { */
-}
-{
-  /* //   const dispatch = useDispatch();
-
-//   const [boardTitle, setBoardTitle] = useState('');
-//   const [boardText, setBoardText] = useState('');
-
-//   const onChangeTitle = useCallback((e) => {
-//     setBoardTitle(e.target.value);
-//   }, [boardTitle]);
-
-//   const onSubmit = useCallback(() => {
-//     dispatch({
-//       type: ADD_POST_REQUEST,
-//       data: {content: boardText, title: boardTitle},
-//     });
-//   }, [boardTitle, boardText]);
-
-//   const handleonBlur = (event, editorContents) => {
-//     setBoardText(editorContents);
-//     console.log(event, editorContents);
-//   };
-
-//   return (
-//     <div>
-//         <TextField
-//           placeholder="제목을 입력해주세요"
-//           fullWidth
-//           value={boardTitle}
-//           onChange={onChangeTitle}
-//         />
-//       <SunEditor
-//         lang="ko"
-//         height="50vh"
-//         setOptions={{
-//           buttonList: [
-//           ['undo', 'redo',
-//           'font', 'fontSize', 'formatBlock',
-//           'blockquote',
-//           'bold', 'underline', 'italic', 'strike',
-//           'fontColor', 'hiliteColor',
-//           'align', 'list', 'lineHeight',
-//           'table', 'link', 'image']],
-//         }}
-//         onBlur={handleonBlur}
-//       />
-//       <button type="button" onClick={onSubmit}><Link href="/board"><a>등록</a></Link></button>
-//     </div>
-//   );
-// };
-
-// export default PostForm; */
-}
