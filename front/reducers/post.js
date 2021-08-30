@@ -10,6 +10,9 @@ export const initialState = {
   postAddLoading: false,
   postAddDone: false,
   postAddError: null,
+  editPostLoading: false,
+  editPostDone: false,
+  editPostError: null,
   imageUploadLoading: false,
   imageUploadDone: false,
   imageUploadError: null,
@@ -64,7 +67,7 @@ export const dummyList = (num) =>
     ],
   }))
 
-//initialState.postList = dummyList(5)
+// initialState.postList = dummyList(5)
 const dummyComment = (data) => ({
   User: { nickname: "cy" },
   content: data.text,
@@ -88,11 +91,17 @@ export const ADD_POST_REQUEST = "ADD_POST_REQUEST"
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS"
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE"
 
+export const EDIT_POST_REQUEST = "EDIT_POST_REQUEST"
+export const EDIT_POST_SUCCESS = "EDIT_POST_SUCCESS"
+export const EDIT_POST_FAILURE = "EDIT_POST_FAILURE"
+
+export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST"
+export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS"
+export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE"
+
 export const IMAGE_UPLOAD_REQUEST = "IMAGE_UPLOAD_REQUEST"
 export const IMAGE_UPLOAD_SUCCESS = "IMAGE_UPLOAD_SUCCESS"
 export const IMAGE_UPLOAD_FAILURE = "IMAGE_UPLOAD_FAILURE"
-
-export const SRH_IMAGE_UPLOAD = "SRH_IMAGE_UPLOAD"
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST"
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS"
@@ -150,6 +159,32 @@ const reducer = (state = initialState, action) =>
         draft.postAddDone = false
         draft.postAddError = action.error
         break
+      case EDIT_POST_REQUEST:
+        draft.postAddLoading = true
+        draft.postAddDone = false
+        break
+      case EDIT_POST_SUCCESS: {
+        draft.postAddLoading = false
+        draft.postAddDone = true
+        break
+      }
+      case EDIT_POST_FAILURE:
+        draft.postAddDone = false
+        draft.postAddError = action.error
+        break
+      case REMOVE_POST_REQUEST:
+        draft.postAddLoading = true
+        draft.postAddDone = false
+        break
+      case REMOVE_POST_SUCCESS: {
+        draft.postAddLoading = false
+        draft.postAddDone = true
+        break
+      }
+      case REMOVE_POST_FAILURE:
+        draft.postAddDone = false
+        draft.postAddError = action.error
+        break
       case IMAGE_UPLOAD_REQUEST:
         draft.imageUploadLoading = true
         draft.imageUploadDone = false
@@ -163,9 +198,6 @@ const reducer = (state = initialState, action) =>
       case IMAGE_UPLOAD_FAILURE:
         draft.imageUploadDone = false
         draft.imageUploadError = action.error
-        break
-      case SRH_IMAGE_UPLOAD:
-        draft.imagePath = action.data
         break
       case LOAD_POSTS_REQUEST:
       case USER_POSTS_REQUEST:
@@ -205,7 +237,7 @@ const reducer = (state = initialState, action) =>
         break
       case USER_POSTS_SUCCESS:
         draft.loadPostLoading = false
-        //draft.singlePost = action.data
+        // draft.singlePost = action.data
         draft.loadPostDone = true
         break
       case USER_POSTS_FAILURE:
@@ -251,7 +283,7 @@ const reducer = (state = initialState, action) =>
           (v) => v.id === action.data.CommentId,
         )
         comment.content = action.data.content
-        //comment.content = action.data.content
+        // comment.content = action.data.content
         draft.editCommentLoading = false
         draft.editCommentDone = true
         break
@@ -289,8 +321,8 @@ const reducer = (state = initialState, action) =>
       case LIKE_POST_SUCCESS: {
         draft.likePostLoading = false
         draft.likePostDone = true
-        //const post = draft.postList.find((v) => v.id === action.data.PostId)
-        //post.Likers.unshift({ id: action.data.UserId })
+        // const post = draft.postList.find((v) => v.id === action.data.PostId)
+        // post.Likers.unshift({ id: action.data.UserId })
         draft.singlePost.Likers.unshift({ id: action.data.UserId })
         break
       }
@@ -305,8 +337,8 @@ const reducer = (state = initialState, action) =>
       case UNLIKE_POST_SUCCESS: {
         draft.unlikePostLoading = false
         draft.unlikePostDone = true
-        //const post = draft.postList.find((v) => v.id === action.data.PostId)
-        //post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId)
+        // const post = draft.postList.find((v) => v.id === action.data.PostId)
+        // post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId)
         draft.singlePost.Likers = draft.singlePost.Likers.filter(
           (v) => v.id !== action.data.UserId,
         )

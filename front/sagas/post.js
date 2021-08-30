@@ -23,7 +23,6 @@ import {
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
-  dummyList,
   LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS,
   LIKE_POST_FAILURE,
@@ -46,6 +45,12 @@ import {
   REVIEW_SEARCH_SUCCESS,
   REVIEW_SEARCH_FAILURE,
   USER_POSTS_REQUEST,
+  EDIT_POST_FAILURE,
+  EDIT_POST_SUCCESS,
+  EDIT_POST_REQUEST,
+  REMOVE_POST_REQUEST,
+  REMOVE_POST_SUCCESS,
+  REMOVE_POST_FAILURE,
 } from "../reducers/post"
 
 function addPostAPI(data) {
@@ -54,7 +59,7 @@ function addPostAPI(data) {
 function* addPost(action) {
   try {
     const result = yield call(addPostAPI, action.data)
-    //yield delay(1000)
+    // yield delay(1000)
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
@@ -68,13 +73,53 @@ function* addPost(action) {
   }
 }
 
+function editPostAPI(editData) {
+  return axios.patch(`/post/${editData.postId}`, editData)
+}
+function* editPost(action) {
+  try {
+    const result = yield call(editPostAPI, action.editData)
+    // yield delay(1000)
+    yield put({
+      type: EDIT_POST_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: EDIT_POST_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function removePostAPI(data) {
+  return axios.delete(`/post/${data}`)
+}
+function* removePost(action) {
+  try {
+    const result = yield call(removePostAPI, action.data)
+    // yield delay(1000)
+    yield put({
+      type: REMOVE_POST_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: REMOVE_POST_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function imageUploadAPI(data) {
   return axios.post("/post/image", data)
 }
 function* imageUpload(action) {
   try {
     const result = yield call(imageUploadAPI, action.data)
-    //yield delay(1000)
+    // yield delay(1000)
     yield put({
       type: IMAGE_UPLOAD_SUCCESS,
       data: result.data,
@@ -189,7 +234,7 @@ function editCommentAPI(data) {
 function* editComment(action) {
   try {
     const result = yield call(editCommentAPI, action.data)
-    //yield delay(1000)
+    // yield delay(1000)
     yield put({
       type: EDIT_COMMENT_SUCCESS,
       data: result.data,
@@ -204,12 +249,12 @@ function* editComment(action) {
 }
 
 function removeCommentAPI(data) {
-  return axios.delete(`/post/${data.commentId}/comment`)
+  return axios.remove(`/post/${data.commentId}/comment`)
 }
 function* removeComment(action) {
   try {
     const result = yield call(removeCommentAPI, action.data)
-    //yield delay(1000)
+    // yield delay(1000)
     yield put({
       type: REMOVE_COMMENT_SUCCESS,
       data: result.data,
@@ -243,7 +288,7 @@ function* likePost(action) {
 }
 
 function unlikePostAPI(data) {
-  return axios.delete(`/post/${data.postId}/like`, data)
+  return axios.remove(`/post/${data.postId}/like`, data)
 }
 function* unlikePost(action) {
   try {
@@ -267,7 +312,7 @@ function reviewSearchAPI(data) {
 function* reviewSearch(action) {
   try {
     const result = yield call(reviewSearchAPI, action.data)
-    //yield delay(1000)
+    // yield delay(1000)
     yield put({
       type: REVIEW_SEARCH_SUCCESS,
       data: result.data,
@@ -283,6 +328,12 @@ function* reviewSearch(action) {
 
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost)
+}
+function* watchEditPost() {
+  yield takeLatest(EDIT_POST_REQUEST, editPost)
+}
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removePost)
 }
 function* watchImageUpload() {
   yield takeLatest(IMAGE_UPLOAD_REQUEST, imageUpload)
@@ -321,6 +372,8 @@ function* watchReviewSearch() {
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
+    fork(watchEditPost),
+    fork(watchRemovePost),
     fork(watchImageUpload),
     fork(watchLoadPosts),
     fork(watchLoadPost),
