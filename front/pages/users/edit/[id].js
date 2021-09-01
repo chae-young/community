@@ -4,17 +4,26 @@ import { useForm } from "react-hook-form"
 import { END } from "redux-saga"
 import axios from "axios"
 
-import { Avatar, TextField, Button } from "@material-ui/core"
+import { TextField } from "@material-ui/core"
 
-import ProfileLayout from "../../components/ProfileLayout"
+import styled from "styled-components"
 import {
   LOAD_USER_REQUEST,
   PROFILE_EDIT_REQUEST,
   PROFILE_IMG_REQUEST,
   USER_INFO_REQUEST,
-} from "../../reducers/user"
-import wrapper from "../../store/configureStore"
+} from "../../../reducers/user"
+import wrapper from "../../../store/configureStore"
+import { AvatarSize, ButtonPurple, minContainer } from "../../../styles/style"
+import Layout from "../../../components/Layout"
 
+const EditForm = styled.div`
+  ${minContainer}
+`
+const EditInput = styled.div`
+  max-width: 280px;
+  margin: auto;
+`
 const edit = () => {
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch()
@@ -48,34 +57,43 @@ const edit = () => {
   }, [])
 
   return (
-    <ProfileLayout userInfo={userInfo}>
-      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-        <button type="button" onClick={onFileUpload}>
-          <Avatar
+    <Layout>
+      <EditForm>
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+          <AvatarSize
             alt={me.nickname}
+            onClick={onFileUpload}
             src={`http://localhost:3063/profile/${me.src}`}
-            width="10%"
           />
-        </button>
-        <input
-          type="file"
-          ref={inputFile}
-          style={{ display: "none" }}
-          onChange={onChangeImage}
-          onClick={onClickImage}
-        />
-        <TextField
-          id="nickname"
-          label="닉네임"
-          {...register("nickname")}
-          fullWidth
-          defaultValue={me.nickname}
-        />
-        <Button variant="contained" color="primary" type="submit" fullWidth>
-          저장
-        </Button>
-      </form>
-    </ProfileLayout>
+          <input
+            type="file"
+            ref={inputFile}
+            style={{ display: "none" }}
+            onChange={onChangeImage}
+            onClick={onClickImage}
+          />
+          <EditInput>
+            <TextField
+              id="nickname"
+              label="닉네임"
+              {...register("nickname")}
+              fullWidth
+              defaultValue={me.nickname}
+            />
+            <ButtonPurple
+              type="submit"
+              style={{
+                width: "100%",
+                height: "40px",
+                margin: "2rem auto 0",
+              }}
+            >
+              저장
+            </ButtonPurple>
+          </EditInput>
+        </form>
+      </EditForm>
+    </Layout>
   )
 }
 

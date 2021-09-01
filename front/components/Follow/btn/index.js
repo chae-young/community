@@ -1,8 +1,10 @@
 import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import PropTypes from "prop-types"
 
 import Button from "@material-ui/core/Button"
-import { FOLLOWING_REQUEST, FOLLOW_REQUEST } from "../reducers/user"
+
+import { FOLLOWING_REQUEST, FOLLOW_REQUEST } from "../../../reducers/user"
 
 const FollowButton = ({ id }) => {
   const dispatch = useDispatch()
@@ -36,6 +38,9 @@ const FollowButton = ({ id }) => {
       )}
     </>
   )
+}
+FollowButton.propTypes = {
+  id: PropTypes.number.isRequired,
 }
 
 export default FollowButton

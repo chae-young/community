@@ -15,13 +15,20 @@ import {
   Avatar,
 } from "@material-ui/core"
 
+import styled from "styled-components"
 import wrapper from "../../../store/configureStore"
 import {
   FOLLOW_LIST_REQUEST,
   LOAD_USER_REQUEST,
   USER_INFO_REQUEST,
 } from "../../../reducers/user"
-import FollowButton from "../../../components/FollowButton"
+import FollowButton from "../../../components/Follow/btn"
+import { minContainer } from "../../../styles/style"
+import Layout from "../../../components/Layout"
+
+const FollowContent = styled.div`
+  ${minContainer}
+`
 
 const Follow = () => {
   const router = useRouter()
@@ -30,7 +37,7 @@ const Follow = () => {
   const { userInfo, followList, followListDone, followListLoading } =
     useSelector((state) => state.user)
 
-  //처음에만 20개 불러오고 스크롤 내릴때마다 10개..
+  // 처음에만 20개 불러오고 스크롤 내릴때마다 10개..
   const [flag, setFlag] = useState(false)
   useEffect(() => {
     const loadOnScroll = () => {
@@ -55,32 +62,34 @@ const Follow = () => {
   }, [followListLoading, flag])
 
   return (
-    <>
-      <List
-        subheader={
-          <ListSubheader>{`${userInfo.nickname}님의 ${follow}`}</ListSubheader>
-        }
-      >
-        {followList.map((v) => (
-          <Link href={`/users/${v.id}`}>
-            <a>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar
-                    alt={v.nickname}
-                    src={`http://localhost:3063/profile/${v.src}`}
-                  />
-                </ListItemAvatar>
-                <ListItemText primary={v.nickname} />
-                <ListItemSecondaryAction>
-                  <FollowButton id={v.id} />
-                </ListItemSecondaryAction>
-              </ListItem>
-            </a>
-          </Link>
-        ))}
-      </List>
-    </>
+    <Layout>
+      <FollowContent>
+        <List
+          subheader={
+            <ListSubheader>{`${userInfo.nickname}님의 ${follow}`}</ListSubheader>
+          }
+        >
+          {followList.map((v) => (
+            <Link href={`/users/${v.id}`}>
+              <a>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={v.nickname}
+                      src={`http://localhost:3063/profile/${v.src}`}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText primary={v.nickname} />
+                  <ListItemSecondaryAction>
+                    <FollowButton id={v.id} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </a>
+            </Link>
+          ))}
+        </List>
+      </FollowContent>
+    </Layout>
   )
 }
 

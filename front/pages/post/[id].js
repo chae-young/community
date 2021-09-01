@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { useRouter } from "next/router"
 import Head from "next/head"
 import Link from "next/link"
@@ -9,24 +9,18 @@ import { END } from "redux-saga"
 import { makeStyles } from "@material-ui/core/styles"
 import { Grid, Avatar } from "@material-ui/core"
 import Rating from "@material-ui/lab/Rating"
-import { FavoriteBorder, Favorite } from "@material-ui/icons"
-import red from "@material-ui/core/colors/red"
 
 import styled from "styled-components"
 import Layout from "../../components/Layout"
-import CommentForm from "../../components/CommentForm"
-import CommentList from "../../components/CommentList"
-import {
-  LIKE_POST_REQUEST,
-  LOAD_POST_REQUEST,
-  POPULAR_POSTS_REQUEST,
-  UNLIKE_POST_REQUEST,
-} from "../../reducers/post"
-import PopularList from "../../components/PopularList"
+import CommentForm from "../../components/Comment/CommentForm"
+import CommentList from "../../components/Comment"
+import { LOAD_POST_REQUEST, POPULAR_POSTS_REQUEST } from "../../reducers/post"
+import PopularList from "../../components/List/post/PostFavorite"
 import wrapper from "../../store/configureStore"
 import { LOAD_USER_REQUEST } from "../../reducers/user"
-import ShareList from "../../components/ShareList"
+import ShareList from "../../components/Share"
 import EditSettingMenu from "../../components/EditSettingMenu"
+import Favorite from "../../components/Post/favorite"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,45 +39,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "4vw",
   },
 }))
-const ArticleWrap = styled.article`
-  > h2 {
-    margin-bottom: 2rem;
-    font-size: 4rem;
-  }
-`
-const ArticleBottom = styled.div`
-  position: relative;
-`
-const ArticleUser = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  font-size: 1.2rem;
-
-  & .nickname {
-    padding-left: 1em;
-  }
-  & .date {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`
-const ArticleText = styled.p`
-  padding: 4rem 0;
-  line-height: 2rem;
-  font-size: 1.4rem;
-`
-const ArticleFavorit = styled.div`
-  display: flex;
-  align-items: center;
-`
-const CommentBox = styled.div``
 
 const Post = () => {
-  const dispatch = useDispatch()
   const router = useRouter()
   const { id } = router.query
   const classes = useStyles()
@@ -144,22 +101,6 @@ const Post = () => {
     }
   }, [windowWidth])
 
-  const Liked = singlePost?.Likers.find((v) => v.id === me.id)
-  const onUnLike = useCallback(() => {
-    // console.log("좋아요 취소")
-    dispatch({
-      type: UNLIKE_POST_REQUEST,
-      data: { postId: parseInt(id), count: singlePost.Likers.length - 1 },
-    })
-  }, [singlePost])
-  const onLike = useCallback(() => {
-    // console.log("좋아요")
-    dispatch({
-      type: LIKE_POST_REQUEST,
-      data: { postId: parseInt(id), count: singlePost.Likers.length + 1 },
-    })
-  }, [singlePost])
-
   return (
     <Layout>
       {singlePost && (
@@ -203,31 +144,14 @@ const Post = () => {
                 </div>
                 <ArticleBottom>
                   <ArticleFavorit>
-                    <button type="button">
-                      {Liked ? (
-                        <Favorite
-                          style={{ color: red[600] }}
-                          onClick={onUnLike}
-                        />
-                      ) : (
-                        <FavoriteBorder fontSize="large" onClick={onLike} />
-                      )}
-                    </button>
+                    <Favorite post={singlePost} />
                     {singlePost.Likers.length}명이 좋아합니다
                   </ArticleFavorit>
-                  <EditSettingMenu id={id} />
+                  {me.id === singlePost.User.id && <EditSettingMenu id={id} />}
                 </ArticleBottom>
               </ArticleWrap>
-              <CommentBox>
-                <CommentList
-                  currentPostId={id}
-                  comments={singlePost.Comments}
-                />
-                <CommentForm
-                  currentPostId={id}
-                  comments={singlePost.Comments}
-                />
-              </CommentBox>
+              <CommentList currentPostId={id} comments={singlePost.Comments} />
+              <CommentForm currentPostId={id} comments={singlePost.Comments} />
             </Grid>
             <Grid item xs={12} sm={4} md={3} className={classes.popular}>
               <PopularList />
@@ -239,6 +163,42 @@ const Post = () => {
     </Layout>
   )
 }
+
+const ArticleWrap = styled.article`
+  > h2 {
+    margin-bottom: 2rem;
+    font-size: 4rem;
+  }
+`
+const ArticleBottom = styled.div`
+  position: relative;
+`
+const ArticleUser = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  font-size: 1.2rem;
+
+  & .nickname {
+    padding-left: 1em;
+  }
+  & .date {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`
+const ArticleText = styled.p`
+  padding: 4rem 0;
+  line-height: 2rem;
+  font-size: 1.4rem;
+`
+const ArticleFavorit = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {

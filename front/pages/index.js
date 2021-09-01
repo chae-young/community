@@ -9,16 +9,25 @@ import "swiper/swiper.min.css"
 import "swiper/components/navigation/navigation.min.css"
 import { Grid } from "@material-ui/core"
 
+import styled from "styled-components"
 import Layout from "../components/Layout"
 import wrapper from "../store/configureStore"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 import { NOW_SCREENING_MOVIE_REQUEST } from "../reducers/movie"
 import { POPULAR_POSTS_REQUEST } from "../reducers/post"
-import PostListContent from "../components/PostListContent"
+import PostListContent from "../components/List/post/PostListContent"
 import NowMovieContent from "../components/NowMovieContent"
 
 SwiperCore.use([Navigation])
 
+const MainSlider = styled.section`
+  padding: 0 2rem;
+  margin-bottom: 10rem;
+  > h2 {
+    margin-bottom: 2em;
+    font-size: 2rem;
+  }
+`
 const Main = () => {
   const { popularPosts } = useSelector((state) => state.post)
   const { nowScreeningMovie } = useSelector((state) => state.movie)
@@ -30,20 +39,19 @@ const Main = () => {
     },
     1024: {
       slidesPerView: 6,
-      spaceBetween: 10,
+      spaceBetween: 60,
     },
   }
 
   return (
     <Layout>
-      <section>
+      <MainSlider>
         <h2>현재 상영영화</h2>
         <Swiper
-          navigation={true}
+          navigation
           slidesPerGroup={1}
           className="mySwiper"
           breakpoints={breakpoints}
-          style={{ margin: "100px 0 0 0" }}
         >
           {nowScreeningMovie.map((v) => (
             <SwiperSlide>
@@ -51,26 +59,24 @@ const Main = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </section>
-
-      <section>
+      </MainSlider>
+      <MainSlider>
         <h2>인기 포스트</h2>
         <Swiper
           navigation
           slidesPerGroup={1}
           className="mySwiper"
           breakpoints={breakpoints}
-          style={{ margin: "100px 0 0 0" }}
         >
           {popularPosts.map((v) => (
             <SwiperSlide>
-              <Grid container wrap="nowrap" spacing={2}>
+              <Grid container>
                 <PostListContent post={v} xs={12} sm={12} />
               </Grid>
             </SwiperSlide>
           ))}
         </Swiper>
-      </section>
+      </MainSlider>
     </Layout>
   )
 }

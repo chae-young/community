@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core"
 
 import CommentForm from "./CommentForm"
-import { REMOVE_COMMENT_REQUEST } from "../reducers/post"
+import { REMOVE_COMMENT_REQUEST } from "../../reducers/post"
 
 const OptionButton = styled(Button)({
   minWidth: "25px",
@@ -25,6 +25,7 @@ const OptionButton = styled(Button)({
 
 const CommentList = ({ currentPostId, comments }) => {
   const dispatch = useDispatch()
+  const { me } = useSelector((state) => state.user)
   const { editCommentDone } = useSelector((state) => state.post)
 
   const [edit, setEdit] = useState(false)
@@ -48,17 +49,19 @@ const CommentList = ({ currentPostId, comments }) => {
     }
   }, [editCommentDone])
 
+  const myComment = (id) => me.id == id
+
   return (
     <List>
       {comments.map((v) => (
-        <ListItem key={v.id} alignItems="flex-start">
+        <ListItem key={v.id} alignItems="flex-start" disableGutters>
           <ListItemAvatar>
             <Avatar
               alt={v.User.nickname}
-              src={v.User.src ? v.User.src : v.User.nickname}
+              src={`http://localhost:3063/profile/${v.User.src}`}
             />
           </ListItemAvatar>
-          {edit ? (
+          {edit && myComment(v.UserId) ? (
             <CommentForm
               currentPostId={currentPostId}
               edit={edit}
@@ -68,14 +71,18 @@ const CommentList = ({ currentPostId, comments }) => {
           ) : (
             <div>
               <ListItemText primary={v.User.nickname} secondary={v.content} />
-              <ButtonGroup variant="text">
-                <OptionButton onClick={onDelete(v.id)}>
-                  <Delete fontSize="small" color="disabled" />
-                </OptionButton>
-                <OptionButton onClick={onModify}>
-                  <Create fontSize="small" color="disabled" />
-                </OptionButton>
-              </ButtonGroup>
+              {myComment(v.UserId) && (
+                <>
+                  <ButtonGroup variant="text">
+                    <OptionButton onClick={onDelete(v.id)}>
+                      <Delete fontSize="small" color="disabled" />
+                    </OptionButton>
+                    <OptionButton onClick={onModify}>
+                      <Create fontSize="small" color="disabled" />
+                    </OptionButton>
+                  </ButtonGroup>
+                </>
+              )}
             </div>
           )}
         </ListItem>

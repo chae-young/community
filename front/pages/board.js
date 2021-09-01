@@ -8,7 +8,7 @@ import { Grid } from "@material-ui/core"
 
 import Layout from "../components/Layout"
 import wrapper from "../store/configureStore"
-import PostListContent from "../components/PostListContent"
+import PostListContent from "../components/List/post/PostListContent"
 import { LOAD_POSTS_REQUEST } from "../reducers/post"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 

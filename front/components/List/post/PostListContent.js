@@ -5,7 +5,12 @@ import Link from "next/link"
 import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 
-import { ListPoster, StyledRating, Ratebox, ListContent } from "../styles/style"
+import {
+  ListPoster,
+  StyledRating,
+  Ratebox,
+  ListContent,
+} from "../../../styles/style"
 
 const useStyles = makeStyles((theme) => ({
   root: (props) => ({

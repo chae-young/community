@@ -2,7 +2,7 @@
 import React, { useCallback, useState, useRef, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import Router from "next/router"
+import { useRouter } from "next/router"
 
 import { Grid } from "@material-ui/core"
 
@@ -20,10 +20,12 @@ import {
   ButtonPurple,
   headerHeight,
 } from "../styles/style"
+import FormSelect from "./FormSelect"
 
 const ImgGrid = styled(Grid)`
   position: relative;
   height: calc(100vh - ${headerHeight});
+  overflow: hidden;
   padding: 2rem 2rem 5rem;
 
   @media ${({ theme }) => theme.device.MinMobile} {
@@ -36,7 +38,7 @@ const ImgGrid = styled(Grid)`
 
 const InputGrid = styled(Grid)`
   height: calc(100vh - ${headerHeight});
-  padding: 6rem;
+  padding: 3rem 6rem 6rem;
 
   @media ${({ theme }) => theme.device.mobile} {
     padding: 8rem 2rem 0;
@@ -61,6 +63,7 @@ const PostFormImgBtn = styled.div`
     justify-content: center;
     padding: 2rem 0;
     border: ${({ theme }) => theme.pointColor.border};
+    background: ${({ theme }) => theme.pointColor.bg};
     border-right: 0;
     font-size: 1.4rem;
     font-weigth: bold;
@@ -90,23 +93,33 @@ const PostTextArea = styled.textarea`
 
 const PostForm = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const { imagePath, singlePost } = useSelector((state) => state.post)
   const { register, trigger, handleSubmit } = useForm()
-
-  const [editMode, setEditMode] = useState(false)
-  useEffect(() => {
-    if (singlePost) {
-      setEditMode(true)
-    }
-  }, [singlePost])
 
   // 1이면 api 2이면 file
   const [selectedCheck, setSelectedCheck] = useState(null)
 
+  const [editMode, setEditMode] = useState(false)
+  const [EditpostImg, setEditpostImg] = useState("")
+  const [category, setCategory] = useState("")
   const [rating, setRating] = useState(0.5)
+  useEffect(() => {
+    if (singlePost) {
+      setEditMode(true)
+      const img = singlePost.Images[0].src
+      setEditpostImg(
+        img.includes("http") ? img : `http://localhost:3063/${img}`,
+      )
+      setSelectedCheck(3)
+      setCategory(singlePost.category)
+      setRating(singlePost.rating)
+    }
+  }, [])
+
   const onSubmit = useCallback(
     (data) => {
-      const totalData = { ...data, imagePath, rating }
+      const totalData = { ...data, imagePath, rating, category }
       const formData = new FormData()
       for (const key in totalData) {
         formData.append(key, totalData[key])
@@ -123,7 +136,7 @@ const PostForm = () => {
           data: totalData,
         })
       }
-      Router.push("/board")
+      router.push("/board")
       window.scrollTo(0, 0)
     },
     [imagePath, rating],
@@ -151,18 +164,6 @@ const PostForm = () => {
     [imagePath],
   )
 
-  const EditModeImg = useCallback(() => {
-    let img
-    if (singlePost) {
-      selectedCheck(3)
-      img = singlePost.Images[0].src
-      if (!img.includes("http")) {
-        img = `http://localhost:3063/${img}`
-      }
-    }
-    return img
-  }, [])
-
   const imgSrc = useCallback(() => {
     switch (selectedCheck) {
       case 1:
@@ -170,7 +171,7 @@ const PostForm = () => {
       case 2:
         return `http://localhost:3063/${imagePath}`
       case 3:
-        return EditModeImg()
+        return EditpostImg
       default:
         return basicPoster
     }
@@ -193,7 +194,7 @@ const PostForm = () => {
               onChange={onChangeImage}
               onClick={onClickImage}
             />
-            <MovieSrhModal setSelectedCheck={setSelectedCheck} />
+            {/* <MovieSrhModal setSelectedCheck={setSelectedCheck} /> */}
             <button type="button" onClick={onFileUpload}>
               내 이미지
               {/* <Attachment font-size="small" className={classes.iconStyle} /> */}
@@ -201,12 +202,13 @@ const PostForm = () => {
           </PostFormImgBtn>
         </ImgGrid>
         <InputGrid item xs={12} sm={6}>
+          <FormSelect category={category} setCategory={setCategory} />
           <PostFormTit>
             <FormInput
               {...register("title", {
                 required: true,
               })}
-              placeholder="영화제목을 입력해주세요."
+              placeholder="리뷰 제목을 입력해주세요."
               defaultValue={singlePost && singlePost.title}
             />
             <StyledRating
@@ -216,7 +218,6 @@ const PostForm = () => {
               onChange={(_event, newValue) => {
                 setRating(newValue)
               }}
-              defaultValue={singlePost && singlePost.rating}
             />
           </PostFormTit>
           <PostTextArea

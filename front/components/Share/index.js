@@ -2,8 +2,11 @@ import React, { useState, useRef, useEffect, forwardRef } from "react"
 
 import { AttachmentOutlined } from "@material-ui/icons"
 
+import styled from "styled-components"
 import { CopyToClipboard } from "react-copy-to-clipboard"
-
+const Ullayout = styled.ul`
+  background: red;
+`
 const ShareList = (props, ref) => {
   const [url, setUrl] = useState(null)
   const [copy, setCopy] = useState(false)
@@ -16,7 +19,7 @@ const ShareList = (props, ref) => {
 
   return (
     <>
-      <ul ref={ref} style={props.style}>
+      <Ullayout ref={ref} style={props.width >= 767 ? props.style : null}>
         <li>트위터예정</li>
         <li>카카오예정</li>
         <li>
@@ -26,7 +29,7 @@ const ShareList = (props, ref) => {
             </button>
           </CopyToClipboard>
         </li>
-      </ul>
+      </Ullayout>
     </>
   )
 }

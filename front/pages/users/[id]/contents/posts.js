@@ -10,7 +10,7 @@ import { Grid } from "@material-ui/core"
 import wrapper from "../../../../store/configureStore"
 import { LOAD_USER_REQUEST, USER_INFO_REQUEST } from "../../../../reducers/user"
 import { USER_POSTS_REQUEST } from "../../../../reducers/post"
-import PostListContent from "../../../../components/PostListContent"
+import PostListContent from "../../../../components/List/post/PostListContent"
 import Layout from "../../../../components/Layout"
 import { PostTitle } from "../../../../styles/style"
 

@@ -8,7 +8,7 @@ import Modal from "@material-ui/core/Modal"
 
 import styled from "styled-components"
 import { MOVIE_SRH_REQUEST } from "../reducers/movie"
-import { SRH_IMAGE_UPLOAD } from "../reducers/post"
+import { SRH_IMAGE_UPLOAD_REQUEST } from "../reducers/post"
 import { CloseBtn, FormInput, ListPoster } from "../styles/style"
 
 const ModalInner = styled.div`
@@ -17,13 +17,13 @@ const ModalInner = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    width: 400px;
+    width: 640px;
     height: calc(100vh - 50%);
     padding: 4rem;
-    overflowY: auto;
+    overflow-y: auto;
     background: ${theme.pointColor.bg};
     border: ${theme.pointColor.border};
-    boxSizing: border-box;
+    box-sizing: border-box;
 `}
 `
 const SearchBox = styled.div`
@@ -73,22 +73,12 @@ const MovieSrhModal = ({ setSelectedCheck }) => {
     },
     [text],
   )
-  const onClickImage = useCallback(
-    (index) => (e) => {
-      setOpen(false)
-      dispatch({
-        type: SRH_IMAGE_UPLOAD,
-        data: movieSrhList[index].link,
-      })
-      setSelectedCheck(1)
-    },
-    [movieSrhList],
-  )
 
   return (
     <>
       <button type="button" onClick={handleOpen}>
-        검색 <Search font-size="small" style={{ padding: "0 0.5rem" }} />
+        검색
+        {/* 검색 <Search font-size="small" style={{ padding: "0 0.5rem" }} /> */}
       </button>
       <Modal
         open={open}

@@ -1,13 +1,12 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { Grid } from "@material-ui/core"
 
 import PostListContent from "./PostListContent"
-import { POPULAR_POSTS_REQUEST } from "../reducers/post"
+import { POPULAR_POSTS_REQUEST } from "../../../reducers/post"
 
-const PopularList = () => {
-  const dispatch = useDispatch()
+const PostFavorite = () => {
   const { popularPosts } = useSelector((state) => state.post)
 
   // useEffect(() => {
@@ -34,4 +33,4 @@ const PopularList = () => {
   )
 }
 
-export default PopularList
+export default PostFavorite

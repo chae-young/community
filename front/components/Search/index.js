@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 
 import { Search, Close } from "@material-ui/icons"
 import styled from "styled-components"
-import { REVIEW_SEARCH_REQUEST } from "../reducers/post"
+import { REVIEW_SEARCH_REQUEST } from "../../reducers/post"
 
 const SearchBox = styled.div`
   width: 100%;
@@ -49,7 +49,7 @@ const SearchPopup = ({ searchopen, onSearchClose }) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const { register, handleSubmit, watch } = useForm()
-  //const watchAllFields = watch()
+  // const watchAllFields = watch()
   const watchShowText = watch("searchText", false)
   const onSubmit = (data) => {
     //    console.log(data, watchShowText)
@@ -59,9 +59,9 @@ const SearchPopup = ({ searchopen, onSearchClose }) => {
     // })
     router.push({
       pathname: `/search/${watchShowText}`,
-      //query: { word: data.searchText },
+      // query: { word: data.searchText },
     })
-    //Router.push("/search", `/search/${data.searchText}`)
+    // Router.push("/search", `/search/${data.searchText}`)
   }
 
   return (

@@ -27,7 +27,7 @@ const App = ({ Component }) => {
   return (
     <>
       <Head>
-        <title>moviefeeds</title>
+        <title>emotion</title>
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
 

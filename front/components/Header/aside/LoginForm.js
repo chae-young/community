@@ -5,39 +5,30 @@ import PropTypes from "prop-types"
 
 import { TextField, Button } from "@material-ui/core"
 
-import { makeStyles } from "@material-ui/core/styles"
-import { LoginRequestAction } from "../reducers/user"
+import styled from "styled-components"
+import { LoginRequestAction } from "../../../reducers/user"
+import { AsideInputField, ButtonPurple } from "../../../styles/style"
 
-const useStyle = makeStyles((theme) => ({
-  bg: {
-    background: "rgb(249, 137, 15)",
-    "&:hover": {
-      background: "rgb(253, 206, 156)",
-    },
-  },
-}))
-
-const LoginForm = ({ setLoginOn }) => {
-  const { me, loginError, loginLoading } = useSelector((state) => state.user)
+const LoginForm = ({ setAisdeToggle }) => {
+  const { loginDone, loginError } = useSelector((state) => state.user)
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch()
-  const classes = useStyle()
 
   const onSubmit = (data) => {
     dispatch(LoginRequestAction({ data }))
-    setLoginOn(false)
   }
+
   useEffect(() => {
     if (loginError) {
       alert(loginError)
-    } else {
-      setLoginOn(false)
+    } else if (loginDone) {
+      setAisdeToggle(false)
     }
-  }, [loginError])
+  }, [loginError, loginDone])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="aside__input-field">
+      <AsideInputField>
         <TextField
           id="userid"
           label="아이디"
@@ -45,8 +36,8 @@ const LoginForm = ({ setLoginOn }) => {
           fullWidth
           required
         />
-      </div>
-      <div className="aside__input-field">
+      </AsideInputField>
+      <AsideInputField>
         <TextField
           type="password"
           id="user-password"
@@ -55,22 +46,23 @@ const LoginForm = ({ setLoginOn }) => {
           fullWidth
           required
         />
-      </div>
-      <Button
-        variant="contained"
-        color="primary"
+      </AsideInputField>
+      <ButtonPurple
         type="submit"
-        fullWidth
-        className={classes.bg}
+        xs={{
+          width: "100%",
+          height: "6rem",
+          margin: "4rem 0 0",
+        }}
       >
         로그인
-      </Button>
+      </ButtonPurple>
     </form>
   )
 }
 
 LoginForm.propTypes = {
-  setLoginOn: PropTypes.func.isRequired,
+  setAisdeToggle: PropTypes.func.isRequired,
 }
 
 export default LoginForm

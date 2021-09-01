@@ -1,19 +1,23 @@
-import React from "react"
+import React, { useEffect } from "react"
 import axios from "axios"
+import Head from "next/head"
 import { useSelector } from "react-redux"
 import { END } from "@redux-saga/core"
 import { useRouter } from "next/router"
+import Link from "next/link"
 
-import ProfileLayout from "../../components/ProfileLayout"
+import styled from "styled-components"
 import { LOAD_USER_REQUEST, USER_INFO_REQUEST } from "../../reducers/user"
 import wrapper from "../../store/configureStore"
 import Layout from "../../components/Layout"
-import { useEffect } from "react"
+import FollowButton from "../../components/Follow/btn"
+import { AvatarSize, minContainer, PostTitle } from "../../styles/style"
 
 const Users = () => {
   const router = useRouter()
   const { id } = router.query
   const { me, userInfo } = useSelector((state) => state.user)
+  const notMe = me.id !== userInfo.id
 
   useEffect(() => {
     if (!me) {
@@ -26,12 +30,71 @@ const Users = () => {
     return <div>로딩중</div>
   }
 
-  return <>{me && <ProfileLayout userInfo={userInfo} />}</>
+  return (
+    <>
+      <Head>
+        <title>{userInfo.nickname}님의 프로필</title>
+        <meta name="description" content={`${userInfo.nickname}님의 게시글`} />
+      </Head>
+      <Layout>
+        <UserProfile>
+          <PostTitle>
+            <b>{userInfo.nickname}</b>님 프로필
+          </PostTitle>
+          <ProfileWrap>
+            <UserImg>
+              {notMe && <FollowButton id={userInfo.id} />}
+              {!notMe && (
+                <Link href={`/edit/${userInfo.id}`}>
+                  <a>
+                    <AvatarSize
+                      alt={userInfo.nickname}
+                      src={`http://localhost:3063/profile/${userInfo.src}`}
+                    />
+                  </a>
+                </Link>
+              )}
+            </UserImg>
+            <UserInfoBtn>
+              <li>
+                <Link href={`/users/${userInfo.id}/contents/posts`}>
+                  <a>게시글 {userInfo.Posts}</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={`/users/${userInfo.id}/followers`}>
+                  <a>팔로워 {userInfo.Followers}</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={`/users/${userInfo.id}/followings`}>
+                  <a>팔로잉 {userInfo.Followings}</a>
+                </Link>
+              </li>
+            </UserInfoBtn>
+          </ProfileWrap>
+        </UserProfile>
+      </Layout>
+    </>
+  )
 }
 
-// export async function getStaticPaths() {
-//   return { paths: [{ params: { id: "0" } }], fallback: true }
-// }
+const UserProfile = styled.div`
+  ${minContainer}
+  text-align: center;
+`
+const ProfileWrap = styled.div``
+const UserInfoBtn = styled.div`
+  max-width: 280px;
+  margin: auto;
+  display: flex;
+  > li {
+    flex: 1;
+    padding: 2rem 0;
+    font-size: 1.2rem;
+  }
+`
+const UserImg = styled.div``
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {

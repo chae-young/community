@@ -3,21 +3,15 @@ import { useForm } from "react-hook-form"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 
-import { makeStyles } from "@material-ui/core/styles"
-import { TextField, Button } from "@material-ui/core"
+import { TextField } from "@material-ui/core"
 
-import { SIGN_UP_REQUEST } from "../reducers/user"
+import { SIGN_UP_REQUEST } from "../../../reducers/user"
+import { AsideInputField, ButtonPurple } from "../../../styles/style"
 
-const useStyle = makeStyles((theme) => ({
-  bg: {
-    background: "red",
-  },
-}))
-
-const Signup = ({ setLoginOn }) => {
-  const classes = useStyle()
+const Signup = ({ setAisdeToggle }) => {
   const dispatch = useDispatch()
   const { signUpDone } = useSelector((state) => state.user)
+  const [signupComplete, setSignupComplete] = useState(false)
   const {
     register,
     handleSubmit,
@@ -26,23 +20,29 @@ const Signup = ({ setLoginOn }) => {
   } = useForm()
 
   useEffect(() => {
-    if (signUpDone) {
+    if (signupComplete) {
       alert("가입이 완료되었습니다")
     }
-  }, [signUpDone])
+  }, [signupComplete])
 
-  const onSubmit = useCallback((data) => {
-    console.log(data)
-    dispatch({
-      type: SIGN_UP_REQUEST,
-      data,
-    })
-    setLoginOn(false)
-  }, [])
+  const onSubmit = useCallback(
+    (data, e) => {
+      dispatch({
+        type: SIGN_UP_REQUEST,
+        data,
+      })
+      if (signUpDone) {
+        e.target.reset()
+        setSignupComplete(true)
+      }
+      setAisdeToggle(false)
+    },
+    [signUpDone],
+  )
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="aside__input-field">
+      <AsideInputField>
         <TextField
           id="name"
           label="이름"
@@ -50,8 +50,8 @@ const Signup = ({ setLoginOn }) => {
           fullWidth
           required
         />
-      </div>
-      <div className="aside__input-field">
+      </AsideInputField>
+      <AsideInputField>
         <TextField
           id="userId"
           label="아이디"
@@ -59,8 +59,8 @@ const Signup = ({ setLoginOn }) => {
           fullWidth
           required
         />
-      </div>
-      <div className="aside__input-field">
+      </AsideInputField>
+      <AsideInputField>
         <TextField
           id="nickname"
           label="닉네임"
@@ -68,8 +68,8 @@ const Signup = ({ setLoginOn }) => {
           fullWidth
           required
         />
-      </div>
-      <div className="aside__input-field">
+      </AsideInputField>
+      <AsideInputField>
         <TextField
           type="password"
           id="password"
@@ -83,8 +83,8 @@ const Signup = ({ setLoginOn }) => {
         {errors?.password?.type === "minLength" && (
           <p>비밀번호 8자 이상으로 입력해주세요.</p>
         )}
-      </div>
-      <div className="aside__input-field">
+      </AsideInputField>
+      <AsideInputField>
         <TextField
           type="password"
           id="password-check"
@@ -98,22 +98,23 @@ const Signup = ({ setLoginOn }) => {
         {errors?.passwordCheck?.type === "validate" && (
           <p>비밀번호가 틀립니다.</p>
         )}
-      </div>
-      <Button
-        variant="contained"
-        color="primary"
+      </AsideInputField>
+      <ButtonPurple
         type="submit"
-        fullWidth
-        className={classes.bg}
+        xs={{
+          width: "100%",
+          height: "6rem",
+          margin: "4rem 0 0",
+        }}
       >
         가입하기
-      </Button>
+      </ButtonPurple>
     </form>
   )
 }
 
 Signup.propTypes = {
-  setLoginOn: PropTypes.func.isRequired,
+  setAisdeToggle: PropTypes.func.isRequired,
 }
 
 export default Signup
