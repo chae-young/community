@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useState, useRef, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
@@ -11,16 +10,16 @@ import {
   ADD_POST_REQUEST,
   EDIT_POST_REQUEST,
   IMAGE_UPLOAD_REQUEST,
-} from "../reducers/post"
-import MovieSrhModal from "./MovieSrhModal"
+} from "../../../reducers/post"
+import MovieSrhModal from "../../MovieSrhModal"
 import basicPoster from "../images/noimage.png"
 import {
   FormInput,
   StyledRating,
   ButtonPurple,
   headerHeight,
-} from "../styles/style"
-import FormSelect from "./FormSelect"
+} from "../../../styles/style"
+import FormSelect from "../category"
 
 const ImgGrid = styled(Grid)`
   position: relative;

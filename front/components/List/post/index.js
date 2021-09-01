@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 
-import { LOAD_POSTS_REQUEST } from "../reducers/post"
-import { LOAD_USER_REQUEST } from "../reducers/user"
+import { LOAD_POSTS_REQUEST } from "../../../reducers/post"
+import { LOAD_USER_REQUEST } from "../../../reducers/user"
 import PostListContent from "./PostListContent"
 
 const useStyles = makeStyles({

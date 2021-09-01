@@ -1,9 +1,9 @@
+import React from "react"
 import axios from "axios"
-import { useSelector } from "react-redux"
 import { END } from "redux-saga"
 
 import Layout from "../../../components/Layout"
-import PostForm from "../../../components/PostForm"
+import PostForm from "../../../components/Post/form"
 import wrapper from "../../../store/configureStore"
 import { LOAD_USER_REQUEST } from "../../../reducers/user"
 import { LOAD_POST_REQUEST } from "../../../reducers/post"
