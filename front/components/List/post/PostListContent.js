@@ -3,14 +3,11 @@ import PropTypes from "prop-types"
 import Link from "next/link"
 
 import { makeStyles } from "@material-ui/core/styles"
-import { Grid } from "@material-ui/core"
+import Grid from "@material-ui/core/Grid"
 
-import {
-  ListPoster,
-  StyledRating,
-  Ratebox,
-  ListContent,
-} from "../../../styles/style"
+import { ListPoster, ListContent } from "../../../styles/style"
+import PostCategoryTag from "./PostCategoryTag"
+import PostRating from "../../Post/rating"
 
 const useStyles = makeStyles((theme) => ({
   root: (props) => ({
@@ -32,21 +29,19 @@ const PostListContent = ({ post, ...rest }) => {
         <a>
           <ListPoster heightVal="25em">
             <img
-              src={
-                post.Images[0].src.includes("http")
-                  ? post.Images[0].src
-                  : `http://localhost:3063/${post.Images[0].src}`
-              }
+              src={`http://localhost:3063/${post.Images[0].src}`}
               width="100%"
               alt={post.title}
             />
+            <PostCategoryTag category={post.category} />
           </ListPoster>
           <ListContent>
             <p>{post.title}</p>
-            <Ratebox>
+            <PostRating rate={post.rating} />
+            {/* <Ratebox>
               <StyledRating precision={0.1} value={post.rating} readOnly />
               <span>{post.rating.substring(0, 3)}</span>
-            </Ratebox>
+            </Ratebox> */}
           </ListContent>
         </a>
       </Link>
@@ -58,7 +53,8 @@ PostListContent.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
-    rating: PropTypes.string,
+    category: PropTypes.string,
+    rating: PropTypes.number,
     Images: PropTypes.array,
   }).isRequired,
 }

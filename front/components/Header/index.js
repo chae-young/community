@@ -1,17 +1,18 @@
 import React, { useState, useCallback, useRef } from "react"
+import Image from "next/image"
 import { useSelector } from "react-redux"
 import Link from "next/link"
 
 import { Search } from "@material-ui/icons"
-import { Avatar } from "@material-ui/core"
 
 import styled from "styled-components"
-import LogoImg from "../../public/images/logo.png"
+import LogoImg from "./images/logo.png"
 import HeaderUserPopover from "./HeaderUserPopover"
-import UserImg from "../../images/common/icon_user.png"
+import UserImg from "./images/icon_user.png"
 import SearchPopup from "../Search"
 import HeaderAside from "./aside"
 import { headerHeight } from "../../styles/style"
+import ProfileAvatar from "../Profile/Avatar"
 
 const Header = () => {
   const { me } = useSelector((state) => state.user)
@@ -45,9 +46,9 @@ const Header = () => {
         <InnerHeader>
           <Logo>
             <Link href="/">
-              <h1>
-                <img src={LogoImg} alt="emotion" width="50%" />
-              </h1>
+              <a>
+                <Image src={LogoImg} alt="emotion" layout="fill" />
+              </a>
             </Link>
           </Logo>
           <Nav>
@@ -60,10 +61,7 @@ const Header = () => {
               <li>
                 <button type="button" onClick={userIconClick}>
                   {me ? (
-                    <Avatar
-                      alt={me.nickname}
-                      src={`http://localhost:3063/profile/${me.src}`}
-                    />
+                    <ProfileAvatar src={me.src} alt={me.nickname} />
                   ) : (
                     <UserIcon />
                   )}
@@ -94,6 +92,7 @@ const Logo = styled.h1`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
 `
 const HeaderWrap = styled.header`
   position: fixed;
@@ -125,6 +124,13 @@ const HeaderUtillMenu = styled.ul`
   > li:first-child {
     padding: 0 2rem;
     font-weight: bold;
+
+    @media ${({ theme }) => theme.device.mobile} {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
   & li + li {
     margin: 0 0 0 1rem;

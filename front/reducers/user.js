@@ -1,5 +1,4 @@
-import shortid from "shortid"
-import produce from "immer"
+import produce from "../utill/produce"
 
 export const initialState = {
   loadUserLoading: false,
@@ -81,7 +80,7 @@ export const LoginRequestAction = (data) => ({
   ...data,
 })
 
-//dummyFollow(10)
+// dummyFollow(10)
 export const dummyFollow = (data) =>
   Array(data)
     .fill()

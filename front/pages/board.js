@@ -58,7 +58,7 @@ const Board = () => {
             post={v}
             xs={6}
             sm={4}
-            padding={{ d: "0 0 80px 0", m: "0 20px 40px 20px" }}
+            padding={{ d: "0 1rem 8rem 1rem", m: "0 20px 40px 20px" }}
           />
         ))}
       </Grid>

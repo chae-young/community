@@ -7,14 +7,13 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import SwiperCore, { Navigation } from "swiper/core"
 import "swiper/swiper.min.css"
 import "swiper/components/navigation/navigation.min.css"
-import { Grid } from "@material-ui/core"
+import Grid from "@material-ui/core/Grid"
 
 import styled from "styled-components"
 import Layout from "../components/Layout"
 import wrapper from "../store/configureStore"
 import { LOAD_USER_REQUEST } from "../reducers/user"
-import { NOW_SCREENING_MOVIE_REQUEST } from "../reducers/movie"
-import { POPULAR_POSTS_REQUEST } from "../reducers/post"
+import { DRAMA_POSTS_REQUEST, POPULAR_POSTS_REQUEST } from "../reducers/post"
 import PostListContent from "../components/List/post/PostListContent"
 import NowMovieContent from "../components/NowMovieContent"
 
@@ -29,8 +28,7 @@ const MainSlider = styled.section`
   }
 `
 const Main = () => {
-  const { popularPosts } = useSelector((state) => state.post)
-  const { nowScreeningMovie } = useSelector((state) => state.movie)
+  const { popularPosts, dramaPosts } = useSelector((state) => state.post)
 
   const breakpoints = {
     320: {
@@ -46,21 +44,6 @@ const Main = () => {
   return (
     <Layout>
       <MainSlider>
-        <h2>현재 상영영화</h2>
-        <Swiper
-          navigation
-          slidesPerGroup={1}
-          className="mySwiper"
-          breakpoints={breakpoints}
-        >
-          {nowScreeningMovie.map((v) => (
-            <SwiperSlide>
-              <NowMovieContent post={v} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </MainSlider>
-      <MainSlider>
         <h2>인기 포스트</h2>
         <Swiper
           navigation
@@ -69,6 +52,24 @@ const Main = () => {
           breakpoints={breakpoints}
         >
           {popularPosts.map((v) => (
+            <SwiperSlide>
+              <Grid container>
+                <PostListContent post={v} xs={12} sm={12} />
+              </Grid>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </MainSlider>
+      <MainSlider>
+        <h2>드라마</h2>
+        <Swiper
+          navigation
+          slidesPerGroup={1}
+          className="mySwiper"
+          breakpoints={breakpoints}
+        >
+          {console.log(dramaPosts)}
+          {dramaPosts.map((v) => (
             <SwiperSlide>
               <Grid container>
                 <PostListContent post={v} xs={12} sm={12} />
@@ -92,13 +93,15 @@ export const getServerSideProps = wrapper.getServerSideProps(
       type: LOAD_USER_REQUEST,
     })
     context.store.dispatch({
-      type: NOW_SCREENING_MOVIE_REQUEST,
+      type: DRAMA_POSTS_REQUEST,
+      data: 10,
     })
     context.store.dispatch({
       type: POPULAR_POSTS_REQUEST,
       data: 10,
     })
     context.store.dispatch(END)
+    console.log(context.store.getState())
     await context.store.sagaTask.toPromise()
     return { props: {} }
   },

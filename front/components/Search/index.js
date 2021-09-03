@@ -69,7 +69,7 @@ const SearchPopup = ({ searchopen, onSearchClose }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="inner">
           <Input
-            placeholder="보고싶은 리뷰 영화제목을 검색해주세요"
+            placeholder="보고싶은 리뷰 제목을 검색해주세요"
             {...register("searchText")}
             autoFocus
           />

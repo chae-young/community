@@ -9,13 +9,13 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
-  Avatar,
   ButtonGroup,
   Button,
 } from "@material-ui/core"
 
 import CommentForm from "./CommentForm"
 import { REMOVE_COMMENT_REQUEST } from "../../reducers/post"
+import ProfileAvatar from "../Profile/Avatar"
 
 const OptionButton = styled(Button)({
   minWidth: "25px",
@@ -56,10 +56,7 @@ const CommentList = ({ currentPostId, comments }) => {
       {comments.map((v) => (
         <ListItem key={v.id} alignItems="flex-start" disableGutters>
           <ListItemAvatar>
-            <Avatar
-              alt={v.User.nickname}
-              src={`http://localhost:3063/profile/${v.User.src}`}
-            />
+            <ProfileAvatar alt={v.User.nickname} src={v.User.src} />
           </ListItemAvatar>
           {edit && myComment(v.UserId) ? (
             <CommentForm

@@ -11,13 +11,13 @@ import { LOAD_USER_REQUEST, USER_INFO_REQUEST } from "../../reducers/user"
 import wrapper from "../../store/configureStore"
 import Layout from "../../components/Layout"
 import FollowButton from "../../components/Follow/btn"
-import { AvatarSize, minContainer, PostTitle } from "../../styles/style"
+import { minContainer, PostTitle } from "../../styles/style"
+import ProfileAvatar from "../../components/Profile/Avatar"
 
 const Users = () => {
   const router = useRouter()
   const { id } = router.query
   const { me, userInfo } = useSelector((state) => state.user)
-  const notMe = me.id !== userInfo.id
 
   useEffect(() => {
     if (!me) {
@@ -29,7 +29,7 @@ const Users = () => {
   if (!userInfo) {
     return <div>로딩중</div>
   }
-
+  const notMe = me.id !== userInfo.id
   return (
     <>
       <Head>
@@ -43,17 +43,20 @@ const Users = () => {
           </PostTitle>
           <ProfileWrap>
             <UserImg>
+              <Link
+                href={
+                  notMe ? `/users/${userInfo.id}` : `/users/edit/${userInfo.id}`
+                }
+              >
+                <a>
+                  <ProfileAvatar
+                    src={userInfo.src}
+                    alt={userInfo.nickname}
+                    size={140}
+                  />
+                </a>
+              </Link>
               {notMe && <FollowButton id={userInfo.id} />}
-              {!notMe && (
-                <Link href={`/edit/${userInfo.id}`}>
-                  <a>
-                    <AvatarSize
-                      alt={userInfo.nickname}
-                      src={`http://localhost:3063/profile/${userInfo.src}`}
-                    />
-                  </a>
-                </Link>
-              )}
             </UserImg>
             <UserInfoBtn>
               <li>
@@ -94,7 +97,11 @@ const UserInfoBtn = styled.div`
     font-size: 1.2rem;
   }
 `
-const UserImg = styled.div``
+const UserImg = styled.div`
+  > button {
+    margin-top: 2rem;
+  }
+`
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {

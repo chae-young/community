@@ -7,7 +7,7 @@ import {
   StylesProvider,
   ThemeProvider as MuiThemeProvider,
   createMuiTheme,
-} from "@material-ui/core"
+} from "@material-ui/core/styles"
 
 import "../styles/swiper.css"
 import GlobalStyle from "../styles/GlobalStyle"

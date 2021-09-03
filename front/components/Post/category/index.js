@@ -11,14 +11,14 @@ const SelectBox = styled(Select)`
     background: none;
   }
 `
-const Category = ({ val, setCategory }) => {
+const Category = ({ categoryName, setCategory }) => {
   const handleChange = (event) => {
     setCategory(event.target.value)
   }
   return (
     <>
       <SelectBox
-        value={val}
+        value={categoryName}
         onChange={handleChange}
         displayEmpty
         disableUnderline
@@ -26,16 +26,16 @@ const Category = ({ val, setCategory }) => {
         <MenuItem value="">
           <em>카테고리</em>
         </MenuItem>
-        <MenuItem value={0}>영화</MenuItem>
-        <MenuItem value={1}>드라마</MenuItem>
-        <MenuItem value={2}>다큐</MenuItem>
+        <MenuItem value="MOVIE">MOVIE</MenuItem>
+        <MenuItem value="DRAMA">DRAMA</MenuItem>
+        <MenuItem value="DOCUMENTARY">DOCUMENTARY</MenuItem>
       </SelectBox>
     </>
   )
 }
 
 Category.propTypes = {
-  val: PropTypes.number.isRequired,
+  categoryName: PropTypes.string.isRequired,
   setCategory: PropTypes.func.isRequired,
 }
 export default Category

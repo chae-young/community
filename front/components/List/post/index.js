@@ -56,7 +56,12 @@ const PostList = () => {
   return (
     <Grid container className={classes.root} spacing={1}>
       {postList.map((v) => (
-        <PostListContent post={v} xs={6} sm={3} />
+        <PostListContent
+          post={v}
+          xs={6}
+          sm={3}
+          padding={{ d: "0 1rem 8rem 1rem", m: "80px 0 0 0" }}
+        />
       ))}
     </Grid>
   )

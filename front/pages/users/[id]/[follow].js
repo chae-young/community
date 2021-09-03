@@ -12,7 +12,6 @@ import {
   ListItemAvatar,
   ListSubheader,
   ListItemSecondaryAction,
-  Avatar,
 } from "@material-ui/core"
 
 import styled from "styled-components"
@@ -25,6 +24,7 @@ import {
 import FollowButton from "../../../components/Follow/btn"
 import { minContainer } from "../../../styles/style"
 import Layout from "../../../components/Layout"
+import ProfileAvatar from "../../../components/Profile/Avatar"
 
 const FollowContent = styled.div`
   ${minContainer}
@@ -70,22 +70,19 @@ const Follow = () => {
           }
         >
           {followList.map((v) => (
-            <Link href={`/users/${v.id}`}>
-              <a>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={v.nickname}
-                      src={`http://localhost:3063/profile/${v.src}`}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText primary={v.nickname} />
-                  <ListItemSecondaryAction>
-                    <FollowButton id={v.id} />
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </a>
-            </Link>
+            <ListItem disableGutters>
+              <ListItemAvatar>
+                <Link href={`/users/${v.id}`}>
+                  <a>
+                    <ProfileAvatar alt={v.nickname} src={v.src} />
+                  </a>
+                </Link>
+              </ListItemAvatar>
+              <ListItemText primary={v.nickname} />
+              <ListItemSecondaryAction>
+                <FollowButton id={v.id} />
+              </ListItemSecondaryAction>
+            </ListItem>
           ))}
         </List>
       </FollowContent>

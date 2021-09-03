@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 import { END } from "redux-saga"
 import axios from "axios"
+import { useRouter } from "next/router"
 
 import { TextField } from "@material-ui/core"
 
@@ -14,8 +15,9 @@ import {
   USER_INFO_REQUEST,
 } from "../../../reducers/user"
 import wrapper from "../../../store/configureStore"
-import { AvatarSize, ButtonPurple, minContainer } from "../../../styles/style"
+import { ButtonPurple, minContainer } from "../../../styles/style"
 import Layout from "../../../components/Layout"
+import ProfileAvatar from "../../../components/Profile/Avatar"
 
 const EditForm = styled.div`
   ${minContainer}
@@ -25,27 +27,39 @@ const EditInput = styled.div`
   margin: auto;
 `
 const edit = () => {
-  const { register, handleSubmit } = useForm()
+  const router = useRouter()
+  const { register, handleSubmit, watch } = useForm()
   const dispatch = useDispatch()
   const { me, userInfo } = useSelector((state) => state.user)
 
+  useEffect(() => {
+    if (!me) {
+      alert("로그인이 필요합니다.")
+      router.push("/")
+    }
+  }, [me])
+
   const inputFile = useRef(null)
-  const onFileUpload = () => {
+  const onFileUpload = useCallback(() => {
     inputFile.current.click()
-  }
-  const onClickImage = (e) => {
+  }, [])
+  const onClickImage = useCallback((e) => {
     e.target.value = null
-  }
-  const onSubmit = (data) => {
-    const editFormData = new FormData()
-    editFormData.append("nickname", data.nickname)
-    editFormData.append("image", me.src)
-    console.log(data.nickname, me.Image)
-    dispatch({
-      type: PROFILE_EDIT_REQUEST,
-      data: editFormData,
-    })
-  }
+  }, [])
+  const onSubmit = useCallback(
+    (data) => {
+      const editFormData = new FormData()
+      const nickname = watch("nickname")
+      console.log(nickname, me.nickname, data.nickname)
+      editFormData.append("nickname", nickname)
+      editFormData.append("image", me.src)
+      dispatch({
+        type: PROFILE_EDIT_REQUEST,
+        data: editFormData,
+      })
+    },
+    [me],
+  )
 
   const onChangeImage = useCallback((e) => {
     const imageFormData = new FormData()
@@ -60,11 +74,13 @@ const edit = () => {
     <Layout>
       <EditForm>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-          <AvatarSize
-            alt={me.nickname}
-            onClick={onFileUpload}
-            src={`http://localhost:3063/profile/${me.src}`}
-          />
+          <div onClick={onFileUpload}>
+            <ProfileAvatar
+              size={140}
+              alt={me.nickname}
+              src={`http://localhost:3063/profile/${me.src}`}
+            />
+          </div>
           <input
             type="file"
             ref={inputFile}
@@ -101,6 +117,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
     const cookie = context.req ? context.req.headers.cookie : ""
     axios.defaults.headers.Cookie = ""
+
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie
     }

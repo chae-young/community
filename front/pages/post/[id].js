@@ -48,6 +48,12 @@ const Post = () => {
   const PostArticle = useRef(null)
 
   const { me } = useSelector((state) => state.user)
+  useEffect(() => {
+    if (!me) {
+      alert("로그인이 필요합니다.")
+      router.push("/")
+    }
+  }, [me])
   const { singlePost } = useSelector((state) => state.post)
   const img = singlePost?.Images[0].src
 

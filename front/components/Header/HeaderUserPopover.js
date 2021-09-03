@@ -2,20 +2,24 @@ import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 import Link from "next/link"
+import { useRouter } from "next/router"
 
-import { Popover, Avatar } from "@material-ui/core"
+import Popover from "@material-ui/core/Popover"
 
 import styled from "styled-components"
 import { LOG_OUT_REQUEST } from "../../reducers/user"
+import ProfileAvatar from "../Profile/Avatar"
 
 const MypopOver = ({ options }) => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const { me } = useSelector((state) => state.user)
 
   const handleClose = useCallback(() => {
     options.setAnchorEl(null)
   }, [])
   const onLogout = useCallback(() => {
+    router.replace("/")
     dispatch({ type: LOG_OUT_REQUEST })
     handleClose()
   })
@@ -28,11 +32,12 @@ const MypopOver = ({ options }) => {
     >
       <PopoverInner>
         <div>
-          <Avatar
+          <ProfileAvatar src={me.src} alt={me.nickname} />
+          {/* <Avatar
             alt={me.nickname}
             src={`http://localhost:3063/profile/${me.src}`}
             width="10%"
-          />
+          /> */}
         </div>
         <PopoverInfo>
           <div className="profile-user">
@@ -54,12 +59,14 @@ const MypopOver = ({ options }) => {
 }
 
 const PopoverWrap = styled(Popover)`
+  min-width: 140px;
   & .MuiPopover-paper {
     border: ${({ theme }) => theme.pointColor.border};
     background: ${({ theme }) => theme.pointColor.bg};
   }
 `
 const PopoverInner = styled.div`
+  display: flex;
   padding: 1.5rem;
 `
 const PopoverInfo = styled.div`

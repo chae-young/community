@@ -1,12 +1,12 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-import { StyledRating, Ratebox, ListContent } from "../styles/style"
+import { StyledRating, Ratebox } from "../styles/style"
 
 const NowMovieContent = ({ post }) => {
   return (
     <>
-      <a
+      {/* <a
         href={`https://movie.naver.com/${post.href}`}
         target="_balnk"
         rel="noopener noreferrer"
@@ -24,7 +24,7 @@ const NowMovieContent = ({ post }) => {
             <span>{post.star && Number(post.star.substring(0, 4))}</span>
           </Ratebox>
         </ListContent>
-      </a>
+      </a> */}
     </>
   )
 }

@@ -1,7 +1,4 @@
 import styled, { css } from "styled-components"
-import { withStyles } from "@material-ui/core/styles"
-import Rating from "@material-ui/lab/Rating"
-import { Avatar } from "@material-ui/core"
 import theme from "./theme"
 
 export const headerHeight = "65px"
@@ -37,11 +34,7 @@ export const PostTitle = styled.h2`
     color: ${theme.pointColor.purple};
   }
 `
-export const AvatarSize = styled(Avatar)`
-  width: 120px;
-  height: 120px;
-  margin: auto;
-`
+
 export const ButtonPurple = styled.button`
   display: block;
   text-align: center;
@@ -66,6 +59,7 @@ export const ButtonPurple = styled.button`
   }
 `
 export const ListPoster = styled.div`
+  position: relative;
   width: 100%;
   height: ${(props) => props.heightVal};
   box-sizing: border-box;
@@ -87,21 +81,6 @@ export const ListContent = styled.div`
     margin-bottom: 0.5em;
   }
 `
-export const Ratebox = styled.div`
-  display: flex;
-  > span {
-    align-self: flex-end;
-    padding-right: 0.3em;
-  }
-`
-export const StyledRating = withStyles({
-  iconFilled: {
-    color: "rgb(252,145,72)",
-  },
-  iconHover: {
-    color: "rgb(252,145,72)",
-  },
-})(Rating)
 
 export const FormInput = styled.input`
   width: 100%;

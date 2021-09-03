@@ -8,8 +8,10 @@ import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 
 import wrapper from "../../store/configureStore"
-import PostListContent from "../../components/PostListContent"
+import PostListContent from "../../components/List/post/PostListContent"
 import { REVIEW_SEARCH_REQUEST } from "../../reducers/post"
+import Layout from "../../components/Layout"
+import { LOAD_USER_REQUEST } from "../../reducers/user"
 
 const useStyles = makeStyles({
   root: {
@@ -60,16 +62,26 @@ const Search = () => {
   }, [searchList, reviewSearchLoading, flag])
 
   return (
-    <Grid container className={classes.root} spacing={1}>
-      {searchList.map((v) => (
-        <PostListContent post={v} xs={6} sm={3} />
-      ))}
-    </Grid>
+    <Layout>
+      <Grid container className={classes.root} spacing={1}>
+        {searchList.map((v) => (
+          <PostListContent post={v} xs={6} sm={3} />
+        ))}
+      </Grid>
+    </Layout>
   )
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : ""
+    axios.defaults.headers.Cookie = ""
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie
+    }
+    context.store.dispatch({
+      type: LOAD_USER_REQUEST,
+    })
     context.store.dispatch({
       type: REVIEW_SEARCH_REQUEST,
       data: context.params.word,

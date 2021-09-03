@@ -1,9 +1,9 @@
-import produce from "immer"
-import shortid from "shortid"
+import produce from "../utill/produce"
 
 export const initialState = {
   postList: [],
   popularPosts: [],
+  dramaPosts: [],
   searchList: [],
   singlePost: null,
   imagePath: "",
@@ -25,6 +25,9 @@ export const initialState = {
   popularPostsLoading: false,
   popularPostsDone: false,
   popularPostsError: null,
+  dramaPostsLoading: false,
+  dramaPostsDone: false,
+  dramaPostsError: null,
   postCount: 0,
   currentPost: null,
   addCommentLoading: false,
@@ -118,6 +121,10 @@ export const USER_POSTS_FAILURE = "USER_POSTS_FAILURE"
 export const POPULAR_POSTS_REQUEST = "POPULAR_POSTS_REQUEST"
 export const POPULAR_POSTS_SUCCESS = "POPULAR_POSTS_SUCCESS"
 export const POPULAR_POSTS_FAILURE = "POPULAR_POSTS_FAILURE"
+
+export const DRAMA_POSTS_REQUEST = "DRAMA_POSTS_REQUEST"
+export const DRAMA_POSTS_SUCCESS = "DRAMA_POSTS_SUCCESS"
+export const DRAMA_POSTS_FAILURE = "DRAMA_POSTS_FAILURE"
 
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST"
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS"
@@ -257,6 +264,20 @@ const reducer = (state = initialState, action) =>
       case POPULAR_POSTS_FAILURE:
         draft.popularPostsDone = false
         draft.popularPostsError = action.error
+        break
+      case DRAMA_POSTS_REQUEST:
+        draft.dramaPostsLoading = true
+        draft.dramaPostsDone = false
+        break
+      case DRAMA_POSTS_SUCCESS: {
+        draft.dramaPostsLoading = false
+        draft.dramaPosts = draft.dramaPosts.concat(action.data)
+        draft.dramaPostsDone = true
+        break
+      }
+      case DRAMA_POSTS_FAILURE:
+        draft.dramaPostsDone = false
+        draft.dramaPostsError = action.error
         break
       case ADD_COMMENT_REQUEST:
         draft.addCommentLoading = true

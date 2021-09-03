@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useRef, useEffect } from "react"
+import Image from "next/image"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
@@ -11,8 +12,7 @@ import {
   EDIT_POST_REQUEST,
   IMAGE_UPLOAD_REQUEST,
 } from "../../../reducers/post"
-import MovieSrhModal from "../../MovieSrhModal"
-import basicPoster from "../images/noimage.png"
+import basicPoster from "./images/noimage.png"
 import {
   FormInput,
   StyledRating,
@@ -20,6 +20,176 @@ import {
   headerHeight,
 } from "../../../styles/style"
 import FormSelect from "../category"
+
+const PostForm = () => {
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const { imagePath, singlePost, postAddError } = useSelector(
+    (state) => state.post,
+  )
+  const { register, trigger, handleSubmit } = useForm()
+
+  // 1이면 api 2이면 file
+  const [selectedCheck, setSelectedCheck] = useState(null)
+
+  const [editMode, setEditMode] = useState(false)
+  const [EditpostImg, setEditpostImg] = useState("")
+  const [category, setCategory] = useState("")
+  const [rating, setRating] = useState(0.5)
+
+  useEffect(() => {
+    if (singlePost) {
+      setEditMode(true)
+      const img = singlePost.Images[0].src
+      setEditpostImg(`http://localhost:3063/${img}`)
+      setSelectedCheck(3)
+      setCategory(singlePost.category)
+      setRating(singlePost.rating)
+    }
+  }, [])
+
+  const onSubmit = useCallback(
+    (data) => {
+      const totalData = { ...data, imagePath, rating, category }
+      const formData = new FormData()
+      for (const key in totalData) {
+        formData.append(key, totalData[key])
+      }
+      if (editMode) {
+        const editData = { ...totalData, postId: singlePost.id }
+        dispatch({
+          type: EDIT_POST_REQUEST,
+          editData,
+        })
+      } else {
+        dispatch({
+          type: ADD_POST_REQUEST,
+          data: totalData,
+        })
+      }
+      router.push("/board")
+      window.scrollTo(0, 0)
+    },
+    [imagePath, rating],
+  )
+
+  const inputFile = useRef(null)
+  const onFileUpload = () => {
+    inputFile.current.click()
+  }
+  const onClickImage = (e) => {
+    e.target.value = null
+  }
+
+  const onChangeImage = useCallback(
+    (e) => {
+      console.log("image", e.target.files[0])
+      const imageFormData = new FormData()
+      imageFormData.append("singleimage", e.target.files[0])
+      if (e.target.files[0].name.length < 200) {
+        dispatch({
+          type: IMAGE_UPLOAD_REQUEST,
+          data: imageFormData,
+        })
+        setSelectedCheck(2)
+      } else {
+        alert("파일명을 200자 이하로 해주세요.")
+      }
+    },
+    [imagePath],
+  )
+
+  const imgSrc = useCallback(() => {
+    switch (selectedCheck) {
+      case 1:
+        return imagePath
+      case 2:
+        return `http://localhost:3063/${imagePath}`
+      case 3:
+        return EditpostImg
+      default:
+        return basicPoster
+    }
+  }, [selectedCheck, imagePath])
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <Grid container style={{ marginTop: "-40px" }}>
+        <ImgGrid item xs={12} sm={6}>
+          <PostFormImg>
+            <div>
+              <Image
+                src={imgSrc()}
+                layout="fill"
+                style={{ maxWidth: "100%" }}
+              />
+            </div>
+          </PostFormImg>
+          <PostFormImgBtn>
+            <input
+              type="file"
+              ref={inputFile}
+              style={{ display: "none" }}
+              onChange={onChangeImage}
+              onClick={onClickImage}
+            />
+            {/* <MovieSrhModal setSelectedCheck={setSelectedCheck} /> */}
+            <button type="button" onClick={onFileUpload}>
+              내 이미지
+              {/* <Attachment font-size="small" className={classes.iconStyle} /> */}
+            </button>
+          </PostFormImgBtn>
+        </ImgGrid>
+        <InputGrid item xs={12} sm={6}>
+          <FormSelect categoryName={category} setCategory={setCategory} />
+          <PostFormTit>
+            <FormInput
+              {...register("title", {
+                required: true,
+              })}
+              placeholder="리뷰 제목을 입력해주세요."
+              defaultValue={singlePost && singlePost.title}
+            />
+            <StyledRating
+              value={rating}
+              precision={0.5}
+              size="large"
+              onChange={(_event, newValue) => {
+                setRating(newValue)
+              }}
+            />
+          </PostFormTit>
+          <PostTextArea
+            {...register("content", {
+              required: true,
+            })}
+            placeholder="내용을 입력해주세요."
+            defaultValue={singlePost && singlePost.content}
+          />
+          <ButtonPurple
+            type="submit"
+            xs={{ width: "100%", height: "65px", margin: "2em auto 0" }}
+            onClick={async () => {
+              const titleVal = await trigger("title")
+              const contentVal = await trigger("content")
+              if (!category) {
+                alert("카테고리를 선택해주세요")
+              } else if (!titleVal) {
+                alert("영화제목을 입력해주세요")
+              } else if (!contentVal) {
+                alert("내용을 입력해주세요")
+              } else if (imgSrc() === basicPoster) {
+                alert("사진을 등록해주세요")
+              }
+            }}
+          >
+            등록
+          </ButtonPurple>
+        </InputGrid>
+      </Grid>
+    </form>
+  )
+}
 
 const ImgGrid = styled(Grid)`
   position: relative;
@@ -89,164 +259,5 @@ const PostTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
 `
-
-const PostForm = () => {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const { imagePath, singlePost } = useSelector((state) => state.post)
-  const { register, trigger, handleSubmit } = useForm()
-
-  // 1이면 api 2이면 file
-  const [selectedCheck, setSelectedCheck] = useState(null)
-
-  const [editMode, setEditMode] = useState(false)
-  const [EditpostImg, setEditpostImg] = useState("")
-  const [category, setCategory] = useState("")
-  const [rating, setRating] = useState(0.5)
-  useEffect(() => {
-    if (singlePost) {
-      setEditMode(true)
-      const img = singlePost.Images[0].src
-      setEditpostImg(
-        img.includes("http") ? img : `http://localhost:3063/${img}`,
-      )
-      setSelectedCheck(3)
-      setCategory(singlePost.category)
-      setRating(singlePost.rating)
-    }
-  }, [])
-
-  const onSubmit = useCallback(
-    (data) => {
-      const totalData = { ...data, imagePath, rating, category }
-      const formData = new FormData()
-      for (const key in totalData) {
-        formData.append(key, totalData[key])
-      }
-      if (editMode) {
-        const editData = { ...totalData, postId: singlePost.id }
-        dispatch({
-          type: EDIT_POST_REQUEST,
-          editData,
-        })
-      } else {
-        dispatch({
-          type: ADD_POST_REQUEST,
-          data: totalData,
-        })
-      }
-      router.push("/board")
-      window.scrollTo(0, 0)
-    },
-    [imagePath, rating],
-  )
-
-  const inputFile = useRef(null)
-  const onFileUpload = () => {
-    inputFile.current.click()
-  }
-  const onClickImage = (e) => {
-    e.target.value = null
-  }
-
-  const onChangeImage = useCallback(
-    (e) => {
-      console.log("image", e.target.files[0])
-      const imageFormData = new FormData()
-      imageFormData.append("singleimage", e.target.files[0])
-      dispatch({
-        type: IMAGE_UPLOAD_REQUEST,
-        data: imageFormData,
-      })
-      setSelectedCheck(2)
-    },
-    [imagePath],
-  )
-
-  const imgSrc = useCallback(() => {
-    switch (selectedCheck) {
-      case 1:
-        return imagePath
-      case 2:
-        return `http://localhost:3063/${imagePath}`
-      case 3:
-        return EditpostImg
-      default:
-        return basicPoster
-    }
-  }, [selectedCheck, imagePath])
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-      <Grid container>
-        <ImgGrid item xs={12} sm={6}>
-          <PostFormImg>
-            <div>
-              <img src={imgSrc()} style={{ maxWidth: "100%" }} />
-            </div>
-          </PostFormImg>
-          <PostFormImgBtn>
-            <input
-              type="file"
-              ref={inputFile}
-              style={{ display: "none" }}
-              onChange={onChangeImage}
-              onClick={onClickImage}
-            />
-            {/* <MovieSrhModal setSelectedCheck={setSelectedCheck} /> */}
-            <button type="button" onClick={onFileUpload}>
-              내 이미지
-              {/* <Attachment font-size="small" className={classes.iconStyle} /> */}
-            </button>
-          </PostFormImgBtn>
-        </ImgGrid>
-        <InputGrid item xs={12} sm={6}>
-          <FormSelect category={category} setCategory={setCategory} />
-          <PostFormTit>
-            <FormInput
-              {...register("title", {
-                required: true,
-              })}
-              placeholder="리뷰 제목을 입력해주세요."
-              defaultValue={singlePost && singlePost.title}
-            />
-            <StyledRating
-              value={rating}
-              precision={0.5}
-              size="large"
-              onChange={(_event, newValue) => {
-                setRating(newValue)
-              }}
-            />
-          </PostFormTit>
-          <PostTextArea
-            {...register("content", {
-              required: true,
-            })}
-            placeholder="내용을 입력해주세요."
-            defaultValue={singlePost && singlePost.content}
-          />
-          <ButtonPurple
-            type="submit"
-            xs={{ width: "100%", height: "65px", margin: "2em auto 0" }}
-            onClick={async () => {
-              const titleVal = await trigger("title")
-              const contentVal = await trigger("content")
-              if (!titleVal) {
-                alert("영화제목을 입력해주세요")
-              } else if (!contentVal) {
-                alert("내용을 입력해주세요")
-              } else if (imgSrc() === basicPoster) {
-                alert("사진을 등록해주세요")
-              }
-            }}
-          >
-            등록
-          </ButtonPurple>
-        </InputGrid>
-      </Grid>
-    </form>
-  )
-}
 
 export default PostForm

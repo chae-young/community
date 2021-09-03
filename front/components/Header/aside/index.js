@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react"
 import PropTypes from "prop-types"
 
-import { Close } from "@material-ui/icons"
+import CloseIcon from "@material-ui/icons/Close"
 
 import styled from "styled-components"
 import LoginForm from "./LoginForm"
@@ -22,7 +22,7 @@ const HeaderAside = ({ aisdeToggle, setAisdeToggle }) => {
     <Aside toggle={aisdeToggle}>
       <h3>{isToggleOn ? "Login" : "Join"}</h3>
       <CloseBtn onClick={onClose}>
-        <Close fontSize="large" />
+        <CloseIcon fontSize="large" />
       </CloseBtn>
       <LoginToggle>
         계정이 없으신가요?
@@ -61,6 +61,11 @@ const Aside = styled.aside`
 const LoginToggle = styled.div`
   display: flex;
   align-items: center;
+  font-size: 1.2rem;
+  & button {
+    font-size: 1.2rem;
+    margin-left: 1rem;
+  }
 `
 HeaderAside.propTypes = {
   aisdeToggle: PropTypes.bool.isRequired,

@@ -1,5 +1,4 @@
 import axios from "axios"
-import shortid from "shortid"
 import {
   fork,
   all,
@@ -51,6 +50,9 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
   REMOVE_POST_FAILURE,
+  DRAMA_POSTS_REQUEST,
+  DRAMA_POSTS_SUCCESS,
+  DRAMA_POSTS_FAILURE,
 } from "../reducers/post"
 
 function addPostAPI(data) {
@@ -209,6 +211,25 @@ function* popularPosts(action) {
   }
 }
 
+function dramaPostsAPI(data) {
+  return axios.get(`/posts/drama?limit=${data}`)
+}
+function* dramaPosts(action) {
+  try {
+    const result = yield call(dramaPostsAPI, action.data)
+    yield put({
+      type: DRAMA_POSTS_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: DRAMA_POSTS_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
 function addCommentAPI(data) {
   return axios.post(`/post/${data.postId}/comment`, data)
 }
@@ -350,6 +371,9 @@ function* watchUserPosts() {
 function* watchPopularPosts() {
   yield throttle(3000, POPULAR_POSTS_REQUEST, popularPosts)
 }
+function* watchDramaPosts() {
+  yield throttle(3000, DRAMA_POSTS_REQUEST, dramaPosts)
+}
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment)
 }
@@ -379,6 +403,7 @@ export default function* postSaga() {
     fork(watchLoadPost),
     fork(watchUserPosts),
     fork(watchPopularPosts),
+    fork(watchDramaPosts),
     fork(watchAddComment),
     fork(watchEditComment),
     fork(watchRemoveComment),
