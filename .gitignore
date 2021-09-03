@@ -3,3 +3,4 @@ uploads/
 .vscode/
 .next/
 *.env
+react-emotion.pem
