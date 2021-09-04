@@ -3,10 +3,10 @@ const path = require("path");
 const fs = require("fs");
 
 try {
-    fs.accessSync("uploads/profile");
+    fs.accessSync("uploads");
 } catch (error) {
     console.log("image 폴더 생성");
-    fs.mkdirSync("uploads/profile");
+    fs.mkdirSync("uploads");
 }
 
 exports.upload = (directory) =>
