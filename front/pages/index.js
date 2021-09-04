@@ -15,7 +15,6 @@ import wrapper from "../store/configureStore"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 import { DRAMA_POSTS_REQUEST, POPULAR_POSTS_REQUEST } from "../reducers/post"
 import PostListContent from "../components/List/post/PostListContent"
-import NowMovieContent from "../components/NowMovieContent"
 
 SwiperCore.use([Navigation])
 

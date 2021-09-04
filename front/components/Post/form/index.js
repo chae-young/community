@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
 
+import { withStyles } from "@material-ui/styles"
+import Rating from "@material-ui/lab/Rating"
 import { Grid } from "@material-ui/core"
 
 import styled from "styled-components"
@@ -13,12 +15,7 @@ import {
   IMAGE_UPLOAD_REQUEST,
 } from "../../../reducers/post"
 import basicPoster from "./images/noimage.png"
-import {
-  FormInput,
-  StyledRating,
-  ButtonPurple,
-  headerHeight,
-} from "../../../styles/style"
+import { FormInput, ButtonPurple, headerHeight } from "../../../styles/style"
 import FormSelect from "../category"
 
 const PostForm = () => {
@@ -259,5 +256,12 @@ const PostTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
 `
-
+export const StyledRating = withStyles({
+  iconFilled: {
+    color: "rgb(252,145,72)",
+  },
+  iconHover: {
+    color: "rgb(252,145,72)",
+  },
+})(Rating)
 export default PostForm

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { Grid } from "@material-ui/core"
 
 import PostListContent from "./PostListContent"
-import { POPULAR_POSTS_REQUEST } from "../../../reducers/post"
 
 const PostFavorite = () => {
   const { popularPosts } = useSelector((state) => state.post)

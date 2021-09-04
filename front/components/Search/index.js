@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react"
+import Reac from "react"
 import PropTypes from "prop-types"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
@@ -6,7 +6,6 @@ import { useRouter } from "next/router"
 
 import { Search, Close } from "@material-ui/icons"
 import styled from "styled-components"
-import { REVIEW_SEARCH_REQUEST } from "../../reducers/post"
 
 const SearchBox = styled.div`
   width: 100%;
