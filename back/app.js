@@ -6,6 +6,8 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const helmet = require("helmet");
+const hpp = require("hpp");
 
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -30,11 +32,18 @@ app.use("/", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan("dev"));
+if (process.env.NODE_ENV === "production") {
+    app.use(morgan("combined"));
+    app.use(hpp());
+    app.use(helmet());
+} else {
+    app.use(morgan("dev"));
+}
+
 // cors
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000", "emo-tion.com"],
         credentials: true,
     })
 );
