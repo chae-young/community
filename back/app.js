@@ -43,7 +43,11 @@ if (process.env.NODE_ENV === "production") {
 // cors
 app.use(
     cors({
-        origin: ["http://localhost:3000", "emo-tion.com"],
+        origin: [
+            "http://localhost:3000",
+            "emo-tion.com",
+            "http://13.125.220.183",
+        ],
         credentials: true,
     })
 );
@@ -62,6 +66,10 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get("/", (req, res) => {
+    res.send("hi");
+});
 
 app.use("/user", userRouter);
 app.use("/post", postRouter);
