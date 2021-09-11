@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid"
 import { ListPoster, ListContent } from "../../../styles/style"
 import PostCategoryTag from "./PostCategoryTag"
 import PostRating from "../../Post/rating"
+import { backUrl } from "../../../config/cofig"
 
 const useStyles = makeStyles((theme) => ({
   root: (props) => ({
@@ -29,7 +30,7 @@ const PostListContent = ({ post, ...rest }) => {
         <a>
           <ListPoster heightVal="25em">
             <img
-              src={`http://localhost:3063/${post.Images[0].src}`}
+              src={`${backUrl}/${post.Images[0].src}`}
               width="100%"
               alt={post.title}
             />
@@ -38,10 +39,6 @@ const PostListContent = ({ post, ...rest }) => {
           <ListContent>
             <p>{post.title}</p>
             <PostRating rate={post.rating} />
-            {/* <Ratebox>
-              <StyledRating precision={0.1} value={post.rating} readOnly />
-              <span>{post.rating.substring(0, 3)}</span>
-            </Ratebox> */}
           </ListContent>
         </a>
       </Link>

@@ -18,6 +18,7 @@ import wrapper from "../../../store/configureStore"
 import { ButtonPurple, minContainer } from "../../../styles/style"
 import Layout from "../../../components/Layout"
 import ProfileAvatar from "../../../components/Profile/Avatar"
+import { backUrl } from "../../../config/cofig"
 
 const EditForm = styled.div`
   ${minContainer}
@@ -78,7 +79,7 @@ const edit = () => {
             <ProfileAvatar
               size={140}
               alt={me.nickname}
-              src={`http://localhost:3063/profile/${me.src}`}
+              src={`${backUrl}/profile/${me.src}`}
             />
           </div>
           <input
