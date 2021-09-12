@@ -275,14 +275,10 @@ router.delete("/:postId/like", async (req, res, next) => {
     }
 });
 
-router.post(
-    "/image",
-    upload("uploads").single("singleimage"),
-    (req, res, next) => {
-        // POST /post/images
-        console.log(req.file);
-        res.json(req.file.filename);
-    }
-);
+router.post("/image", upload.single("singleimage"), (req, res, next) => {
+    // POST /post/images
+    console.log(req.file);
+    res.json(req.file.location);
+});
 
 module.exports = router;
