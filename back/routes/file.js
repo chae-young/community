@@ -1,7 +1,7 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const multers3 = require("multer-s3");
+const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 
 try {
