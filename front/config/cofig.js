@@ -1,1 +1,1 @@
-export const backUrl = "http://52.78.142.154"
+export const backUrl = "http://api.emotion-feed.com"
