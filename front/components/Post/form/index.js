@@ -101,7 +101,7 @@ const PostForm = () => {
       case 1:
         return imagePath
       case 2:
-        return `${imagePath}`
+        return `${imagePath.replace(/\/thumb\//, "/original/")}`
       case 3:
         return EditpostImg
       default:
