@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
     app.enable("trust proxy");
     app.use(morgan("combined"));
     app.use(hpp());
-    app.use(helmet({ contentSecurityPolicy: false }));
+    app.use(helmet());
     // cors
     app.use(
         cors({
@@ -83,6 +83,6 @@ app.use("/post", postRouter);
 app.use("/posts", postsRouter);
 app.use("/movie", movieRouter);
 
-app.listen(80, () => {
+app.listen(3065, () => {
     console.log("서버 실행 중");
 });
