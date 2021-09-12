@@ -36,21 +36,23 @@ if (process.env.NODE_ENV === "production") {
     app.use(morgan("combined"));
     app.use(hpp());
     app.use(helmet());
+    // cors
+    app.use(
+        cors({
+            origin: "http://emotion-feed.com",
+            credentials: true,
+        })
+    );
 } else {
     app.use(morgan("dev"));
+    // cors
+    app.use(
+        cors({
+            origin: true,
+            credentials: true,
+        })
+    );
 }
-
-// cors
-app.use(
-    cors({
-        origin: [
-            "http://localhost:3000",
-            "emotion-feed.com",
-            "http://13.125.220.183",
-        ],
-        credentials: true,
-    })
-);
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
@@ -60,6 +62,9 @@ app.use(
         secret: process.env.COOKIE_SECRET,
         cookie: {
             secure: false,
+            httpOnly: true,
+            domain:
+                process.env.NODE_ENV === "production" && ".emotion-feed.com",
             maxAge: 3600000,
         },
     })
@@ -76,6 +81,6 @@ app.use("/post", postRouter);
 app.use("/posts", postsRouter);
 app.use("/movie", movieRouter);
 
-app.listen(3063, () => {
+app.listen(80, () => {
     console.log("서버 실행 중");
 });
