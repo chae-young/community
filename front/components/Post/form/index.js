@@ -17,7 +17,6 @@ import {
 import basicPoster from "./images/noimage.png"
 import { FormInput, ButtonPurple, headerHeight } from "../../../styles/style"
 import FormSelect from "../category"
-import { backUrl } from "../../../config/cofig"
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -39,7 +38,7 @@ const PostForm = () => {
     if (singlePost) {
       setEditMode(true)
       const img = singlePost.Images[0].src
-      setEditpostImg(`${backUrl}/${img}`)
+      setEditpostImg(`${img}`)
       setSelectedCheck(3)
       setCategory(singlePost.category)
       setRating(singlePost.rating)
@@ -102,7 +101,7 @@ const PostForm = () => {
       case 1:
         return imagePath
       case 2:
-        return `${backUrl}/${imagePath}`
+        return `${imagePath}`
       case 3:
         return EditpostImg
       default:

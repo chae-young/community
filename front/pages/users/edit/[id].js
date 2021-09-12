@@ -18,7 +18,6 @@ import wrapper from "../../../store/configureStore"
 import { ButtonPurple, minContainer } from "../../../styles/style"
 import Layout from "../../../components/Layout"
 import ProfileAvatar from "../../../components/Profile/Avatar"
-import { backUrl } from "../../../config/cofig"
 
 const EditForm = styled.div`
   ${minContainer}
@@ -76,11 +75,7 @@ const edit = () => {
       <EditForm>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div onClick={onFileUpload}>
-            <ProfileAvatar
-              size={140}
-              alt={me.nickname}
-              src={`${backUrl}/profile/${me.src}`}
-            />
+            <ProfileAvatar size={140} alt={me.nickname} src={`${me.src}`} />
           </div>
           <input
             type="file"
