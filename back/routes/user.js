@@ -260,7 +260,7 @@ router.post(
     upload("uploads/profile").single("singleimage"),
     (req, res, next) => {
         console.log(req.file);
-        res.json(req.file.location);
+        res.json(req.file.location.replace(/\/original\//, "/thumb/"));
     }
 );
 
