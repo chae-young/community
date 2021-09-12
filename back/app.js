@@ -45,7 +45,7 @@ app.use(
     cors({
         origin: [
             "http://localhost:3000",
-            "emo-tion.com",
+            "emotion-feed.com",
             "http://13.125.220.183",
         ],
         credentials: true,
