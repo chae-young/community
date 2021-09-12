@@ -33,13 +33,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 if (process.env.NODE_ENV === "production") {
+    app.enable("trust proxy");
     app.use(morgan("combined"));
     app.use(hpp());
-    app.use(helmet());
+    app.use(helmet({ contentSecurityPolicy: false }));
     // cors
     app.use(
         cors({
-            origin: "http://emotion-feed.com",
+            origin: "https://emotion-feed.com",
             credentials: true,
         })
     );
@@ -60,8 +61,9 @@ app.use(
         saveUninitialized: false,
         resave: false,
         secret: process.env.COOKIE_SECRET,
+        proxy: process.env.NODE_ENV === "production",
         cookie: {
-            secure: false,
+            secure: process.env.NODE_ENV === "production",
             httpOnly: true,
             domain:
                 process.env.NODE_ENV === "production" && ".emotion-feed.com",
