@@ -234,7 +234,7 @@ router.post("/logout", isLoggedIn, (req, res) => {
 
 router.patch(
     "/profile",
-    upload.single("singleimage"),
+    upload("uploads").single("singleimage"),
     async (req, res, next) => {
         try {
             console.log(req.body.image);
