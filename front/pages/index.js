@@ -67,7 +67,6 @@ const Main = () => {
           className="mySwiper"
           breakpoints={breakpoints}
         >
-          {console.log(dramaPosts)}
           {dramaPosts.map((v) => (
             <SwiperSlide>
               <Grid container>
@@ -100,7 +99,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       data: 10,
     })
     context.store.dispatch(END)
-    console.log(context.store.getState())
+
     await context.store.sagaTask.toPromise()
     return { props: {} }
   },

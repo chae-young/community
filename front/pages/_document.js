@@ -3,44 +3,49 @@ import Document, { Html, Head, Main, NextScript } from "next/document"
 import { ServerStyleSheet } from "styled-components"
 import { ServerStyleSheets } from "@material-ui/core/styles"
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    const sheet = new ServerStyleSheet()
+    const styledComponentsSheet = new ServerStyleSheet()
+    const materialSheets = new ServerStyleSheets()
     const originalRenderPage = ctx.renderPage
 
     try {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+            styledComponentsSheet.collectStyles(
+              materialSheets.collect(<App {...props} />),
+            ),
         })
-
       const initialProps = await Document.getInitialProps(ctx)
-      const styleTags = sheet.getStyleElement()
       return {
         ...initialProps,
-        styleTags,
         styles: (
           <>
             {initialProps.styles}
-            {sheet.getStyleElement()}
+            {materialSheets.getStyleElement()}
+            {styledComponentsSheet.getStyleElement()}
           </>
         ),
       }
     } finally {
-      sheet.seal()
+      styledComponentsSheet.seal()
     }
   }
 
   render() {
     return (
-      <Html>
+      <Html lang="ko">
         <Head>
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+          />
           <link
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
             rel="stylesheet"
           />
-          {this.props.styleTags}
         </Head>
         <body>
           <Main />
@@ -51,23 +56,4 @@ export default class MyDocument extends Document {
     )
   }
 }
-
-MyDocument.getInitialProps = async (ctx) => {
-  const sheets = new ServerStyleSheets()
-  const originalRenderPage = ctx.renderPage
-
-  ctx.renderPage = () =>
-    originalRenderPage({
-      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-    })
-
-  const initialProps = await Document.getInitialProps(ctx)
-
-  return {
-    ...initialProps,
-    styles: [
-      ...React.Children.toArray(initialProps.styles),
-      sheets.getStyleElement(),
-    ],
-  }
-}
+export default MyDocument

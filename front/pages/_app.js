@@ -31,10 +31,10 @@ const App = ({ Component }) => {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
 
+      <GlobalStyle />
       <StylesProvider injectFirst>
         <MuiThemeProvider theme={myTheme}>
           <ThemeProvider theme={theme}>
-            <GlobalStyle />
             <Component />
           </ThemeProvider>
         </MuiThemeProvider>

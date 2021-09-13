@@ -3,7 +3,7 @@ import reset from "styled-reset"
 import { headerHeight } from "./style"
 
 const GlobalStyle = createGlobalStyle`
-${reset};
+    ${reset}
     html,body{
         padding: 0;
         margin: 0;
