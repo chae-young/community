@@ -21,6 +21,8 @@ import { LOAD_USER_REQUEST } from "../../reducers/user"
 import ShareList from "../../components/Share"
 import EditSettingMenu from "../../components/EditSettingMenu"
 import Favorite from "../../components/Post/favorite"
+import ProfileAvatar from "../../components/Profile/Avatar"
+import AlertLogin from "../../components/AlertLogin"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,12 +50,10 @@ const Post = () => {
   const PostArticle = useRef(null)
 
   const { me } = useSelector((state) => state.user)
-  useEffect(() => {
-    if (!me) {
-      alert("로그인이 필요합니다.")
-      router.push("/")
-    }
-  }, [me])
+  if (!me) {
+    return <AlertLogin />
+  }
+
   const { singlePost } = useSelector((state) => state.post)
   const img = singlePost?.Images[0].src
 
@@ -122,7 +122,7 @@ const Post = () => {
                 <ArticleUser>
                   <Link href={`/users/${singlePost.User.id}`}>
                     <a>
-                      <Avatar
+                      <ProfileAvatar
                         alt={singlePost.User.nickname}
                         src={singlePost.User.src}
                       />

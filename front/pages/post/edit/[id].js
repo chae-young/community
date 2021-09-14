@@ -1,14 +1,21 @@
 import React from "react"
 import axios from "axios"
 import { END } from "redux-saga"
+import { useSelector } from "react-redux"
 
 import Layout from "../../../components/Layout"
 import PostForm from "../../../components/Post/form"
 import wrapper from "../../../store/configureStore"
 import { LOAD_USER_REQUEST } from "../../../reducers/user"
 import { LOAD_POST_REQUEST } from "../../../reducers/post"
+import AlertLogin from "../../../components/AlertLogin"
 
 const PostEdit = () => {
+  const { me } = useSelector((state) => state.user)
+
+  if (!me) {
+    return <AlertLogin />
+  }
   return (
     <Layout>
       <PostForm />

@@ -18,6 +18,7 @@ import wrapper from "../../../store/configureStore"
 import { ButtonPurple, minContainer } from "../../../styles/style"
 import Layout from "../../../components/Layout"
 import ProfileAvatar from "../../../components/Profile/Avatar"
+import AlertLogin from "../../../components/AlertLogin"
 
 const EditForm = styled.div`
   ${minContainer}
@@ -32,12 +33,9 @@ const edit = () => {
   const dispatch = useDispatch()
   const { me, userInfo } = useSelector((state) => state.user)
 
-  useEffect(() => {
-    if (!me) {
-      alert("로그인이 필요합니다.")
-      router.push("/")
-    }
-  }, [me])
+  if (!me) {
+    return <AlertLogin />
+  }
 
   const inputFile = useRef(null)
   const onFileUpload = useCallback(() => {
@@ -78,7 +76,7 @@ const edit = () => {
             <ProfileAvatar
               size={140}
               alt={me.nickname}
-              src={me.src.replace(/\/thumb\//, "/original/")}
+              src={me.src && me.src.replace(/\/thumb\//, "/original/")}
             />
           </div>
           <input

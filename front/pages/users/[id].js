@@ -13,18 +13,16 @@ import Layout from "../../components/Layout"
 import FollowButton from "../../components/Follow/btn"
 import { minContainer, PostTitle } from "../../styles/style"
 import ProfileAvatar from "../../components/Profile/Avatar"
+import AlertLogin from "../../components/AlertLogin"
 
 const Users = () => {
   const router = useRouter()
   const { id } = router.query
   const { me, userInfo } = useSelector((state) => state.user)
 
-  useEffect(() => {
-    if (!me) {
-      alert("로그인이 필요합니다.")
-      router.push("/")
-    }
-  }, [me])
+  if (!me) {
+    return <AlertLogin />
+  }
 
   if (!userInfo) {
     return <div>로딩중</div>

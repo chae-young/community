@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { END } from "redux-saga"
+import AlertLogin from "../components/AlertLogin"
 
 import Layout from "../components/Layout"
 import PostForm from "../components/Post/form"
@@ -12,12 +13,9 @@ import wrapper from "../store/configureStore"
 const Write = () => {
   const router = useRouter()
   const { me } = useSelector((state) => state.user)
-  useEffect(() => {
-    if (!me) {
-      alert("로그인이 필요합니다.")
-      router.push("/")
-    }
-  }, [me])
+  if (!me) {
+    return <AlertLoginn />
+  }
 
   return (
     <Layout>
