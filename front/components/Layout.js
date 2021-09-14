@@ -19,6 +19,7 @@ const Layout = ({ children }) => {
 const Container = styled.section`
   min-height: 540px;
   margin-top: 4rem;
+  padding-bottom: 8rem;
 `
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

@@ -270,7 +270,7 @@ function* editComment(action) {
 }
 
 function removeCommentAPI(data) {
-  return axios.remove(`/post/${data.commentId}/comment`)
+  return axios.delete(`/post/${data.commentId}/comment`)
 }
 function* removeComment(action) {
   try {
