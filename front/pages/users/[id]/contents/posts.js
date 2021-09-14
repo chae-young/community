@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback } from "react"
 import { useRouter } from "next/router"
 import axios from "axios"
 import { END } from "redux-saga"
@@ -13,6 +13,7 @@ import { USER_POSTS_REQUEST } from "../../../../reducers/post"
 import PostListContent from "../../../../components/List/post/PostListContent"
 import Layout from "../../../../components/Layout"
 import { PostTitle } from "../../../../styles/style"
+import useInfiniteScroll from "../../../../hooks/useInfiniteScroll"
 
 const useStyles = makeStyles({
   root: {
@@ -27,33 +28,24 @@ const Posts = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const { userInfo } = useSelector((state) => state.user)
-  const { postList, postCount, loadPostsLoading, loadPostsDone } = useSelector(
+
+  const { postList, loadPostsLoading, loadPostsDone } = useSelector(
     (state) => state.post,
   )
+  const scrollDispatch = useCallback(() => {
+    const lastId = postList[postList.length - 1].id
+    dispatch({
+      type: USER_POSTS_REQUEST,
+      lastId,
+    })
+  }, [postList])
 
-  const [flag, setFlag] = useState(false)
-  useEffect(() => {
-    const loadOnScroll = () => {
-      if (
-        Math.round(window.scrollY) + document.documentElement.clientHeight >=
-        document.documentElement.scrollHeight - 200
-      ) {
-        if (loadPostsDone) setFlag(false)
-        if (!flag && !loadPostsLoading) {
-          const lastId = postList[postList.length - 1].id
-          dispatch({
-            type: USER_POSTS_REQUEST,
-            lastId,
-          })
-          setFlag(true)
-        }
-      }
-    }
-    window.addEventListener("scroll", loadOnScroll)
-    return () => {
-      window.removeEventListener("scroll", loadOnScroll)
-    }
-  }, [postList, loadPostsLoading, flag])
+  const infiniteScroll = useInfiniteScroll(
+    postList,
+    loadPostsLoading,
+    loadPostsDone,
+    scrollDispatch,
+  )
 
   return (
     <Layout>

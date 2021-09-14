@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
@@ -25,6 +25,7 @@ import FollowButton from "../../../components/Follow/btn"
 import { minContainer } from "../../../styles/style"
 import Layout from "../../../components/Layout"
 import ProfileAvatar from "../../../components/Profile/Avatar"
+import useInfiniteScroll from "../../../hooks/useInfiniteScroll"
 
 const FollowContent = styled.div`
   ${minContainer}
@@ -38,28 +39,18 @@ const Follow = () => {
     useSelector((state) => state.user)
 
   // 처음에만 20개 불러오고 스크롤 내릴때마다 10개..
-  const [flag, setFlag] = useState(false)
-  useEffect(() => {
-    const loadOnScroll = () => {
-      if (
-        Math.round(window.scrollY) + document.documentElement.clientHeight >=
-        document.documentElement.scrollHeight - 200
-      ) {
-        if (followListDone) setFlag(false)
-        if (!flag && !followListLoading) {
-          dispatch({
-            type: FOLLOW_LIST_REQUEST,
-            data: { userId: id, name: follow, limit: 10 },
-          })
-          setFlag(true)
-        }
-      }
-    }
-    window.addEventListener("scroll", loadOnScroll)
-    return () => {
-      window.removeEventListener("scroll", loadOnScroll)
-    }
-  }, [followListLoading, flag])
+  const scrollDispatch = useCallback(() => {
+    dispatch({
+      type: FOLLOW_LIST_REQUEST,
+      data: { userId: id, name: follow, limit: 10 },
+    })
+  }, [])
+
+  const infiniteScroll = useInfiniteScroll(
+    followListLoading,
+    followListDone,
+    scrollDispatch,
+  )
 
   return (
     <Layout>

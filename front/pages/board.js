@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react"
+import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import axios from "axios"
 import { END } from "redux-saga"
@@ -11,6 +11,7 @@ import wrapper from "../store/configureStore"
 import PostListContent from "../components/List/post/PostListContent"
 import { LOAD_POSTS_REQUEST } from "../reducers/post"
 import { LOAD_USER_REQUEST } from "../reducers/user"
+import useInfiniteScroll from "../hooks/useInfiniteScroll"
 
 const useStyles = makeStyles({
   root: {
@@ -22,32 +23,47 @@ const useStyles = makeStyles({
 const Board = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
-  const { postList, postCount, loadPostsLoading, loadPostsDone } = useSelector(
+  const { postList, loadPostsLoading, loadPostsDone } = useSelector(
     (state) => state.post,
   )
-  const [flag, setFlag] = useState(false)
-  useEffect(() => {
-    const loadOnScroll = () => {
-      if (
-        Math.round(window.scrollY) + document.documentElement.clientHeight >=
-        document.documentElement.scrollHeight - 200
-      ) {
-        if (loadPostsDone) setFlag(false)
-        if (!flag && !loadPostsLoading) {
-          const lastId = postList[postList.length - 1].id
-          dispatch({
-            type: LOAD_POSTS_REQUEST,
-            lastId,
-          })
-          setFlag(true)
-        }
-      }
-    }
-    window.addEventListener("scroll", loadOnScroll)
-    return () => {
-      window.removeEventListener("scroll", loadOnScroll)
-    }
-  }, [postList, loadPostsLoading, flag])
+  const scrollDispatch = useCallback(() => {
+    const lastId = postList[postList.length - 1].id
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+      lastId,
+    })
+  }, [postList])
+
+  const infiniteScroll = useInfiniteScroll(
+    postList,
+    loadPostsLoading,
+    loadPostsDone,
+    scrollDispatch,
+  )
+
+  // const [flag, setFlag] = useState(false)
+  // useEffect(() => {
+  //   const loadOnScroll = () => {
+  //     if (
+  //       Math.round(window.scrollY) + document.documentElement.clientHeight >=
+  //       document.documentElement.scrollHeight - 200
+  //     ) {
+  //       if (loadPostsDone) setFlag(false)
+  //       if (!flag && !loadPostsLoading) {
+  //         const lastId = postList[postList.length - 1].id
+  //         dispatch({
+  //           type: LOAD_POSTS_REQUEST,
+  //           lastId,
+  //         })
+  //         setFlag(true)
+  //       }
+  //     }
+  //   }
+  //   window.addEventListener("scroll", loadOnScroll)
+  //   return () => {
+  //     window.removeEventListener("scroll", loadOnScroll)
+  //   }
+  // }, [postList, loadPostsLoading, flag])
 
   return (
     <Layout>

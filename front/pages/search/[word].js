@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
 import axios from "axios"
@@ -12,6 +12,7 @@ import PostListContent from "../../components/List/post/PostListContent"
 import { REVIEW_SEARCH_REQUEST } from "../../reducers/post"
 import Layout from "../../components/Layout"
 import { LOAD_USER_REQUEST } from "../../reducers/user"
+import useInfiniteScroll from "../../hooks/useInfiniteScroll"
 
 const useStyles = makeStyles({
   root: {
@@ -26,40 +27,25 @@ const Search = () => {
   const router = useRouter()
   const classes = useStyles()
   const { word } = router.query
-  const { searchList, postCount, reviewSearchLoading, reviewSearchDone } =
-    useSelector((state) => state.post)
+  const { searchList, reviewSearchLoading, reviewSearchDone } = useSelector(
+    (state) => state.post,
+  )
 
-  // useEffect(() => {
-  //   dispatch({ type: LOAD_USER_REQUEST })
-  //   if (postCount === 0 || postCount === 10) {
-  //     dispatch({ type: LOAD_POSTS_REQUEST })
-  //   }
-  // }, [])
+  const scrollDispatch = useCallback(() => {
+    const lastId = searchList[searchList.length - 1].id
+    dispatch({
+      type: REVIEW_SEARCH_REQUEST,
+      data: lastId,
+      word,
+    })
+  }, [searchList])
 
-  const [flag, setFlag] = useState(false)
-  useEffect(() => {
-    const loadOnScroll = () => {
-      if (
-        Math.round(window.scrollY) + document.documentElement.clientHeight >=
-        document.documentElement.scrollHeight - 200
-      ) {
-        if (reviewSearchDone) setFlag(false)
-        if (!flag && !reviewSearchLoading) {
-          const lastId = searchList[searchList.length - 1].id
-          dispatch({
-            type: REVIEW_SEARCH_REQUEST,
-            data: lastId,
-            word,
-          })
-          setFlag(true)
-        }
-      }
-    }
-    window.addEventListener("scroll", loadOnScroll)
-    return () => {
-      window.removeEventListener("scroll", loadOnScroll)
-    }
-  }, [searchList, reviewSearchLoading, flag])
+  const infiniteScroll = useInfiniteScroll(
+    searchList,
+    reviewSearchLoading,
+    reviewSearchDone,
+    scrollDispatch,
+  )
 
   return (
     <Layout>
