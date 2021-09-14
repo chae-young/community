@@ -60,9 +60,15 @@ const Posts = () => {
       <PostTitle>
         <b>{userInfo.nickname}</b>님의 포스트
       </PostTitle>
-      <Grid container className={classes.root} spacing={1}>
+      <Grid container className={classes.root}>
         {postList.map((v) => (
-          <PostListContent key={v.id} post={v} xs={6} sm={3} />
+          <PostListContent
+            key={v.id}
+            post={v}
+            xs={6}
+            sm={3}
+            padding={{ d: "0 1rem 8rem 1rem", m: "0 20px 40px 20px" }}
+          />
         ))}
       </Grid>
     </Layout>

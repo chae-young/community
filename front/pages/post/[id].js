@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   popular: {
-    paddingLeft: "4vw",
+    padding: "0 0 40px 4vw",
   },
 }))
 

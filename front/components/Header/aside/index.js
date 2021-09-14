@@ -53,6 +53,9 @@ const Aside = styled.aside`
   transition: all 0.5s ease;
   box-sizing: border-box;
 
+  @media ${({ theme }) => theme.device.mobile} {
+    width: 90vw;
+  }
   > h3 {
     margin-bottom: 5rem;
     font-size: 2.7rem;

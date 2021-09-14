@@ -27,8 +27,13 @@ export const Container = styled.div`
 `
 export const PostTitle = styled.h2`
   max-width: 1000px;
+  padding: 0 1rem;
   margin: 0 auto 6rem;
   font-size: 4rem;
+  @media ${theme.device.mobile} {
+    padding: 0 2rem;
+    font-size: 3rem;
+  }
   > b {
     font-wegiht: bold;
     color: ${theme.pointColor.purple};
