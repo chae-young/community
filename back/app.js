@@ -32,8 +32,8 @@ app.use("/", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set("trust proxy", 1);
 if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1);
     app.use(morgan("combined"));
     app.use(hpp());
     app.use(helmet());
@@ -63,7 +63,7 @@ app.use(
         secret: process.env.COOKIE_SECRET,
         proxy: true,
         cookie: {
-            secure: true,
+            secure: process.env.NODE_ENV === "production",
             httpOnly: true,
             domain:
                 process.env.NODE_ENV === "production" && ".emotion-feed.com",
@@ -83,6 +83,6 @@ app.use("/post", postRouter);
 app.use("/posts", postsRouter);
 app.use("/movie", movieRouter);
 
-app.listen(3065, () => {
+app.listen(3063, () => {
     console.log("서버 실행 중");
 });
