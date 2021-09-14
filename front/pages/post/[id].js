@@ -98,7 +98,7 @@ const Post = () => {
     }
     window.addEventListener("resize", resizeWindow)
     if (windowWidth >= 767) {
-      console.log(windowWidth)
+      // console.log(windowWidth)
       window.addEventListener("scroll", fixItem)
     }
     return () => {
@@ -124,7 +124,7 @@ const Post = () => {
                     <a>
                       <Avatar
                         alt={singlePost.User.nickname}
-                        src={`http://localhost:3063/profile/${singlePost.User.src}`}
+                        src={singlePost.User.src}
                       />
                     </a>
                   </Link>
@@ -138,11 +138,7 @@ const Post = () => {
                 />
                 <div>
                   <img
-                    src={
-                      img.includes("http")
-                        ? img
-                        : `http://localhost:3063/${img}`
-                    }
+                    src={img.replace(/\/thumb\//, "/original/")}
                     style={{ maxWidth: "100%" }}
                     alt={singlePost.title}
                   />
@@ -165,7 +161,6 @@ const Post = () => {
           </Grid>
         </>
       )}
-      <div style={{ height: "500px" }}>푸터예정</div>
     </Layout>
   )
 }

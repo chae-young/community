@@ -49,8 +49,8 @@ const edit = () => {
   const onSubmit = useCallback(
     (data) => {
       const editFormData = new FormData()
-      const nickname = watch("nickname")
-      console.log(nickname, me.nickname, data.nickname)
+      const nickname = watch("nickname") || me.nickname
+      //  console.log(nickname, me.nickname, data.nickname)
       editFormData.append("nickname", nickname)
       editFormData.append("image", me.src)
       dispatch({
@@ -75,7 +75,11 @@ const edit = () => {
       <EditForm>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div onClick={onFileUpload}>
-            <ProfileAvatar size={140} alt={me.nickname} src={`${me.src}`} />
+            <ProfileAvatar
+              size={140}
+              alt={me.nickname}
+              src={me.src.replace(/\/thumb\//, "/original/")}
+            />
           </div>
           <input
             type="file"

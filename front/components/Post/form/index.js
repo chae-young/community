@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef, useEffect } from "react"
-import Image from "next/image"
+
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
@@ -21,12 +21,10 @@ import FormSelect from "../category"
 const PostForm = () => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { imagePath, singlePost, postAddError } = useSelector(
-    (state) => state.post,
-  )
-  const { register, trigger, handleSubmit } = useForm()
+  const { imagePath, singlePost } = useSelector((state) => state.post)
+  const { register, trigger, handleSubmit, watch } = useForm()
 
-  // 1이면 api 2이면 file
+  // 1이면 내이미지 2이면 편집모드
   const [selectedCheck, setSelectedCheck] = useState(null)
 
   const [editMode, setEditMode] = useState(false)
@@ -39,7 +37,7 @@ const PostForm = () => {
       setEditMode(true)
       const img = singlePost.Images[0].src
       setEditpostImg(`${img}`)
-      setSelectedCheck(3)
+      setSelectedCheck(2)
       setCategory(singlePost.category)
       setRating(singlePost.rating)
     }
@@ -88,7 +86,7 @@ const PostForm = () => {
           type: IMAGE_UPLOAD_REQUEST,
           data: imageFormData,
         })
-        setSelectedCheck(2)
+        setSelectedCheck(1)
       } else {
         alert("파일명을 200자 이하로 해주세요.")
       }
@@ -99,10 +97,8 @@ const PostForm = () => {
   const imgSrc = useCallback(() => {
     switch (selectedCheck) {
       case 1:
-        return imagePath
+        return imagePath.replace(/\/thumb\//, "/original/")
       case 2:
-        return `${imagePath.replace(/\/thumb\//, "/original/")}`
-      case 3:
         return EditpostImg
       default:
         return basicPoster
@@ -115,9 +111,9 @@ const PostForm = () => {
         <ImgGrid item xs={12} sm={6}>
           <PostFormImg>
             <div>
-              <Image
+              <img
                 src={imgSrc()}
-                layout="fill"
+                alt={watch("title", "기본이미지")}
                 style={{ maxWidth: "100%" }}
               />
             </div>
