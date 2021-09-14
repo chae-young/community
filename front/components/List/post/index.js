@@ -57,6 +57,7 @@ const PostList = () => {
     <Grid container className={classes.root} spacing={1}>
       {postList.map((v) => (
         <PostListContent
+          key={v.id}
           post={v}
           xs={6}
           sm={3}

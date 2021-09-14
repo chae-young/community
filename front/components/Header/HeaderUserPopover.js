@@ -22,7 +22,7 @@ const MypopOver = ({ options }) => {
     router.replace("/")
     dispatch({ type: LOG_OUT_REQUEST })
     handleClose()
-  })
+  }, [])
   return (
     <PopoverWrap
       id={options.id}
@@ -102,8 +102,8 @@ MypopOver.propTypes = {
   options: PropTypes.shape({
     id: PropTypes.string,
     open: PropTypes.bool,
-    anchorEl: PropTypes.bool,
-    setAnchorEl: PropTypes.bool,
+    anchorEl: null,
+    setAnchorEl: PropTypes.func,
   }),
 }
 

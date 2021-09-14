@@ -214,8 +214,7 @@ const reducer = (state = initialState, action) =>
       case LOAD_POSTS_SUCCESS:
       case USER_POSTS_SUCCESS: {
         draft.loadPostsLoading = false
-        const posts = [...action.data, ...draft.postList]
-        draft.postList = posts
+        draft.postList = draft.postList.concat(action.data)
         draft.postCount = action.data.length
         draft.loadPostsDone = true
         break

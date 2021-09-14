@@ -39,7 +39,6 @@ import {
   FOLLOW_LIST_REQUEST,
   FOLLOW_LIST_SUCCESS,
   FOLLOW_LIST_FAILURE,
-  dummyFollow,
 } from "../reducers/user"
 
 function loadUserAPI() {
@@ -126,7 +125,7 @@ function* signUp(action) {
     yield call(signUpAPI, action.data)
     yield put({
       type: SIGN_UP_SUCCESS,
-      //data: result.data,
+      // data: result.data,
     })
   } catch (err) {
     console.error(err)
@@ -143,7 +142,7 @@ function profileImgAPI(data) {
 function* profileImg(action) {
   try {
     const result = yield call(profileImgAPI, action.data)
-    //yield delay(1000)
+    // yield delay(1000)
     yield put({
       type: PROFILE_IMG_SUCCESS,
       data: result.data,
@@ -265,7 +264,7 @@ function* watchFollowing() {
   yield takeLatest(FOLLOWING_REQUEST, following)
 }
 function* watchFollowList() {
-  yield throttle(3000, FOLLOW_LIST_REQUEST, followList)
+  yield throttle(1000, FOLLOW_LIST_REQUEST, followList)
 }
 export default function* userSaga() {
   yield all([

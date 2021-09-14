@@ -8,11 +8,9 @@ import Footer from "./Footer"
 
 const Layout = ({ children }) => {
   const router = useRouter()
-  const footerStatus =
-    router.asPath !== "/write" || router.asPath.includes("post/edit")
 
-  const renderFooer = useCallback(() => {
-    if (footerStatus) {
+  const renderFooter = useCallback(() => {
+    if (router.asPath !== "/write" || router.asPath.includes("post/edit")) {
       return <Footer />
     }
   }, [router.asPath])
@@ -20,15 +18,14 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <Container footer={footerStatus}>{children}</Container>
-      {renderFooer}
+      <Container footer={renderFooter()}>{children}</Container>
+      {renderFooter()}
     </>
   )
 }
 const Container = styled.section`
   min-height: 540px;
   margin-top: 4rem;
-  padding-bottom: ${(props) => !props.footer && "8rem"};
 `
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

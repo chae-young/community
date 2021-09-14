@@ -366,7 +366,7 @@ function* watchLoadPost() {
   yield takeLatest(LOAD_POST_REQUEST, loadPost)
 }
 function* watchUserPosts() {
-  yield throttle(3000, USER_POSTS_REQUEST, userPosts)
+  yield takeLatest(USER_POSTS_REQUEST, userPosts)
 }
 function* watchPopularPosts() {
   yield takeLatest(POPULAR_POSTS_REQUEST, popularPosts)

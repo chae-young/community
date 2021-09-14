@@ -18,7 +18,7 @@ const Header = () => {
   const { me } = useSelector((state) => state.user)
   const header = useRef(null)
   const [anchorEl, setAnchorEl] = useState(null)
-  const [aisdeToggle, setAisdeToggle] = useState(null)
+  const [aisdeToggle, setAisdeToggle] = useState(false)
 
   const userIconClick = useCallback((e) => {
     if (me) {

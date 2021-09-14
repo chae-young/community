@@ -21,5 +21,5 @@ export default (object = null, loading, done, dispatch) => {
     return () => {
       window.removeEventListener("scroll", loadOnScroll)
     }
-  }, [object, loading, flag])
+  }, [object, loading, done, flag])
 }

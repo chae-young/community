@@ -31,9 +31,9 @@ const PostForm = () => {
   const [EditpostImg, setEditpostImg] = useState("")
   const [category, setCategory] = useState("")
   const [rating, setRating] = useState(0.5)
-
+  console.log(router.asPath)
   useEffect(() => {
-    if (singlePost) {
+    if (router.asPath.includes("post/edit")) {
       setEditMode(true)
       const img = singlePost.Images[0].src
       setEditpostImg(`${img}`)
@@ -41,7 +41,7 @@ const PostForm = () => {
       setCategory(singlePost.category)
       setRating(singlePost.rating)
     }
-  }, [])
+  }, [singlePost])
 
   const onSubmit = useCallback(
     (data) => {
@@ -51,7 +51,14 @@ const PostForm = () => {
         formData.append(key, totalData[key])
       }
       if (editMode) {
-        const editData = { ...totalData, postId: singlePost.id }
+        const img = imagePath || singlePost.Images[0].src
+        const editData = {
+          ...data,
+          img,
+          rating,
+          category,
+          postId: singlePost.id,
+        }
         dispatch({
           type: EDIT_POST_REQUEST,
           editData,
@@ -69,26 +76,26 @@ const PostForm = () => {
   )
 
   const inputFile = useRef(null)
-  const onFileUpload = () => {
+  const onFileUpload = useCallback(() => {
     inputFile.current.click()
-  }
-  const onClickImage = (e) => {
+  }, [])
+  const onClickImage = useCallback((e) => {
     e.target.value = null
-  }
+  }, [])
 
   const onChangeImage = useCallback(
     (e) => {
-      console.log("image", e.target.files[0])
+      // console.log("image", e.target.files[0])
       const imageFormData = new FormData()
       imageFormData.append("singleimage", e.target.files[0])
-      if (e.target.files[0].name.length < 200) {
+      if (e.target.files[0].name.length < 100) {
         dispatch({
           type: IMAGE_UPLOAD_REQUEST,
           data: imageFormData,
         })
         setSelectedCheck(1)
       } else {
-        alert("파일명을 200자 이하로 해주세요.")
+        alert("파일명을 100자 이하로 해주세요.")
       }
     },
     [imagePath],
@@ -141,10 +148,11 @@ const PostForm = () => {
                 required: true,
               })}
               placeholder="리뷰 제목을 입력해주세요."
-              defaultValue={singlePost && singlePost.title}
+              {...(editMode && { defaultValue: singlePost.title })}
             />
             <StyledRating
               value={rating}
+              name="별점"
               precision={0.5}
               size="large"
               onChange={(_event, newValue) => {
@@ -157,7 +165,7 @@ const PostForm = () => {
               required: true,
             })}
             placeholder="내용을 입력해주세요."
-            defaultValue={singlePost && singlePost.content}
+            {...(editMode && { defaultValue: singlePost.content })}
           />
           <ButtonPurple
             type="submit"
@@ -252,7 +260,7 @@ const PostTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
 `
-export const StyledRating = withStyles({
+const StyledRating = withStyles({
   iconFilled: {
     color: "rgb(252,145,72)",
   },
@@ -260,4 +268,5 @@ export const StyledRating = withStyles({
     color: "rgb(252,145,72)",
   },
 })(Rating)
+
 export default PostForm

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import PropTypes from "prop-types"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
@@ -16,7 +16,7 @@ const CommentForm = ({ ...obj }) => {
     },
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = useCallback((data) => {
     if (edit) {
       dispatch({
         type: EDIT_COMMENT_REQUEST,
@@ -28,7 +28,7 @@ const CommentForm = ({ ...obj }) => {
         data: { postId: currentPostId, content: data.text },
       })
     }
-  }
+  }, [])
   return (
     <CommentFormWrap>
       <form onSubmit={handleSubmit(onSubmit)}>

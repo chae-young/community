@@ -51,7 +51,7 @@ const Main = () => {
           breakpoints={breakpoints}
         >
           {popularPosts.map((v) => (
-            <SwiperSlide>
+            <SwiperSlide key={v.id}>
               <Grid container>
                 <PostListContent post={v} xs={12} sm={12} />
               </Grid>
@@ -68,7 +68,7 @@ const Main = () => {
           breakpoints={breakpoints}
         >
           {dramaPosts.map((v) => (
-            <SwiperSlide>
+            <SwiperSlide key={v.id}>
               <Grid container>
                 <PostListContent post={v} xs={12} sm={12} />
               </Grid>

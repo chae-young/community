@@ -14,7 +14,7 @@ const Write = () => {
   const router = useRouter()
   const { me } = useSelector((state) => state.user)
   if (!me) {
-    return <AlertLoginn />
+    return <AlertLogin />
   }
 
   return (

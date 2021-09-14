@@ -27,7 +27,7 @@ import AlertLogin from "../../components/AlertLogin"
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 1500,
-    margin: "auto",
+    margin: "0 auto 10rem",
     padding: "0 20px",
     [theme.breakpoints.down("sm")]: {},
   },

@@ -28,7 +28,7 @@ const PostListContent = ({ post, ...rest }) => {
       <Link href={`/post/${post.id}`}>
         <a>
           <ListPoster heightVal="25em">
-            <img src={`${post.Images[0].src}`} width="100%" alt={post.title} />
+            <img src={post.Images[0].src} width="100%" alt={post.title} />
             <PostCategoryTag category={post.category} />
           </ListPoster>
           <ListContent>
@@ -46,7 +46,7 @@ PostListContent.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
     category: PropTypes.string,
-    rating: PropTypes.number,
+    rating: PropTypes.string,
     Images: PropTypes.array,
   }).isRequired,
 }

@@ -61,7 +61,7 @@ const Follow = () => {
           }
         >
           {followList.map((v) => (
-            <ListItem disableGutters>
+            <ListItem key={v.id} disableGutters>
               <ListItemAvatar>
                 <Link href={`/users/${v.id}`}>
                   <a>

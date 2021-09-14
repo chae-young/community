@@ -19,7 +19,7 @@ const PostFavorite = () => {
   return (
     <>
       {popularPosts.map((v) => (
-        <Grid container wrap="nowrap">
+        <Grid key={v.id} container wrap="nowrap">
           <PostListContent
             post={v}
             xs={12}

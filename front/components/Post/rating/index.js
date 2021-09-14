@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 
 import { withStyles } from "@material-ui/styles"
 import Rating from "@material-ui/lab/Rating"
@@ -14,14 +15,14 @@ const PostRating = ({ rate }) => {
   )
 }
 
-export const Ratebox = styled.div`
+const Ratebox = styled.div`
   display: flex;
   > span {
     align-self: flex-end;
     padding-right: 0.3em;
   }
 `
-export const StyledRating = withStyles({
+const StyledRating = withStyles({
   iconFilled: {
     color: "rgb(252,145,72)",
   },
@@ -29,5 +30,9 @@ export const StyledRating = withStyles({
     color: "rgb(252,145,72)",
   },
 })(Rating)
+
+PostRating.propTypes = {
+  rate: PropTypes.string.isRequired,
+}
 
 export default PostRating

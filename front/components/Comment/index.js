@@ -89,7 +89,7 @@ const CommentList = ({ currentPostId, comments }) => {
 }
 
 CommentList.propTypes = {
-  currentPostId: PropTypes.number.isRequired,
+  currentPostId: PropTypes.string.isRequired,
   comments: PropTypes.array.isRequired,
 }
 export default CommentList
