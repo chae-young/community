@@ -360,19 +360,19 @@ function* watchImageUpload() {
   yield takeLatest(IMAGE_UPLOAD_REQUEST, imageUpload)
 }
 function* watchLoadPosts() {
-  yield throttle(3000, LOAD_POSTS_REQUEST, loadPosts)
+  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts)
 }
 function* watchLoadPost() {
-  yield throttle(3000, LOAD_POST_REQUEST, loadPost)
+  yield takeLatest(LOAD_POST_REQUEST, loadPost)
 }
 function* watchUserPosts() {
   yield throttle(3000, USER_POSTS_REQUEST, userPosts)
 }
 function* watchPopularPosts() {
-  yield throttle(3000, POPULAR_POSTS_REQUEST, popularPosts)
+  yield takeLatest(POPULAR_POSTS_REQUEST, popularPosts)
 }
 function* watchDramaPosts() {
-  yield throttle(3000, DRAMA_POSTS_REQUEST, dramaPosts)
+  yield takeLatest(DRAMA_POSTS_REQUEST, dramaPosts)
 }
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment)
