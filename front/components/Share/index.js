@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect, forwardRef } from "react"
+import React, { useState, useEffect, forwardRef } from "react"
 
 import { AttachmentOutlined } from "@material-ui/icons"
 
 import styled from "styled-components"
 import { CopyToClipboard } from "react-copy-to-clipboard"
-const Ullayout = styled.ul`
-  background: red;
-`
+import KakaoButton from "./kakao/index"
+
 const ShareList = (props, ref) => {
   const [url, setUrl] = useState(null)
   const [copy, setCopy] = useState(false)
+
   useEffect(() => {
     setUrl(window.location.href)
     if (copy) {
@@ -19,13 +19,14 @@ const ShareList = (props, ref) => {
 
   return (
     <>
-      <Ullayout ref={ref} style={props.width >= 767 ? props.style : null}>
-        <li>트위터예정</li>
-        <li>카카오예정</li>
+      <Ullayout ref={ref} style={props.width >= 943 ? props.style : null}>
+        <li>
+          <KakaoButton post={props.post} />
+        </li>
         <li>
           <CopyToClipboard text={url} onCopy={() => setCopy(true)}>
             <button type="button">
-              <AttachmentOutlined />
+              <AttachmentOutlined fontSize="large" />
             </button>
           </CopyToClipboard>
         </li>
@@ -33,5 +34,17 @@ const ShareList = (props, ref) => {
     </>
   )
 }
-
+const Ullayout = styled.ul`
+  > li + li {
+    margin: 1rem 0 0 0;
+  }
+  @media (max-width: 943px) {
+    display: flex;
+    align-items: center;
+    margin: 0 0 2rem 0;
+    > li + li {
+      margin: 0 0 0 1rem;
+    }
+  }
+`
 export default forwardRef(ShareList)

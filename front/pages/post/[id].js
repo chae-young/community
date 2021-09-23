@@ -7,7 +7,7 @@ import axios from "axios"
 import { END } from "redux-saga"
 
 import { makeStyles } from "@material-ui/core/styles"
-import { Grid, Avatar } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import Rating from "@material-ui/lab/Rating"
 
 import styled from "styled-components"
@@ -23,6 +23,7 @@ import EditSettingMenu from "../../components/EditSettingMenu"
 import Favorite from "../../components/Post/favorite"
 import ProfileAvatar from "../../components/Profile/Avatar"
 import AlertLogin from "../../components/AlertLogin"
+import { headerHeight } from "../../styles/style"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,7 +80,7 @@ const Post = () => {
       } else if (window.scrollY >= PostArticle.current.offsetTop) {
         setShaerBoxStlye((prevState) => ({
           ...prevState,
-          transform: `translateY(${window.scrollY}px)`,
+          transform: `translateY(${window.scrollY + headerHeight}px)`,
         }))
       } else {
         setShaerBoxStlye((prevState) => ({
@@ -97,7 +98,7 @@ const Post = () => {
       }))
     }
     window.addEventListener("resize", resizeWindow)
-    if (windowWidth >= 767) {
+    if (windowWidth >= 943) {
       // console.log(windowWidth)
       window.addEventListener("scroll", fixItem)
     }
@@ -113,6 +114,26 @@ const Post = () => {
         <>
           <Head>
             <title> {singlePost.User.nickname}님의 글</title>
+            <meta
+              name="description"
+              content={singlePost.content}
+              key="description"
+            />
+            <meta
+              property="og:title"
+              content={`${singlePost.User.nickname}님의 게시글`}
+              key="title"
+            />
+            <meta
+              property="og:description"
+              content={singlePost.content}
+              key="og:description"
+            />
+            <meta property="og:image" content={singlePost.Images[0]} />
+            <meta
+              property="og:url"
+              content={`https://emotion-feed.com/post/${id}`}
+            />
           </Head>
           <Grid container className={classes.root}>
             <Grid item xs sm className={classes.content}>
@@ -135,6 +156,7 @@ const Post = () => {
                   ref={Sharebox}
                   style={shareBoxStlye}
                   width={windowWidth}
+                  post={singlePost}
                 />
                 <div>
                   <img
@@ -208,6 +230,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie
     }
+
     context.store.dispatch({
       type: LOAD_USER_REQUEST,
     })
@@ -221,7 +244,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     })
     context.store.dispatch(END)
     await context.store.sagaTask.toPromise()
-    console.log(context.store.getState())
+
     return { props: {} }
   },
 )
