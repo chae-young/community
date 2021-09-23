@@ -38,10 +38,7 @@ class MyDocument extends Document {
       <Html lang="ko">
         <Head>
           <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
+
           <link
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
             rel="stylesheet"
@@ -49,6 +46,7 @@ class MyDocument extends Document {
         </Head>
         <body>
           <Main />
+          <script src="https://developers.kakao.com/sdk/js/kakao.js" />
           <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2Ces2016%2Ces2015%2Ces2017%2Ces2018%2Ces2019" />
           <NextScript />
         </body>
