@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const { Op } = require("sequelize");
 
 const { User, Post, Image, Comment } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
@@ -53,6 +54,7 @@ router.get("/:id/posts", async (req, res, next) => {
             const posts = await user.getPosts({
                 where,
                 limit: 10,
+                order: [["id", "DESC"]],
                 include: [
                     {
                         model: User,
