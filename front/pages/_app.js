@@ -6,7 +6,7 @@ import { ThemeProvider } from "styled-components"
 import {
   StylesProvider,
   ThemeProvider as MuiThemeProvider,
-  createTheme,
+  createMuiTheme,
 } from "@material-ui/core/styles"
 
 import "../styles/swiper.css"
@@ -22,7 +22,7 @@ const App = ({ Component }) => {
     }
   }, [])
 
-  const myTheme = createTheme()
+  const myTheme = createMuiTheme()
 
   return (
     <>
