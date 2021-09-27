@@ -5,7 +5,7 @@ import PropTypes from "prop-types"
 
 import { TextField } from "@material-ui/core"
 
-import { LoginRequestAction } from "../../../reducers/user"
+import { LOG_IN_REQUEST } from "../../../reducers/user"
 import { AsideInputField, ButtonPurple } from "../../../styles/style"
 
 const LoginForm = ({ setAisdeToggle }) => {
@@ -14,7 +14,12 @@ const LoginForm = ({ setAisdeToggle }) => {
   const dispatch = useDispatch()
 
   const onSubmit = (data) => {
-    dispatch(LoginRequestAction({ data }))
+    console.log(data)
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data,
+    })
+    // dispatch(LoginRequestAction({ data }))
   }
 
   useEffect(() => {

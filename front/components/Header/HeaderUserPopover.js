@@ -19,8 +19,8 @@ const MypopOver = ({ options }) => {
     options.setAnchorEl(null)
   }, [])
   const onLogout = useCallback(() => {
-    router.replace("/")
     dispatch({ type: LOG_OUT_REQUEST })
+    router.replace("/")
     handleClose()
   }, [])
   return (

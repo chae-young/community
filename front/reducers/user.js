@@ -75,20 +75,20 @@ export const FOLLOW_LIST_REQUEST = "FOLLOW_LIST_REQUEST"
 export const FOLLOW_LIST_SUCCESS = "FOLLOW_LIST_SUCCESS"
 export const FOLLOW_LIST_FAILURE = "FOLLOW_LIST_FAILURE"
 
-export const LoginRequestAction = (data) => ({
-  type: LOG_IN_REQUEST,
-  ...data,
-})
+// export const LoginRequestAction = (data) => ({
+//   type: LOG_IN_REQUEST,
+//   ...data,
+// })
 
-// dummyFollow(10)
-export const dummyFollow = (data) =>
-  Array(data)
-    .fill()
-    .map(() => ({
-      id: 2,
-      nickname: "채영",
-      src: null,
-    }))
+// // dummyFollow(10)
+// export const dummyFollow = (data) =>
+//   Array(data)
+//     .fill()
+//     .map(() => ({
+//       id: 2,
+//       nickname: "채영",
+//       src: null,
+//     }))
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
