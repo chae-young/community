@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 
-import TextField from "@material-ui/core/TextField"
+import { TextField } from "@material-ui/core"
 
 import { SIGN_UP_REQUEST } from "../../../reducers/user"
 import { AsideInputField, ButtonPurple } from "../../../styles/style"

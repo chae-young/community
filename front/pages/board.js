@@ -1,28 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import axios from "axios"
+import dynamic from "next/dynamic"
 import { END } from "redux-saga"
 
-import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 
-import Layout from "../components/Layout"
+import styled from "styled-components"
+const Layout = dynamic(() => import("../components/Layout"))
+import useInfiniteScroll from "../hooks/useInfiniteScroll"
 import wrapper from "../store/configureStore"
 import PostListContent from "../components/List/post/PostListContent"
 import { LOAD_POSTS_REQUEST } from "../reducers/post"
 import { LOAD_USER_REQUEST } from "../reducers/user"
-import useInfiniteScroll from "../hooks/useInfiniteScroll"
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 1000,
-    margin: "auto",
-  },
-})
 
 const Board = () => {
   const dispatch = useDispatch()
-  const classes = useStyles()
   const { postList, loadPostsLoading, loadPostsDone } = useSelector(
     (state) => state.post,
   )
@@ -41,33 +34,9 @@ const Board = () => {
     scrollDispatch,
   )
 
-  // const [flag, setFlag] = useState(false)
-  // useEffect(() => {
-  //   const loadOnScroll = () => {
-  //     if (
-  //       Math.round(window.scrollY) + document.documentElement.clientHeight >=
-  //       document.documentElement.scrollHeight - 200
-  //     ) {
-  //       if (loadPostsDone) setFlag(false)
-  //       if (!flag && !loadPostsLoading) {
-  //         const lastId = postList[postList.length - 1].id
-  //         dispatch({
-  //           type: LOAD_POSTS_REQUEST,
-  //           lastId,
-  //         })
-  //         setFlag(true)
-  //       }
-  //     }
-  //   }
-  //   window.addEventListener("scroll", loadOnScroll)
-  //   return () => {
-  //     window.removeEventListener("scroll", loadOnScroll)
-  //   }
-  // }, [postList, loadPostsLoading, flag])
-
   return (
     <Layout>
-      <Grid container className={classes.root}>
+      <GridContent container>
         {postList.map((v) => (
           <PostListContent
             key={v.id}
@@ -77,10 +46,14 @@ const Board = () => {
             padding={{ d: "0 1rem 8rem 1rem", m: "0 20px 40px 20px" }}
           />
         ))}
-      </Grid>
+      </GridContent>
     </Layout>
   )
 }
+const GridContent = styled(Grid)`
+  max-width: 1000px;
+  margin: auto;
+`
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
     const cookie = context.req ? context.req.headers.cookie : ""
@@ -91,10 +64,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-    // if (postCount === 0 || postCount === 10) {
+
     context.store.dispatch({
       type: LOAD_POSTS_REQUEST,
-      // data: context.params.id,
     })
     context.store.dispatch(END)
     await context.store.sagaTask.toPromise()

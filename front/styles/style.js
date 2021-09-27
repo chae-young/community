@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 import theme from "./theme"
 
-export const headerHeight = "65px"
+export const headerHeight = 65
 export const InputStyle = css`
   padding: 0;
   background: none;

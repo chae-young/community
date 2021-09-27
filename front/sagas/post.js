@@ -35,6 +35,8 @@ import {
   REVIEW_SEARCH_SUCCESS,
   REVIEW_SEARCH_FAILURE,
   USER_POSTS_REQUEST,
+  USER_POSTS_FAILURE,
+  USER_POSTS_SUCCESS,
   EDIT_POST_FAILURE,
   EDIT_POST_SUCCESS,
   EDIT_POST_REQUEST,
@@ -165,19 +167,19 @@ function* loadPost(action) {
 }
 
 function userPostsAPI(data, lastId) {
-  return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`)
+  return axios.get(`/user/${data.id}/posts?lastId=${data.lastId || 0}`)
 }
 function* userPosts(action) {
   try {
-    const result = yield call(userPostsAPI, action.data, action.lastId)
+    const result = yield call(userPostsAPI, action.data)
     yield put({
-      type: LOAD_POSTS_SUCCESS,
+      type: USER_POSTS_SUCCESS,
       data: result.data,
     })
   } catch (err) {
     console.error(err)
     yield put({
-      type: LOAD_POSTS_FAILURE,
+      type: USER_POSTS_FAILURE,
       error: err.response.data,
     })
   }

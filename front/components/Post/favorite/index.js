@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 
 import { FavoriteBorder, Favorite } from "@material-ui/icons"
-import red from "@material-ui/core/colors/red"
 
 import { LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from "../../../reducers/post"
 
@@ -29,7 +28,7 @@ const FavoriteBtn = ({ post }) => {
   return (
     <button type="button">
       {Liked ? (
-        <Favorite style={{ color: red[600] }} onClick={onUnLike} />
+        <Favorite style={{ color: "red" }} onClick={onUnLike} />
       ) : (
         <FavoriteBorder fontSize="large" onClick={onLike} />
       )}

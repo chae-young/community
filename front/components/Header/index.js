@@ -2,15 +2,16 @@ import React, { useState, useCallback, useRef } from "react"
 import Image from "next/image"
 import { useSelector } from "react-redux"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 
 import { Search } from "@material-ui/icons"
 
 import styled from "styled-components"
-import LogoImg from "./images/logo.png"
-import HeaderUserPopover from "./HeaderUserPopover"
+import LogoImg from "../../public/images/logo.png"
+const HeaderUserPopover = dynamic(() => import("./HeaderUserPopover"))
+const SearchPopup = dynamic(() => import("../Search"))
+const HeaderAside = dynamic(() => import("./aside"))
 import UserImg from "./images/icon_user.png"
-import SearchPopup from "../Search"
-import HeaderAside from "./aside"
 import { headerHeight } from "../../styles/style"
 import ProfileAvatar from "../Profile/Avatar"
 
@@ -93,6 +94,11 @@ const Logo = styled.h1`
   top: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  > a {
+    display: block;
+    width: 130px;
+    height: 31px;
+  }
 `
 const HeaderWrap = styled.header`
   position: fixed;
@@ -100,7 +106,7 @@ const HeaderWrap = styled.header`
   left: 0;
   z-index: 10;
   width: 100%;
-  height: ${headerHeight};
+  height: ${headerHeight}px;
 `
 const InnerHeader = styled.div`
   position: relative;

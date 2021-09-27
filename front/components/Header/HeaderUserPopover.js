@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import Link from "next/link"
 import { useRouter } from "next/router"
 
-import Popover from "@material-ui/core/Popover"
+import { Popover } from "@material-ui/core"
 
 import styled from "styled-components"
 import { LOG_OUT_REQUEST } from "../../reducers/user"
@@ -33,11 +33,6 @@ const MypopOver = ({ options }) => {
       <PopoverInner>
         <div>
           <ProfileAvatar src={me.src} alt={me.nickname} />
-          {/* <Avatar
-            alt={me.nickname}
-            src={`http://localhost:3063/profile/${me.src}`}
-            width="10%"
-          /> */}
         </div>
         <PopoverInfo>
           <div className="profile-user">

@@ -1,17 +1,16 @@
 import axios from "axios"
-import { useRouter } from "next/router"
-import React, { useEffect } from "react"
+import React from "react"
+import dynamic from "next/dynamic"
 import { useSelector } from "react-redux"
 import { END } from "redux-saga"
-import AlertLogin from "../components/AlertLogin"
 
-import Layout from "../components/Layout"
+const Layout = dynamic(() => import("../components/Layout"))
+const AlertLogin = dynamic(() => import("../components/AlertLogin"))
 import PostForm from "../components/Post/form"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 import wrapper from "../store/configureStore"
 
 const Write = () => {
-  const router = useRouter()
   const { me } = useSelector((state) => state.user)
   if (!me) {
     return <AlertLogin />

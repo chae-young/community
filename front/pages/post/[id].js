@@ -1,55 +1,40 @@
-import React, { useState, useCallback, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import { useRouter } from "next/router"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 import Link from "next/link"
 import axios from "axios"
 import { END } from "redux-saga"
 
-import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
-import Rating from "@material-ui/lab/Rating"
+import { Rating } from "@material-ui/lab"
 
 import styled from "styled-components"
-import Layout from "../../components/Layout"
+const Layout = dynamic(() => import("../../components/Layout"))
+const CommentList = dynamic(() => import("../../components/Comment"))
+const AlertLogin = dynamic(() => import("../../components/AlertLogin"), {
+  ssr: false,
+})
+const EditSettingMenu = dynamic(() =>
+  import("../../components/EditSettingMenu"),
+)
 import CommentForm from "../../components/Comment/CommentForm"
-import CommentList from "../../components/Comment"
 import { LOAD_POST_REQUEST, POPULAR_POSTS_REQUEST } from "../../reducers/post"
 import PopularList from "../../components/List/post/PostFavorite"
 import wrapper from "../../store/configureStore"
 import { LOAD_USER_REQUEST } from "../../reducers/user"
 import ShareList from "../../components/Share"
-import EditSettingMenu from "../../components/EditSettingMenu"
 import Favorite from "../../components/Post/favorite"
 import ProfileAvatar from "../../components/Profile/Avatar"
-import AlertLogin from "../../components/AlertLogin"
 import { headerHeight } from "../../styles/style"
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 1500,
-    margin: "0 auto 10rem",
-    padding: "0 20px",
-    [theme.breakpoints.down("sm")]: {},
-  },
-  content: {
-    paddingLeft: "20vw",
-    [theme.breakpoints.down("sm")]: {
-      paddingLeft: 0,
-    },
-  },
-  popular: {
-    padding: "0 0 40px 4vw",
-  },
-}))
 
 const Post = () => {
   const router = useRouter()
   const { id } = router.query
-  const classes = useStyles()
   const Sharebox = useRef(null)
   const PostArticle = useRef(null)
-
+  const [refVisible, setRefVisible] = useState(false)
   const { me } = useSelector((state) => state.user)
   if (!me) {
     return <AlertLogin />
@@ -68,6 +53,17 @@ const Post = () => {
   }
   const [shareBoxStlye, setShaerBoxStlye] = useState(null)
   useEffect(() => {
+    if (!refVisible) {
+      return
+    }
+    if (Sharebox.current && PostArticle.current) {
+      setShaerBoxStlye((prevState) => ({
+        position: "absolute",
+        top: 0,
+        left: `${PostArticle.current.offsetLeft / 2}px`,
+        transform: `translateY(${PostArticle.current.offsetTop}px)`,
+      }))
+    }
     setWindowWidth(window.innerWidth)
     function fixItem() {
       const endHeight =
@@ -89,14 +85,6 @@ const Post = () => {
         }))
       }
     }
-    if (Sharebox.current && PostArticle.current) {
-      setShaerBoxStlye((prevState) => ({
-        position: "absolute",
-        top: 0,
-        left: `${PostArticle.current.offsetLeft / 2}px`,
-        transform: `translateY(${PostArticle.current.offsetTop}px)`,
-      }))
-    }
     window.addEventListener("resize", resizeWindow)
     if (windowWidth >= 943) {
       // console.log(windowWidth)
@@ -106,7 +94,7 @@ const Post = () => {
       window.removeEventListener("resize", resizeWindow)
       window.removeEventListener("scroll", fixItem)
     }
-  }, [windowWidth])
+  }, [windowWidth, refVisible])
 
   return (
     <Layout>
@@ -135,9 +123,14 @@ const Post = () => {
               content={`https://emotion-feed.com/post/${id}`}
             />
           </Head>
-          <Grid container className={classes.root}>
-            <Grid item xs sm className={classes.content}>
-              <ArticleWrap ref={PostArticle}>
+          <GridWrap container>
+            <GridContent item xs sm>
+              <ArticleWrap
+                ref={(el) => {
+                  PostArticle.current = el
+                  setRefVisible(!!el)
+                }}
+              >
                 <h2>{singlePost.title}</h2>
                 <Rating value={singlePost.rating} precision={0.1} readOnly />
                 <ArticleUser>
@@ -176,11 +169,11 @@ const Post = () => {
               </ArticleWrap>
               <CommentList currentPostId={id} comments={singlePost.Comments} />
               <CommentForm currentPostId={id} comments={singlePost.Comments} />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3} className={classes.popular}>
+            </GridContent>
+            <GridPopular item xs={12} sm={4} md={3}>
               <PopularList />
-            </Grid>
-          </Grid>
+            </GridPopular>
+          </GridWrap>
         </>
       )}
     </Layout>
@@ -221,6 +214,20 @@ const ArticleText = styled.p`
 const ArticleFavorit = styled.div`
   display: flex;
   align-items: center;
+`
+const GridWrap = styled(Grid)`
+  max-width: 1500px;
+  margin: 0 auto 10rem;
+  padding: 0 20px;
+`
+const GridContent = styled(Grid)`
+  padding-left: 20vw;
+  @media ${({ theme }) => theme.device.maxTablet} {
+    padding-left: 0;
+  }
+`
+const GridPopular = styled(Grid)`
+  padding: 0 0 40px 4vw;
 `
 
 export const getServerSideProps = wrapper.getServerSideProps(

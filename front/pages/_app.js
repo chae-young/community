@@ -2,11 +2,11 @@ import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 import Head from "next/head"
 
-import styled, { ThemeProvider } from "styled-components"
+import { ThemeProvider } from "styled-components"
 import {
   StylesProvider,
   ThemeProvider as MuiThemeProvider,
-  createMuiTheme,
+  createTheme,
 } from "@material-ui/core/styles"
 
 import "../styles/swiper.css"
@@ -22,13 +22,29 @@ const App = ({ Component }) => {
     }
   }, [])
 
-  const myTheme = createMuiTheme()
+  const myTheme = createTheme()
 
   return (
     <>
       <Head>
         <title>emotion</title>
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/public/favicon.ico" />
+        <meta name="keywords" content="리뷰,영화,드라마,다큐" />
+        <meta
+          name="description"
+          content="emotion | 영화,tv 드라마,다큐 리뷰를 서로 공유해요"
+          key="description"
+        />
+        <meta
+          property="og:title"
+          content="emotion | 리뷰 공유 서비스"
+          key="title"
+        />
+        <meta
+          property="og:description"
+          content="emotion | 영화,tv 드라마,다큐 리뷰를 서로 공유해요"
+          key="og:description"
+        />
       </Head>
 
       <GlobalStyle />

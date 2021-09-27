@@ -1,6 +1,8 @@
+
 {
   "presets": ["next/babel"],
   "plugins": [
+
     [
       "babel-plugin-styled-components",
       {
@@ -8,7 +10,7 @@
         "displayName": true,
         "preprocess": false
       }
-    ],
+    ],   
     [
       "babel-plugin-import",
       {
@@ -30,11 +32,11 @@
     [
       "babel-plugin-import",
       {
-        "libraryName": "@material-ui/styles",
+        "libraryName": "@material-ui/lab",
         "libraryDirectory": "",
         "camel2DashComponentName": false
       },
-      "styles"
+      "lab"
     ]
   ]
 }

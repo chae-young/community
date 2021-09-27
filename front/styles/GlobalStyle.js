@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
         font-size:10px;
     };
     body{
-        padding-top:${headerHeight};
+        padding-top: ${headerHeight}px;
         line-height: 1.5;
         background:#f5f0e4;        
     }

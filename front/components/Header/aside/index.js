@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from "react"
 import PropTypes from "prop-types"
+import dynamic from "next/dynamic"
 
-import CloseIcon from "@material-ui/icons/Close"
+import { Close } from "@material-ui/icons"
 
 import styled from "styled-components"
 import LoginForm from "./LoginForm"
-import Signup from "./Signup"
+const Signup = dynamic(() => import("./Signup"))
 import { CloseBtn } from "../../../styles/style"
 
 const HeaderAside = ({ aisdeToggle, setAisdeToggle }) => {
@@ -22,7 +23,7 @@ const HeaderAside = ({ aisdeToggle, setAisdeToggle }) => {
     <Aside toggle={aisdeToggle}>
       <h3>{isToggleOn ? "Login" : "Join"}</h3>
       <CloseBtn onClick={onClose}>
-        <CloseIcon fontSize="large" />
+        <Close fontSize="large" />
       </CloseBtn>
       <LoginToggle>
         계정이 없으신가요?

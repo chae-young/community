@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 
-import Avatar from "@material-ui/core/Avatar"
+import { Avatar } from "@material-ui/core"
 import styled from "styled-components"
 
 const ProfileAvatar = ({ src, alt, size }) => {

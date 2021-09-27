@@ -19,7 +19,7 @@ const ShareList = (props, ref) => {
 
   return (
     <>
-      <Ullayout ref={ref} style={props.width >= 943 ? props.style : null}>
+      <Ullayout ref={ref} style={props.width >= 1024 ? props.style : null}>
         <li>
           <KakaoButton post={props.post} />
         </li>

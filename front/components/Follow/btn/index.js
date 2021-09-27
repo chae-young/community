@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 
 import styled from "styled-components"
-import { $ } from "dom7"
 import theme from "../../../styles/theme"
 import { FOLLOWING_REQUEST, FOLLOW_REQUEST } from "../../../reducers/user"
 

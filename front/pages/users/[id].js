@@ -1,23 +1,23 @@
-import React, { useEffect } from "react"
+import React from "react"
 import axios from "axios"
 import Head from "next/head"
+import dynamic from "next/dynamic"
 import { useSelector } from "react-redux"
 import { END } from "@redux-saga/core"
-import { useRouter } from "next/router"
 import Link from "next/link"
 
 import styled from "styled-components"
 import { LOAD_USER_REQUEST, USER_INFO_REQUEST } from "../../reducers/user"
 import wrapper from "../../store/configureStore"
-import Layout from "../../components/Layout"
-import FollowButton from "../../components/Follow/btn"
+const Layout = dynamic(() => import("../../components/Layout"))
+const FollowButton = dynamic(() => import("../../components/Follow/btn"))
+const AlertLogin = dynamic(() => import("../../components/AlertLogin"), {
+  ssr: false,
+})
 import { minContainer, PostTitle } from "../../styles/style"
 import ProfileAvatar from "../../components/Profile/Avatar"
-import AlertLogin from "../../components/AlertLogin"
 
 const Users = () => {
-  const router = useRouter()
-  const { id } = router.query
   const { me, userInfo } = useSelector((state) => state.user)
 
   if (!me) {
@@ -32,7 +32,7 @@ const Users = () => {
     <>
       <Head>
         <title>{userInfo.nickname}님의 프로필</title>
-        <meta name="description" content={`${userInfo.nickname}님의 게시글`} />
+        <meta property="og:title" content={`${userInfo.nickname}님의 게시글`} />
       </Head>
       <Layout>
         <UserProfile>
@@ -103,7 +103,6 @@ const UserImg = styled.div`
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
-    console.log(context.req)
     const cookie = context.req ? context.req.headers.cookie : ""
     axios.defaults.headers.Cookie = ""
     if (context.req && cookie) {
@@ -118,7 +117,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     })
     context.store.dispatch(END)
     await context.store.sagaTask.toPromise()
-    console.log("getState", context.store.getState().user.userInfo)
+    //console.log("getState", context.store.getState().user.userInfo)
     return { props: {} }
   },
 )

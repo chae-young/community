@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
+import Link from "next/link"
 
 import { styled } from "@material-ui/core/styles"
 import { Delete, Create } from "@material-ui/icons"
@@ -56,7 +57,11 @@ const CommentList = ({ currentPostId, comments }) => {
       {comments.map((v) => (
         <ListItem key={v.id} alignItems="flex-start" disableGutters>
           <ListItemAvatar>
-            <ProfileAvatar alt={v.User.nickname} src={v.User.src} />
+            <Link href={`/users/${v.UserId}`}>
+              <a>
+                <ProfileAvatar alt={v.User.nickname} src={v.User.src} />
+              </a>
+            </Link>
           </ListItemAvatar>
           {edit && myComment(v.UserId) ? (
             <CommentForm

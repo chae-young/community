@@ -1,11 +1,10 @@
-import React, { useCallback, useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 
-import TextField from "@material-ui/core/TextField"
+import { TextField } from "@material-ui/core"
 
-import styled from "styled-components"
 import { LoginRequestAction } from "../../../reducers/user"
 import { AsideInputField, ButtonPurple } from "../../../styles/style"
 

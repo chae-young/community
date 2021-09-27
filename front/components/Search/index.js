@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+
 import { useRouter } from "next/router"
 
 import { Search, Close } from "@material-ui/icons"
@@ -45,7 +45,6 @@ const SearchBtn = styled.div`
 `
 
 const SearchPopup = ({ searchopen, onSearchClose }) => {
-  const dispatch = useDispatch()
   const router = useRouter()
   const { register, handleSubmit, watch } = useForm()
   // const watchAllFields = watch()

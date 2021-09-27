@@ -3,6 +3,7 @@ const diviceSize = {
   mobileM: "375px",
   mobileL: "600px",
   tablet: "768px",
+  tabletL: "1024px",
   desktop: "1200px",
 }
 const pointColor = {
@@ -15,6 +16,7 @@ const device = {
   mobile: `(max-width: ${diviceSize.mobileL})`,
   MinMobile: `(min-width: ${diviceSize.mobileL})`,
   tablet: `(min-width: ${diviceSize.tablet})`,
+  maxTablet: `(max-width: ${diviceSize.tabletL})`,
   desktop: `(min-width: ${diviceSize.desktop})`,
 }
 

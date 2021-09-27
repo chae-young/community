@@ -1,16 +1,18 @@
-import React, { useEffect } from "react"
+import React from "react"
 import axios from "axios"
+import dynamic from "next/dynamic"
 import { END } from "redux-saga"
 import { useSelector } from "react-redux"
 
 import { Swiper, SwiperSlide } from "swiper/react"
-import SwiperCore, { Navigation } from "swiper/core"
 import "swiper/swiper.min.css"
 import "swiper/components/navigation/navigation.min.css"
-import Grid from "@material-ui/core/Grid"
+import SwiperCore, { Navigation } from "swiper"
+
+import { Grid } from "@material-ui/core"
 
 import styled from "styled-components"
-import Layout from "../components/Layout"
+const Layout = dynamic(() => import("../components/Layout"))
 import wrapper from "../store/configureStore"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 import { DRAMA_POSTS_REQUEST, POPULAR_POSTS_REQUEST } from "../reducers/post"
@@ -29,6 +31,13 @@ const MainSlider = styled.section`
 const Main = () => {
   const { popularPosts, dramaPosts } = useSelector((state) => state.post)
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  }
   const breakpoints = {
     320: {
       slidesPerView: 2,

@@ -1,9 +1,9 @@
-import React, { useCallback, useRef, useEffect } from "react"
+import React, { useCallback, useRef } from "react"
+import dynamic from "next/dynamic"
 import { useDispatch, useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 import { END } from "redux-saga"
 import axios from "axios"
-import { useRouter } from "next/router"
 
 import { TextField } from "@material-ui/core"
 
@@ -16,9 +16,11 @@ import {
 } from "../../../reducers/user"
 import wrapper from "../../../store/configureStore"
 import { ButtonPurple, minContainer } from "../../../styles/style"
-import Layout from "../../../components/Layout"
+const Layout = dynamic(() => import("../../../components/Layout"))
+const AlertLogin = dynamic(() => import("../../../components/AlertLogin"), {
+  ssr: false,
+})
 import ProfileAvatar from "../../../components/Profile/Avatar"
-import AlertLogin from "../../../components/AlertLogin"
 
 const EditForm = styled.div`
   ${minContainer}
@@ -27,11 +29,10 @@ const EditInput = styled.div`
   max-width: 280px;
   margin: auto;
 `
-const edit = () => {
-  const router = useRouter()
+const Edit = () => {
   const { register, handleSubmit, watch } = useForm()
   const dispatch = useDispatch()
-  const { me, userInfo } = useSelector((state) => state.user)
+  const { me } = useSelector((state) => state.user)
 
   if (!me) {
     return <AlertLogin />
@@ -132,4 +133,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   },
 )
 
-export default edit
+export default Edit

@@ -1,11 +1,10 @@
 import React, { useCallback, useState, useRef, useEffect } from "react"
-
+import dynamic from "next/dynamic"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
 
-import { withStyles } from "@material-ui/styles"
-import Rating from "@material-ui/lab/Rating"
+import { Rating } from "@material-ui/lab"
 import { Grid } from "@material-ui/core"
 
 import styled from "styled-components"
@@ -16,7 +15,7 @@ import {
 } from "../../../reducers/post"
 import basicPoster from "./images/noimage.png"
 import { FormInput, ButtonPurple, headerHeight } from "../../../styles/style"
-import FormSelect from "../category"
+const FormSelect = dynamic(() => import("../category"))
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -31,7 +30,7 @@ const PostForm = () => {
   const [EditpostImg, setEditpostImg] = useState("")
   const [category, setCategory] = useState("")
   const [rating, setRating] = useState(0.5)
-  console.log(router.asPath)
+
   useEffect(() => {
     if (router.asPath.includes("post/edit")) {
       setEditMode(true)
@@ -150,7 +149,7 @@ const PostForm = () => {
               placeholder="리뷰 제목을 입력해주세요."
               {...(editMode && { defaultValue: singlePost.title })}
             />
-            <StyledRating
+            <Rating
               value={rating}
               name="별점"
               precision={0.5}
@@ -260,13 +259,5 @@ const PostTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
 `
-const StyledRating = withStyles({
-  iconFilled: {
-    color: "rgb(252,145,72)",
-  },
-  iconHover: {
-    color: "rgb(252,145,72)",
-  },
-})(Rating)
 
 export default PostForm

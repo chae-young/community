@@ -50,46 +50,6 @@ export const initialState = {
   reviewSearchError: null,
 }
 
-export const dummyList = (num) =>
-  Array.from(Array(num).keys()).map((v) => ({
-    id: 1,
-    User: {
-      id: 1,
-      image: "",
-      nickname: "cy",
-    },
-    title: "제목",
-    rating: 4.5,
-    content: "첫번째게시글",
-    Images: [{ src: "https://" }],
-    Comments: [
-      {
-        User: { nickname: "cy" },
-        content: "goob!",
-      },
-    ],
-  }))
-
-// initialState.postList = dummyList(5)
-const dummyComment = (data) => ({
-  User: { nickname: "cy" },
-  content: data.text,
-})
-const dummyPost = (data) => ({
-  id: data.id,
-  User: {
-    id: shortid.generate(),
-    nickname: "테스트용닉네임",
-  },
-  post: {
-    title: data.title,
-    rating: data.rating,
-    content: data.content,
-  },
-  Image: data.imagePath,
-  Comments: [],
-})
-
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST"
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS"
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE"

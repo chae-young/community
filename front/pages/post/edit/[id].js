@@ -1,14 +1,17 @@
 import React from "react"
+import dynamic from "next/dynamic"
 import axios from "axios"
 import { END } from "redux-saga"
 import { useSelector } from "react-redux"
 
-import Layout from "../../../components/Layout"
+const Layout = dynamic(() => import("../../../components/Layout"))
+const AlertLogin = dynamic(() => import("../../../components/AlertLogin"), {
+  ssr: false,
+})
 import PostForm from "../../../components/Post/form"
 import wrapper from "../../../store/configureStore"
 import { LOAD_USER_REQUEST } from "../../../reducers/user"
 import { LOAD_POST_REQUEST } from "../../../reducers/post"
-import AlertLogin from "../../../components/AlertLogin"
 
 const PostEdit = () => {
   const { me } = useSelector((state) => state.user)

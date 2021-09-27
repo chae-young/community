@@ -2,29 +2,24 @@ import React from "react"
 import PropTypes from "prop-types"
 import Link from "next/link"
 
-import { makeStyles } from "@material-ui/core/styles"
-import Grid from "@material-ui/core/Grid"
+import { Grid } from "@material-ui/core"
 
+import styled from "styled-components"
 import { ListPoster, ListContent } from "../../../styles/style"
 import PostCategoryTag from "./PostCategoryTag"
 import PostRating from "../../Post/rating"
 
-const useStyles = makeStyles((theme) => ({
-  root: (props) => ({
-    padding: props.d,
-    [theme.breakpoints.down("xs")]: {
-      padding: props.m,
-    },
-  }),
-}))
-
+const GridContent = styled(Grid)`
+  padding: ${(props) => (props.padding ? props.padding.d : 0)};
+  @media ${({ theme }) => theme.device.mobile} {
+    padding: ${(props) => (props.padding ? props.padding.m : 0)};
+  }
+`
 const PostListContent = ({ post, ...rest }) => {
   const { xs, sm, padding } = rest
-  const props = padding
-  const classes = useStyles(props)
 
   return (
-    <Grid item xs={xs} sm={sm} className={classes.root}>
+    <GridContent item xs={xs} sm={sm} padding={padding}>
       <Link href={`/post/${post.id}`}>
         <a>
           <ListPoster heightVal="25em">
@@ -37,7 +32,7 @@ const PostListContent = ({ post, ...rest }) => {
           </ListContent>
         </a>
       </Link>
-    </Grid>
+    </GridContent>
   )
 }
 
