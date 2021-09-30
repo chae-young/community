@@ -55,10 +55,12 @@ const SearchPopup = ({ searchopen, onSearchClose }) => {
     //   type: REVIEW_SEARCH_REQUEST,
     //   data: data.searchText,
     // })
-    router.push({
-      pathname: `/search/${watchShowText}`,
-      // query: { word: data.searchText },
-    })
+    if (watchShowText.length) {
+      router.push({
+        pathname: `/search/${watchShowText}`,
+        // query: { word: data.searchText },
+      })
+    }
     // Router.push("/search", `/search/${data.searchText}`)
   }
 
