@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import axios from "axios"
 import dynamic from "next/dynamic"
 import { END } from "redux-saga"
@@ -7,19 +7,17 @@ import { useSelector } from "react-redux"
 import wrapper from "../store/configureStore"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 import { DRAMA_POSTS_REQUEST, POPULAR_POSTS_REQUEST } from "../reducers/post"
+import Slider from "../components/Slider"
 
 const Layout = dynamic(() => import("../components/Layout"))
-const DynamicSlider = dynamic(() => import("../components/Slider"), {
-  loading: () => <p>...</p>,
-})
 
 const Main = () => {
   const { popularPosts, dramaPosts } = useSelector((state) => state.post)
 
   return (
     <Layout>
-      <DynamicSlider title="인기 포스트" dataList={popularPosts} />
-      <DynamicSlider title="드라마" dataList={dramaPosts} />
+      <Slider title="인기 포스트" dataList={popularPosts} />
+      <Slider title="드라마" dataList={dramaPosts} />
 
       {/* <MainSlider>
         <h2>드라마</h2>
