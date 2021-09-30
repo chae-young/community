@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import axios from "axios"
 import dynamic from "next/dynamic"
 import { END } from "redux-saga"
@@ -51,18 +51,7 @@ const Main = () => {
     <Layout>
       <MainSlider>
         <h2>인기 포스트</h2>
-        <Swiper
-          slidesPerView={6}
-          spaceBetween={60}
-          navigation
-          observer="true"
-          onSwiper={(swiper) => {
-            setTimeout(() => {
-              console.log(swiper.slides[0].attributes.style)
-            }, 1000)
-          }}
-          breakpoints={breakpoints}
-        >
+        <Swiper spaceBetween={60} navigation breakpoints={breakpoints}>
           {popularPosts.map((v) => (
             <SwiperSlide key={v.id}>
               <Grid container>
@@ -72,7 +61,7 @@ const Main = () => {
           ))}
         </Swiper>
       </MainSlider>
-      <MainSlider>
+      {/* <MainSlider>
         <h2>드라마</h2>
         <Swiper navigation breakpoints={breakpoints}>
           {dramaPosts.map((v) => (
@@ -83,7 +72,7 @@ const Main = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </MainSlider>
+      </MainSlider> */}
     </Layout>
   )
 }
