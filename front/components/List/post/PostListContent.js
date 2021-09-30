@@ -19,20 +19,23 @@ const PostListContent = ({ post, ...rest }) => {
   const { xs, sm, padding } = rest
 
   return (
-    <GridContent item xs={xs} sm={sm} padding={padding}>
-      <Link href={`/post/${post.id}`}>
-        <a>
-          <ListPoster heightVal="25em">
-            <img src={post.Images[0].src} width="100%" alt={post.title} />
-            <PostCategoryTag category={post.category} />
-          </ListPoster>
-          <ListContent>
-            <p>{post.title}</p>
-            <PostRating rate={post.rating} />
-          </ListContent>
-        </a>
-      </Link>
-    </GridContent>
+    <>
+      <GridContent item xs={xs} sm={sm} padding={padding}>
+        <Link href={`/post/${post.id}`}>
+          <a>
+            <ListPoster heightVal="25em">
+              <img src={post.Images[0].src} width="100%" alt={post.title} />
+
+              <PostCategoryTag category={post.category} />
+            </ListPoster>
+            <ListContent>
+              <p>{post.title}</p>
+              <PostRating rate={post.rating} />
+            </ListContent>
+          </a>
+        </Link>
+      </GridContent>
+    </>
   )
 }
 
