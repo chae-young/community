@@ -16,11 +16,12 @@ import {
 } from "../../../reducers/user"
 import wrapper from "../../../store/configureStore"
 import { ButtonPurple, minContainer } from "../../../styles/style"
+import ProfileAvatar from "../../../components/Profile/Avatar"
+
 const Layout = dynamic(() => import("../../../components/Layout"))
 const AlertLogin = dynamic(() => import("../../../components/AlertLogin"), {
   ssr: false,
 })
-import ProfileAvatar from "../../../components/Profile/Avatar"
 
 const EditForm = styled.div`
   ${minContainer}
@@ -32,7 +33,7 @@ const EditInput = styled.div`
 const Edit = () => {
   const { register, handleSubmit, watch } = useForm()
   const dispatch = useDispatch()
-  const { me } = useSelector((state) => state.user)
+  const { me, profileImgDone } = useSelector((state) => state.user)
 
   if (!me) {
     return <AlertLogin />
@@ -56,8 +57,11 @@ const Edit = () => {
         type: PROFILE_EDIT_REQUEST,
         data: editFormData,
       })
+      if (profileImgDone) {
+        alert("프로필이 수정되었습니다.")
+      }
     },
-    [me],
+    [me, profileImgDone],
   )
 
   const onChangeImage = useCallback((e) => {
