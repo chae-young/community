@@ -92,5 +92,12 @@ const MainSlider = styled.section`
     margin-bottom: 2em;
     font-size: 2rem;
   }
+  & img {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    &.swiper-lazy-loaded {
+      opacity: 1;
+    }
+  }
 `
 export default Slider
