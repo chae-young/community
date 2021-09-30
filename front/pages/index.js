@@ -47,12 +47,7 @@ const Main = () => {
     <Layout>
       <MainSlider>
         <h2>인기 포스트</h2>
-        <Swiper
-          navigation
-          slidesPerGroup={6}
-          className="mySwiper"
-          breakpoints={breakpoints}
-        >
+        <Swiper navigation className="mySwiper" breakpoints={breakpoints}>
           {popularPosts.map((v) => (
             <SwiperSlide key={v.id}>
               <Grid container>
@@ -64,12 +59,7 @@ const Main = () => {
       </MainSlider>
       <MainSlider>
         <h2>드라마</h2>
-        <Swiper
-          navigation
-          slidesPerGroup={6}
-          className="mySwiper"
-          breakpoints={breakpoints}
-        >
+        <Swiper navigation className="mySwiper" breakpoints={breakpoints}>
           {dramaPosts.map((v) => (
             <SwiperSlide key={v.id}>
               <Grid container>

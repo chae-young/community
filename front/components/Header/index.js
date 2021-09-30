@@ -8,12 +8,13 @@ import { Search } from "@material-ui/icons"
 
 import styled from "styled-components"
 import LogoImg from "../../public/images/logo.png"
-const HeaderUserPopover = dynamic(() => import("./HeaderUserPopover"))
-const SearchPopup = dynamic(() => import("../Search"))
-const HeaderAside = dynamic(() => import("./aside"))
 import UserImg from "./images/icon_user.png"
 import { headerHeight } from "../../styles/style"
 import ProfileAvatar from "../Profile/Avatar"
+
+const HeaderUserPopover = dynamic(() => import("./HeaderUserPopover"))
+const SearchPopup = dynamic(() => import("../Search"))
+const HeaderAside = dynamic(() => import("./aside"))
 
 const Header = () => {
   const { me } = useSelector((state) => state.user)
