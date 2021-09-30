@@ -12,11 +12,12 @@ import SwiperCore, { Navigation } from "swiper"
 import { Grid } from "@material-ui/core"
 
 import styled from "styled-components"
-const Layout = dynamic(() => import("../components/Layout"))
 import wrapper from "../store/configureStore"
 import { LOAD_USER_REQUEST } from "../reducers/user"
 import { DRAMA_POSTS_REQUEST, POPULAR_POSTS_REQUEST } from "../reducers/post"
 import PostListContent from "../components/List/post/PostListContent"
+
+const Layout = dynamic(() => import("../components/Layout"))
 
 SwiperCore.use([Navigation])
 
@@ -31,13 +32,6 @@ const MainSlider = styled.section`
 const Main = () => {
   const { popularPosts, dramaPosts } = useSelector((state) => state.post)
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  }
   const breakpoints = {
     320: {
       slidesPerView: 2,
@@ -55,7 +49,7 @@ const Main = () => {
         <h2>인기 포스트</h2>
         <Swiper
           navigation
-          slidesPerGroup={1}
+          slidesPerGroup={6}
           className="mySwiper"
           breakpoints={breakpoints}
         >
@@ -72,7 +66,7 @@ const Main = () => {
         <h2>드라마</h2>
         <Swiper
           navigation
-          slidesPerGroup={1}
+          slidesPerGroup={6}
           className="mySwiper"
           breakpoints={breakpoints}
         >
