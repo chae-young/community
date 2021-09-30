@@ -49,36 +49,40 @@ const Main = () => {
 
   return (
     <Layout>
-      <MainSlider>
-        <h2>인기 포스트</h2>
-        <Swiper
-          slidesPerView={6}
-          spaceBetween={60}
-          navigation
-          className="mySwiper"
-          breakpoints={breakpoints}
-        >
-          {popularPosts.map((v) => (
-            <SwiperSlide key={v.id}>
-              <Grid container>
-                <PostListContent post={v} xs={12} sm={12} />
-              </Grid>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </MainSlider>
-      <MainSlider>
-        <h2>드라마</h2>
-        <Swiper navigation className="mySwiper" breakpoints={breakpoints}>
-          {dramaPosts.map((v) => (
-            <SwiperSlide key={v.id}>
-              <Grid container>
-                <PostListContent post={v} xs={12} sm={12} />
-              </Grid>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </MainSlider>
+      {Swiper && (
+        <>
+          <MainSlider>
+            <h2>인기 포스트</h2>
+            <Swiper
+              slidesPerView={6}
+              spaceBetween={60}
+              navigation
+              className="mySwiper"
+              breakpoints={breakpoints}
+            >
+              {popularPosts.map((v) => (
+                <SwiperSlide key={v.id}>
+                  <Grid container>
+                    <PostListContent post={v} xs={12} sm={12} />
+                  </Grid>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </MainSlider>
+          <MainSlider>
+            <h2>드라마</h2>
+            <Swiper navigation className="mySwiper" breakpoints={breakpoints}>
+              {dramaPosts.map((v) => (
+                <SwiperSlide key={v.id}>
+                  <Grid container>
+                    <PostListContent post={v} xs={12} sm={12} />
+                  </Grid>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </MainSlider>
+        </>
+      )}
     </Layout>
   )
 }
