@@ -37,7 +37,11 @@ const Main = () => {
       slidesPerView: 2,
       spaceBetween: 10,
     },
-    1024: {
+    767: {
+      slidesPerView: 4,
+      spaceBetween: 40,
+    },
+    1199: {
       slidesPerView: 6,
       spaceBetween: 60,
     },
@@ -47,7 +51,13 @@ const Main = () => {
     <Layout>
       <MainSlider>
         <h2>인기 포스트</h2>
-        <Swiper navigation className="mySwiper" breakpoints={breakpoints}>
+        <Swiper
+          slidesPerView={6}
+          spaceBetween={60}
+          navigation
+          className="mySwiper"
+          breakpoints={breakpoints}
+        >
           {popularPosts.map((v) => (
             <SwiperSlide key={v.id}>
               <Grid container>
