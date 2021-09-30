@@ -58,8 +58,8 @@ const Main = () => {
           observer="true"
           onSwiper={(swiper) => {
             setTimeout(() => {
-              swiper.update() // ------> this solution
-            }, 3000)
+              console.log(swiper.slides[0].attributes.style)
+            }, 1000)
           }}
           breakpoints={breakpoints}
         >
