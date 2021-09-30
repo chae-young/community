@@ -10,8 +10,8 @@ import { AsideInputField, ButtonPurple } from "../../../styles/style"
 
 const Signup = ({ setAisdeToggle }) => {
   const dispatch = useDispatch()
-  const { signUpDone } = useSelector((state) => state.user)
-  const [signupComplete, setSignupComplete] = useState(false)
+  const { signUpDone, signUpError } = useSelector((state) => state.user)
+
   const {
     register,
     handleSubmit,
@@ -19,25 +19,21 @@ const Signup = ({ setAisdeToggle }) => {
     formState: { errors },
   } = useForm()
 
-  useEffect(() => {
-    if (signupComplete) {
-      alert("가입이 완료되었습니다")
-    }
-  }, [signupComplete])
-
   const onSubmit = useCallback(
     (data, e) => {
       dispatch({
         type: SIGN_UP_REQUEST,
         data,
       })
+      if (signUpError) {
+        alert(signUpError)
+      }
       if (signUpDone) {
         e.target.reset()
-        setSignupComplete(true)
+        alert("가입이 완료되었습니다")
       }
-      setAisdeToggle(false)
     },
-    [signUpDone],
+    [signUpDone, signUpError],
   )
 
   return (
@@ -55,10 +51,15 @@ const Signup = ({ setAisdeToggle }) => {
         <TextField
           id="userId"
           label="아이디"
-          {...register("userId")}
+          {...register("userId", {
+            pattern: /^[a-zA-Z0-9]*$/,
+          })}
           fullWidth
           required
         />
+        {errors?.userId?.type === "pattern" && (
+          <p>영문과 숫자로 입력해주세요.</p>
+        )}
       </AsideInputField>
       <AsideInputField>
         <TextField

@@ -28,7 +28,7 @@ const App = ({ Component }) => {
     <>
       <Head>
         <title>emotion</title>
-        <link rel="shortcut icon" href="/public/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="keywords" content="리뷰,영화,드라마,다큐" />
         <meta
           name="description"
