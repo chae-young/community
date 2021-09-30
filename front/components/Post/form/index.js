@@ -15,13 +15,14 @@ import {
 } from "../../../reducers/post"
 import basicPoster from "./images/noimage.png"
 import { FormInput, ButtonPurple, headerHeight } from "../../../styles/style"
+
 const FormSelect = dynamic(() => import("../category"))
 
 const PostForm = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const { imagePath, singlePost } = useSelector((state) => state.post)
-  const { register, trigger, handleSubmit, watch } = useForm()
+  const { register, trigger, handleSubmit, watch, setValue } = useForm()
 
   // 1이면 내이미지 2이면 편집모드
   const [selectedCheck, setSelectedCheck] = useState(null)
@@ -39,6 +40,8 @@ const PostForm = () => {
       setSelectedCheck(2)
       setCategory(singlePost.category)
       setRating(singlePost.rating)
+      setValue("title", singlePost.title)
+      setValue("content", singlePost.content)
     }
   }, [singlePost])
 
@@ -71,7 +74,7 @@ const PostForm = () => {
       router.push("/board")
       window.scrollTo(0, 0)
     },
-    [imagePath, rating],
+    [imagePath, rating, category],
   )
 
   const inputFile = useRef(null)
@@ -147,7 +150,7 @@ const PostForm = () => {
                 required: true,
               })}
               placeholder="리뷰 제목을 입력해주세요."
-              {...(editMode && { defaultValue: singlePost.title })}
+              // {...(editMode && { defaultValue: singlePost.title })}
             />
             <Rating
               value={rating}
@@ -164,7 +167,7 @@ const PostForm = () => {
               required: true,
             })}
             placeholder="내용을 입력해주세요."
-            {...(editMode && { defaultValue: singlePost.content })}
+            // {...(editMode && { defaultValue: singlePost.content })}
           />
           <ButtonPurple
             type="submit"
