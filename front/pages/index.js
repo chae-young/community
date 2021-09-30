@@ -4,10 +4,10 @@ import dynamic from "next/dynamic"
 import { END } from "redux-saga"
 import { useSelector } from "react-redux"
 
+import SwiperCore, { Navigation } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper.min.css"
 import "swiper/components/navigation/navigation.min.css"
-import SwiperCore, { Navigation } from "swiper"
 
 import { Grid } from "@material-ui/core"
 
@@ -49,40 +49,41 @@ const Main = () => {
 
   return (
     <Layout>
-      {Swiper && (
-        <>
-          <MainSlider>
-            <h2>인기 포스트</h2>
-            <Swiper
-              slidesPerView={6}
-              spaceBetween={60}
-              navigation
-              className="mySwiper"
-              breakpoints={breakpoints}
-            >
-              {popularPosts.map((v) => (
-                <SwiperSlide key={v.id}>
-                  <Grid container>
-                    <PostListContent post={v} xs={12} sm={12} />
-                  </Grid>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </MainSlider>
-          <MainSlider>
-            <h2>드라마</h2>
-            <Swiper navigation className="mySwiper" breakpoints={breakpoints}>
-              {dramaPosts.map((v) => (
-                <SwiperSlide key={v.id}>
-                  <Grid container>
-                    <PostListContent post={v} xs={12} sm={12} />
-                  </Grid>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </MainSlider>
-        </>
-      )}
+      <MainSlider>
+        <h2>인기 포스트</h2>
+        <Swiper
+          slidesPerView={6}
+          spaceBetween={60}
+          navigation
+          observer="true"
+          onSwiper={(swiper) => {
+            setTimeout(() => {
+              swiper.update() // ------> this solution
+            }, 3000)
+          }}
+          breakpoints={breakpoints}
+        >
+          {popularPosts.map((v) => (
+            <SwiperSlide key={v.id}>
+              <Grid container>
+                <PostListContent post={v} xs={12} sm={12} />
+              </Grid>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </MainSlider>
+      <MainSlider>
+        <h2>드라마</h2>
+        <Swiper navigation breakpoints={breakpoints}>
+          {dramaPosts.map((v) => (
+            <SwiperSlide key={v.id}>
+              <Grid container>
+                <PostListContent post={v} xs={12} sm={12} />
+              </Grid>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </MainSlider>
     </Layout>
   )
 }
