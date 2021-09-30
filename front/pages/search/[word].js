@@ -13,8 +13,9 @@ import wrapper from "../../store/configureStore"
 import PostListContent from "../../components/List/post/PostListContent"
 import { REVIEW_SEARCH_REQUEST } from "../../reducers/post"
 import { LOAD_USER_REQUEST } from "../../reducers/user"
-const Layout = dynamic(() => import("../../components/Layout"))
 import useInfiniteScroll from "../../components/Layout"
+
+const Layout = dynamic(() => import("../../components/Layout"))
 
 const Search = () => {
   const router = useRouter()
@@ -50,24 +51,31 @@ const Search = () => {
           content={`emotin | ${word} 의 검색결과`}
         />
       </Head>
-
-      <GridContent container>
-        {searchList.map((v) => (
-          <PostListContent
-            key={v.id}
-            post={v}
-            xs={6}
-            sm={4}
-            padding={{ d: "0 1rem 8rem 1rem", m: "0 20px 40px 20px" }}
-          />
-        ))}
-      </GridContent>
+      {searchList.length ? (
+        <GridContent container>
+          {searchList.map((v) => (
+            <PostListContent
+              key={v.id}
+              post={v}
+              xs={6}
+              sm={4}
+              padding={{ d: "0 1rem 8rem 1rem", m: "0 20px 40px 20px" }}
+            />
+          ))}
+        </GridContent>
+      ) : (
+        <ResultText>검색결과가 없습니다.</ResultText>
+      )}
     </Layout>
   )
 }
 const GridContent = styled(Grid)`
   max-width: 1000px;
   margin: 0 auto;
+`
+const ResultText = styled.p`
+  text-align: center;
+  font-size: 2rem;
 `
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {

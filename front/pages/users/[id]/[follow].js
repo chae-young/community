@@ -1,12 +1,11 @@
 import React, { useCallback } from "react"
 import Link from "next/link"
 import Head from "next/head"
-import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
 import { END } from "@redux-saga/core"
-import axios from "axios"
 
+import axios from "axios"
 import {
   List,
   ListItem,
@@ -23,11 +22,11 @@ import {
   LOAD_USER_REQUEST,
   USER_INFO_REQUEST,
 } from "../../../reducers/user"
-const FollowButton = dynamic(() => import("../../../components/Follow/btn"))
-const Layout = dynamic(() => import("../../../components/Layout"))
-import useInfiniteScroll from "../../../hooks/useInfiniteScroll"
+import FollowButton from "../../../components/Follow/btn"
 import { minContainer } from "../../../styles/style"
+import Layout from "../../../components/Layout"
 import ProfileAvatar from "../../../components/Profile/Avatar"
+import useInfiniteScroll from "../../../hooks/useInfiniteScroll"
 
 const FollowContent = styled.div`
   ${minContainer}
@@ -66,7 +65,10 @@ const Follow = () => {
           property="og:title"
           content={`${userInfo.nickname}님의 ${follow}`}
         />
-
+        <meta
+          property="og:description"
+          content={`${userInfo.nickname}님의 ${follow}`}
+        />
         <meta
           property="og:url"
           content={`https://emotion-feed.com/users/${id}/${follow}`}
