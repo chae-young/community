@@ -177,7 +177,7 @@ user들끼리 팔로잉 팔로우를 할수 있고 각 프로필 페이지에서
 -   user 객체 내 Follower,Folloing 프로퍼티 존재
 -   로그인 한 id와 프로필 정보 user id 비교하여 팔로우 버튼 유무 구현.
 -   팔로우 시 현재 user id 를 dispath
--   팔로우 리스트는 router의 params 값이 follow면 follow 리스트, following이면 followinf 리스트가 나오도록 구현.
+-   팔로우 리스트는 router의 params 값이 follow면 follow 리스트, following이면 following 리스트가 나오도록 구현.
 -   처음 리스트는 20개씩, 스크롤 내리면 10개 씩 나오도록 함.
 
 <br>
