@@ -189,7 +189,7 @@ user들끼리 팔로잉 팔로우를 할수 있고 각 프로필 페이지에서
 
 -   post 객체 내 Liker 프로퍼티 존재
 -   로그인된 아이디와 게시글 아이디 비교하여 좋아요 유무 판단
--   좋아요 클릭시 post.Likers.length - 1 , 좋아요 취소시 post.Likers.length - 1 로 카운트 전달
+-   좋아요 클릭시 post.Likers.length + 1 , 좋아요 취소시 post.Likers.length - 1 로 카운트 전달
 -   db 에 각 포스트의 좋아요수 저장
 
 <br>
