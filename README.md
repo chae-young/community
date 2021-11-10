@@ -5,6 +5,7 @@
 
 <br>
 <br>
+<img src="https://user-images.githubusercontent.com/28029685/141098671-a465f349-f503-4954-b9be-03c85add7f44.gif">
 <br>
 <br>
 
@@ -142,7 +143,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 **3. 로그인/회원가입/로그아웃**
 
--   react-hook-from 라이브러리의 error기능을 이용하여 비밀번호가 8자 이상으로 입력되도록 체크
+-   react-hook-from 라이브러리의 error옵션을 이용하여 비밀번호가 8자 이상으로 입력되도록 체크
 -   비밀번호 확인 체크
 -   로그아웃시 메인페이지로 이동
 
@@ -240,13 +241,14 @@ user들끼리 팔로잉 팔로우를 할수 있고 각 프로필 페이지에서
 
     <br>
 
--   로딩속도
+-   로딩속도 성능 개선
 
-    ~~로딩속도가 살짝 느린거 같아서 문제가 무엇인지 찾는중이다..~~
-    처음엔 saga throttle 기능을 사용하여 데이터를 가져왔었는데 로딩이 너무 느려서 takelatest 로 바꿨다.
-    로딩 부분에 대해선 공부가 더 필요한것 같다.
+    ~~로딩속도가 느린거 같아서 문제가 무엇인지 찾는중..~~
+    - 처음엔 saga throttle 기능을 사용하여 포스트를 가져왔었는데 로딩이 너무 느려서 takelatest 로 바꿨다.(로딩속도 10s대 에서 3-4s로 개선)
 
-    ++ js 용량 문제도 있어서 라이브러리를 트리쉐이킹 하거나 필요없는 코드 삭제
+    - js 용량 문제로 라이브러리를 트리쉐이킹,필요없는 코드 삭제(1G -> 3mb로 개선)
+
+    - dynamic import를 활용하여 런타임시 컴포넌트 import
 
     <br>
 
