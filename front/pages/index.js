@@ -16,7 +16,6 @@ const Main = () => {
 
   return (
     <Layout>
-      {console.log(1)}
       <Slider title="인기 포스트" dataList={popularPosts} />
       <Slider title="드라마" dataList={dramaPosts} />
 
