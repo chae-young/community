@@ -47,7 +47,7 @@ const Header = () => {
       <HeaderWrap ref={header}>
         <InnerHeader>
           <Logo>
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <a>
                 <Image src={LogoImg} alt="emotion" layout="fill" />
               </a>
@@ -56,7 +56,7 @@ const Header = () => {
           <Nav>
             <HeaderUtillMenu>
               <li>
-                <Link href="/board">
+                <Link href="/board" prefetch={false}>
                   <a>REVIEW</a>
                 </Link>
               </li>

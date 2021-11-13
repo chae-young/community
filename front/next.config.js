@@ -10,10 +10,16 @@ module.exports = withPlugins([[withImages], [withBundleAnalyzer]], {
 
   webpack(config, { webpack }) {
     const prod = process.env.NODE_ENV === "production"
-    return {
+    const nextConfig = {
       ...config,
       mode: prod ? "production" : "development",
       devtool: prod ? "hidden-source-map" : "eval",
     }
+    // nextConfig.optimization = {
+    //   ...config.optimization,
+    //   minimize: true,
+    //   minimizer: [new UglifyJsPlugin()],
+    // }
+    return nextConfig
   },
 })

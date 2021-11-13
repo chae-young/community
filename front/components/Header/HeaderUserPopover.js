@@ -36,7 +36,7 @@ const MypopOver = ({ options }) => {
         </div>
         <PopoverInfo>
           <div className="profile-user">
-            <Link href="/users/[id]" as={`/users/${me.id}`}>
+            <Link href="/users/[id]" as={`/users/${me.id}`} prefetch={false}>
               <a>{me.nickname}</a>
             </Link>
             <span className="id">{me.userId}</span>

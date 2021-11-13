@@ -57,7 +57,7 @@ const Slider = ({ title, dataList }) => {
           <SwiperSlide key={v.id}>
             <Grid container>
               <Grid item xs={12} sm={12}>
-                <Link href={`/post/${v.id}`}>
+                <Link href={`/post/${v.id}`} prefetch={false}>
                   <a>
                     <ListPoster heightVal="25em">
                       <img

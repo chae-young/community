@@ -21,7 +21,7 @@ const PostListContent = ({ post, ...rest }) => {
   return (
     <>
       <GridContent item xs={xs} sm={sm} padding={padding}>
-        <Link href={`/post/${post.id}`}>
+        <Link href={`/post/${post.id}`} prefetch={false}>
           <a>
             <ListPoster heightVal="25em">
               <img src={post.Images[0].src} width="100%" alt={post.title} />
