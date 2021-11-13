@@ -41,7 +41,7 @@ const MypopOver = ({ options }) => {
             </Link>
             <span className="id">{me.userId}</span>
           </div>
-          <Link href="/write">
+          <Link href="/write" prefetch={false}>
             <a className="profile-write">글쓰기</a>
           </Link>
           <button type="button" onClick={onLogout}>
