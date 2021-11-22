@@ -9,8 +9,6 @@
 <br>
 <br>
 
-
-
 # 목차
 
 ## [1.프로젝트 소개](#프로젝트-소개)<br>
@@ -62,7 +60,7 @@ front 와 back 분리 <br/>
 <br>
 <br>
 
-#  stack
+# stack
 
 front : React,Next.js,Redux,Redux-saga,style-components,material-ui <br/>
 back : espress.js,sequelize,mysql <br/>
@@ -144,15 +142,16 @@ export const getServerSideProps = wrapper.getServerSideProps(
 **3. 로그인/회원가입/로그아웃**
 
 로그인
--   react-hook-from 라이브러리의 error옵션을 이용하여 비밀번호가 8자 이상으로 입력되도록 체크
--   user id,password 입력받아 post 요청
--   back에서 passport로 프론트에서 받은 데이터 확인
--   db에 해당 id 존재하면 로그인
+
+-   세션id 활용
+-   유저 로그인후 세션id 생성-> 세션id 클라이언트전달
+-   인증 필요 페이지마다 쿠키전달
+-   서버에서 쿠키를 받아 세션id 확인 후 데이터 응답
 
 회원가입
 
-- input에 user 정보 입력 -> post 요청
-- db에 해당 id 존재하지 않으면 db에 저장 후 회원가입 완료
+-   input에 user 정보 입력 -> post 요청
+-   db에 해당 id 존재하지 않으면 db에 저장 후 회원가입 완료
 
 <br>
 <br>
@@ -251,11 +250,12 @@ user들끼리 팔로잉 팔로우를 할수 있고 각 프로필 페이지에서
 -   로딩속도 성능 개선
 
     ~~로딩속도가 느린거 같아서 문제가 무엇인지 찾는중..~~
-    - 처음엔 saga throttle 기능을 사용하여 포스트를 가져왔었는데 로딩이 너무 느려서 takelatest 로 바꿨다.(로딩속도 8s대 에서 2-3s로 개선)
 
-    - js 용량 문제로 라이브러리를 트리쉐이킹,필요없는 코드 삭제(1G -> 3mb로 개선)
+    -   처음엔 saga throttle 기능을 사용하여 포스트를 가져왔었는데 로딩이 너무 느려서 takelatest 로 바꿨다.(로딩속도 8s대 에서 2-3s로 개선)
 
-    - dynamic import를 활용하여 런타임시 컴포넌트 import
+    -   js 용량 문제로 라이브러리를 트리쉐이킹,필요없는 코드 삭제(1G -> 3mb로 개선)
+
+    -   dynamic import를 활용하여 런타임시 컴포넌트 import
 
     <br>
 
